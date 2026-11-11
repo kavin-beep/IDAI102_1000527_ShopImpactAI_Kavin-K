@@ -150,6 +150,29 @@ class AppTests(unittest.TestCase):
         self.assertFalse(app.exception)
         self.assertEqual(by_label(app.metric, "Above spending goal").value, "INR 400.00")
 
+    def test_wishlist_skip_and_buy_keep_goals_and_history_separate(self):
+        app = self.app()
+        for name in ["Headphones", "Jacket"]:
+            by_label(app.text_input, "What is it?").set_value(name)
+            by_label(app.button, "Add to wishlist").click().run()
+            self.assertFalse(app.exception)
+        wishlist = app.session_state["account_data"]["settings"]["wishlist"]
+        self.assertEqual([w["name"] for w in wishlist], ["Headphones", "Jacket"])
+        app.button(key=f"skip_{wishlist[0]['id']}").click().run()
+        self.assertFalse(app.exception)
+        self.assertEqual(app.session_state["account_data"]["purchases"], [])
+        self.assertEqual(by_label(app.metric, "Kept in your pocket").value, "INR 1,000.00")
+        app.button(key=f"buy_{wishlist[1]['id']}").click().run()
+        self.assertFalse(app.exception)
+        saved = app.session_state["account_data"]
+        self.assertEqual([p["brand"] for p in saved["purchases"]], ["Jacket"])
+        self.assertEqual({w["status"] for w in saved["settings"]["wishlist"]}, {"skipped", "bought"})
+        app.number_input(key="budget").set_value(2000.0)
+        by_label(app.button, "Save goals & appearance").click().run()
+        latest = self.db.load(self.db.login("alice", "Testing only password 123"))
+        self.assertEqual(latest["settings"]["budget"], 2000.0)
+        self.assertEqual(len(latest["settings"]["wishlist"]), 2)
+
     def test_incorrect_login_shows_message_without_crashing(self):
         app = AppTest.from_file(str(APP), default_timeout=30).run()
         app.text_input(key="login_name").set_value("alice")

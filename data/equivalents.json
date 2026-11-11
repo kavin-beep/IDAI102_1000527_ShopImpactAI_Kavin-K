@@ -1,0 +1,21 @@
+{
+  "source": "US EPA Greenhouse Gas Equivalencies Calculator - Calculations and References",
+  "url": "https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator-calculations-and-references",
+  "page_updated": "2026-08-04",
+  "reviewed": "2026-11-11",
+  "note": "US averages used only to make a rough kg CO2e estimate easier to picture. They are illustrations, not measurements or offsets.",
+  "factors": {
+    "car_km": {
+      "kg_per_unit": "0.24420",
+      "derivation": "3.93 x 10^-4 metric tons CO2e per mile (average gasoline passenger vehicle) / 1.609344 km per mile"
+    },
+    "phone_charge": {
+      "kg_per_unit": "0.0124",
+      "derivation": "1.24 x 10^-5 metric tons CO2 per smartphone charged"
+    },
+    "tree_month": {
+      "kg_per_unit": "5.0",
+      "derivation": "0.060 metric ton CO2 per urban tree seedling per year (10-year average) / 12 months"
+    }
+  }
+}

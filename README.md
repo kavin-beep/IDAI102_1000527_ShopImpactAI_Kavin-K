@@ -24,13 +24,26 @@
 
 | Built with | Persistence | Checks | Release status |
 | :---: | :---: | :---: | :---: |
-| Python 3.12 · Streamlit | SQLite / Neon PostgreSQL | 84 tests passed locally · 5 Oct 2026 | Live on Streamlit Cloud |
+| Python 3.12 · Streamlit · Altair | SQLite / Neon PostgreSQL | 94 tests passed locally · 11 Nov 2026 | Live on Streamlit Cloud |
 
 ShopImpact turns a purchase list into a useful shopping journal: record what you buy, see spending patterns, explore rough emissions estimates, and consider reuse or repair. It implements **Scenario 1** of the Year 1 Python Programming assessment.
 
 > **An estimate, with a clear purpose.** CO₂e means carbon dioxide equivalent. ShopImpact estimates impact using price × category factor; it does not measure a specific product's actual emissions.
 
 ---
+
+## What's new in ShopImpact 2.0 (November 2026)
+
+| | |
+| :--- | :--- |
+| 🎨 **Aurora design system** | Gradient hero with a level orb, glass cards, colourful KPI tiles, a new type scale (Plus Jakarta Sans + Fraunces) and refreshed Normal, Day and Night themes. |
+| ✨ **Motion everywhere** | Cards rise in, numbers count up, goal rings draw themselves, badges pop, buttons shimmer and leaves drift. One switch (or the device's reduced-motion setting, or high contrast) turns it all off. |
+| ⏸️ **Mindful wishlist** | Park something you want for a 7-day cool-off, then skip it (balloons, +25 eco points, money "kept in your pocket") or buy it (it becomes a purchase with a fresh estimate). |
+| 🏆 **Eco journey** | Eco points, five levels from Seedling to Forest keeper, a reuse & repair streak and seven lifetime milestones. Points never change the fixed badge rules. |
+| 🌍 **Everyday equivalents** | Each month's estimated kg CO₂e is pictured as car kilometres, smartphone charges and tree-months using US EPA equivalency factors (`data/equivalents.json`). |
+| 🍩 **Vibrant charts** | Rounded category bars, donuts and a gradient six-month trend built with Altair, plus a month-in-a-sentence summary. |
+
+A matching 18-slide presentation is in [`output/presentation/ShopImpact_Vibrant_Deck.pptx`](output/presentation/ShopImpact_Vibrant_Deck.pptx).
 
 ## Features
 
@@ -108,7 +121,9 @@ These are **rough reference estimates**. US sector averages, broad category mapp
 | accounts.py | Argon2id passwords, sessions, recovery and database storage |
 | logic.py | Decimal calculations, purchase dictionaries, monthly summaries, badge rules |
 | insights.py | Six-month trends, goal balance and filtered history views |
-| ui.py | Shared visual styling and sign-in branding |
+| ui.py | Design system, animations, themes and small HTML components |
+| charts.py | Vibrant Altair category bars, donuts and trend areas |
+| journey.py | Eco points, levels, streaks, milestones, equivalents and the mindful wishlist |
 | storage.py | Validated JSON import/export and spreadsheet-safe CSV |
 | data/ | Product catalog, published source evidence and tips |
 | tools/draw_rewards.py | Turtle leaf generation and optional desktop preview |
@@ -156,7 +171,7 @@ Open **Theme & animation** in the sidebar to choose **Normal** (the original loo
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
 
-84 automated tests pass (5 October 2026), covering calculations, factor provenance, account isolation, persistence, recovery, rate limiting, concurrent saves, trends, filtering and interface workflows. Tests use disposable databases and do not write to real accounts. The 15-purchase synthetic fixture exists only for testing. See [test evidence](docs/testing.md).
+94 automated tests pass (11 November 2026), covering calculations, the eco journey, the mindful wishlist, factor provenance, account isolation, persistence, recovery, rate limiting, concurrent saves, trends, filtering and interface workflows. Tests use disposable databases and do not write to real accounts. The 15-purchase synthetic fixture exists only for testing. See [test evidence](docs/testing.md).
 
 ## Deployment and assessment
 
