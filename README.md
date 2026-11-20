@@ -10,7 +10,7 @@
 <p align="center">
   <a href="https://shopimpact-duy7hphexgoshhqfexfmkt.streamlit.app/">Open live app</a> ·
   <a href="output/presentation/ShopImpact_Vibrant_Deck.pptx">Download the presentation</a> ·
-  <a href="https://canva.link/v8iiqeb2k0bxb1g">Open Canva storyboard</a> ·
+  <a href="https://canva.link/v8iiqeb2k0bxb1g">Open the Canva deck (21 slides)</a> ·
   <a href="#whats-new-in-shopimpact-20">What's new</a> ·
   <a href="#features">Explore features</a> ·
   <a href="#screenshots">See the app</a> ·
@@ -47,7 +47,7 @@ Released 11 November 2026.
 | 🌍 **Everyday equivalents** | Each month's estimated kg CO₂e is pictured as car kilometres, smartphone charges and tree-months using US EPA equivalency factors. |
 | 🍩 **Vibrant charts** | Rounded category bars, donuts and a gradient six-month trend built with Altair, plus a month-in-a-sentence summary. |
 
-A matching 18-slide presentation with speaker notes is in [`output/presentation/ShopImpact_Vibrant_Deck.pptx`](output/presentation/ShopImpact_Vibrant_Deck.pptx).
+Two matching presentations cover the whole app: the 21-slide [Canva deck](https://canva.link/v8iiqeb2k0bxb1g) (updated for 2.0, with speaker notes) and an 18-slide PowerPoint, [`ShopImpact_Vibrant_Deck.pptx`](output/presentation/ShopImpact_Vibrant_Deck.pptx).
 
 ## Features
 
@@ -145,7 +145,7 @@ These are **rough reference estimates**. US sector averages, broad category mapp
 | tools/draw_rewards.py | Turtle leaf generation and optional desktop preview |
 | tests/ | Disposable account/UI tests, journey tests and synthetic purchase fixtures |
 | docs/ | Design, methodology, test evidence, deployment and assessment checklist |
-| output/ | 10-page guide (PDF) and the vibrant presentation (PPTX) |
+| output/ | 10-page guide (PDF) and the PowerPoint presentation (PPTX); the Canva deck is linked above |
 
 ```mermaid
 flowchart LR
@@ -202,7 +202,7 @@ The [repository readiness review](docs/repository-readiness.md) records the fina
 
 The [ten-page code and data guide](output/pdf/ShopImpact_10_Page_Explanation.pdf) is included for learning and review. Its test count describes the earlier 78-test snapshot; the current suite has 94 tests. The guide predates the ShopImpact 2.0 design, the wishlist, the eco journey and the v3 reference data; see this README and the 2026 update for the current version. It is separate from the final assessment submission document.
 
-The [vibrant presentation](output/presentation/ShopImpact_Vibrant_Deck.pptx) covers the problem, the estimate model, every feature of ShopImpact 2.0 and the test results. Its screenshots and six-month chart use the same fictional local test account as the README screenshots.
+The [Canva deck](https://canva.link/v8iiqeb2k0bxb1g) (21 slides) and the [PowerPoint presentation](output/presentation/ShopImpact_Vibrant_Deck.pptx) (18 slides) cover the problem, the estimate model, every feature of ShopImpact 2.0 and the test results. Its screenshots and six-month chart use the same fictional local test account as the README screenshots.
 
 See [deployment instructions](docs/deployment.md). Neon PostgreSQL was connected and verified on 2 October 2026: registration, login, account isolation, purchase persistence across new connections, conflicting-save protection and logout passed. Temporary QA accounts were deleted. ShopImpact is deployed on Streamlit Community Cloud, and the public sign-in page has been checked in the browser. Full account workflows on the deployed app, redeployment persistence and provider backup restoration remain pending verification.
 
@@ -245,4 +245,4 @@ Every push and pull request runs the full suite on GitHub Actions (see the badge
 - Name of Mentor: Syed Ali Beema S
 - Registration No: 1000527
 - Name of School: Jain Vidyalaya
-- AI assistance: OpenAI ChatGPT (Codex) assisted with coding, debugging and documentation; Anthropic Claude assisted with the ShopImpact 2.0 redesign, new features and presentation. Project direction and final decisions were made by the student.
+- AI assistance: OpenAI ChatGPT (Codex) assisted with coding, debugging and documentation; Anthropic Claude assisted with the ShopImpact 2.0 redesign, new features and presentations. Project direction and final decisions were made by the student.
