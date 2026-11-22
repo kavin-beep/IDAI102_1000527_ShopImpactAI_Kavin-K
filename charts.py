@@ -1,9 +1,9 @@
-"""Vibrant Altair charts. Every colour is paired with a text label or tooltip."""
+"""Earthy Altair charts. Every colour is paired with a text label or tooltip."""
 import altair as alt
 import pandas as pd
 from ui import CATEGORY_COLORS
 
-FONT = "Plus Jakarta Sans"
+FONT = "Inter"
 SCALE = alt.Scale(domain=list(CATEGORY_COLORS), range=list(CATEGORY_COLORS.values()))
 
 
@@ -48,12 +48,12 @@ def category_donut(grouped, unit, ink):
 def trend_area(months, values, measure, ink):
     data = pd.DataFrame({"Month": months, "Value": values})
     gradient = alt.Gradient(gradient="linear", x1=1, x2=1, y1=1, y2=0, stops=[
-        alt.GradientStop(color="rgba(16,185,129,0.04)", offset=0),
-        alt.GradientStop(color="rgba(20,184,166,0.35)", offset=0.5),
-        alt.GradientStop(color="rgba(99,102,241,0.65)", offset=1)])
+        alt.GradientStop(color="rgba(163,197,133,0.02)", offset=0),
+        alt.GradientStop(color="rgba(163,197,133,0.30)", offset=0.5),
+        alt.GradientStop(color="rgba(232,176,74,0.60)", offset=1)])
     base = alt.Chart(data).encode(x=alt.X("Month:N", sort=None, title=None, axis=alt.Axis(labelAngle=0)))
     area = base.mark_area(interpolate="monotone", color=gradient,
-                          line={"color": "#0EA5A4", "strokeWidth": 3}).encode(y=alt.Y("Value:Q", title=measure))
-    dots = base.mark_point(filled=True, size=110, color="#8B5CF6", stroke="white", strokeWidth=2, opacity=1).encode(
+                          line={"color": "#E8B04A", "strokeWidth": 3}).encode(y=alt.Y("Value:Q", title=measure))
+    dots = base.mark_point(filled=True, size=110, color="#A3C585", stroke="#17140F", strokeWidth=2, opacity=1).encode(
         y="Value:Q", tooltip=[alt.Tooltip("Month:N"), alt.Tooltip("Value:Q", title=measure, format=",.2f")])
     return _style((area + dots).properties(height=320), ink)

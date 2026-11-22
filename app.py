@@ -108,7 +108,7 @@ with st.sidebar:
 
 apply_styles(high_contrast)
 night = st.session_state.get("visual_theme") == "Night" and not high_contrast
-ink = "#EEF3FB" if night else "#0F2E25"
+ink = ui.chart_ink(high_contrast)
 
 if st.session_state.pop("celebrate", False):
     st.balloons()

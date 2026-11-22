@@ -4,7 +4,7 @@ Students, young adults and families may want to understand purchases without spe
 
 ## Current layout
 
-The sign-in page pairs a dark green introduction panel with labelled account forms. On narrow screens the panels stack. The dashboard uses a quieter cream background, white metric cards, rounded controls and consistent heading sizes. Captions keep their intended text colour without Streamlit's default opacity reduction. A shared stylesheet supports the same appearance across account and shopping pages.
+The 2026 "Conscious Market Journal" design places the app over slow, crossfading second-hand market, clothes-rack and forest footage (Mixkit, free licence) with a warm grain and bokeh layer. Panels are dark glass with Fraunces serif headlines, mono kickers and numbered section headings. The sign-in page pairs a video cover panel with labelled account forms; on narrow screens the panels stack. Day warms the footage with a sun glow, Night tints it blue with stars, and turning off animated scenery (or the device's reduced-motion setting) removes the video. High contrast switches to black, white and yellow with no footage. Captions keep their intended text colour without Streamlit's default opacity reduction. A shared stylesheet supports the same appearance across account and shopping pages.
 
 ```text
 +----------------------+--------------------------------------------------+
