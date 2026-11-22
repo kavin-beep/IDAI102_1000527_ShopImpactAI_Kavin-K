@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" width="1200" height="520" role="img" aria-label="How ShopImpact works: the browser talks to the Streamlit app, which uses Python calculations, reference data and an account database">
+  <style>
+    .box{fill:#17140f;stroke:#3a342a;stroke-width:1.5}
+    .hot{stroke:#e8b04a}
+    .t{font-family:Fraunces,Georgia,serif;font-size:21px;fill:#f4ede1}
+    .s{font-family:Consolas,'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:1px;fill:#a59c8a}
+    .k{font-family:Consolas,'JetBrains Mono',monospace;font-size:11px;letter-spacing:3px;fill:#e8b04a}
+    .flow{fill:none;stroke:#e8b04a;stroke-width:2;stroke-dasharray:6 8;animation:dash 1.4s linear infinite;opacity:.85}
+    .flow.g{stroke:#a3c585}
+    @keyframes dash{to{stroke-dashoffset:-28}}
+    .dot{animation:pulse 2.2s ease-in-out infinite}
+    @keyframes pulse{50%{opacity:.2}}
+  </style>
+  <rect width="1200" height="520" fill="#0e0c09"/>
+  <text x="40" y="44" class="k">HOW SHOPIMPACT WORKS</text>
+
+  <!-- column 1: person -->
+  <rect x="40" y="90" width="230" height="140" rx="18" class="box hot"/>
+  <circle cx="64" cy="118" r="5" fill="#a3c585" class="dot"/>
+  <text x="78" y="123" class="t">You, in a browser</text>
+  <text x="64" y="156" class="s">Sign in · log a purchase</text>
+  <text x="64" y="176" class="s">Park a wish · read insights</text>
+  <text x="64" y="196" class="s">Download CSV / JSON</text>
+
+  <rect x="40" y="280" width="230" height="170" rx="18" class="box"/>
+  <text x="64" y="318" class="t">Motion layer</text>
+  <text x="64" y="346" class="s">ui.py · crossfading footage</text>
+  <text x="64" y="366" class="s">grain · bokeh · 3D tilt</text>
+  <text x="64" y="386" class="s">Normal · Day · Night</text>
+  <text x="64" y="406" class="s">high contrast · reduced</text>
+  <text x="64" y="426" class="s">motion respected</text>
+
+  <!-- column 2: app -->
+  <rect x="340" y="90" width="260" height="360" rx="18" class="box hot"/>
+  <text x="364" y="128" class="t">Streamlit app</text>
+  <text x="364" y="152" class="s">app.py · account_ui.py</text>
+  <g class="s">
+    <text x="364" y="196">🌿 Dashboard</text>
+    <text x="364" y="222">⏸️ Mindful wishlist</text>
+    <text x="364" y="248">📈 Insights</text>
+    <text x="364" y="274">🏆 Eco journey</text>
+    <text x="364" y="300">🧾 History &amp; backups</text>
+    <text x="364" y="326">📚 How it works</text>
+  </g>
+  <text x="364" y="372" class="s">charts.py · Altair bars,</text>
+  <text x="364" y="392" class="s">donuts, six-month trends</text>
+  <text x="364" y="420" class="s">Turtle leaf (SVG reward)</text>
+
+  <!-- column 3: python -->
+  <rect x="670" y="90" width="240" height="170" rx="18" class="box"/>
+  <text x="694" y="128" class="t">Python logic</text>
+  <text x="694" y="156" class="s">logic.py · Decimal maths,</text>
+  <text x="694" y="176" class="s">price × category factor</text>
+  <text x="694" y="200" class="s">journey.py · points, levels,</text>
+  <text x="694" y="220" class="s">streaks, wishlist</text>
+  <text x="694" y="244" class="s">insights.py · trends, goals</text>
+
+  <rect x="670" y="290" width="240" height="160" rx="18" class="box"/>
+  <text x="694" y="328" class="t">Reference data</text>
+  <text x="694" y="356" class="s">USEEIO v1.4 factors</text>
+  <text x="694" y="376" class="s">World Bank 2024 INR rate</text>
+  <text x="694" y="396" class="s">US EPA equivalents</text>
+  <text x="694" y="416" class="s">alternatives · eco tips</text>
+
+  <!-- column 4: storage -->
+  <rect x="980" y="90" width="180" height="200" rx="18" class="box hot"/>
+  <text x="1004" y="128" class="t">Accounts</text>
+  <text x="1004" y="156" class="s">accounts.py</text>
+  <text x="1004" y="180" class="s">Argon2id hashes</text>
+  <text x="1004" y="200" class="s">hashed sessions</text>
+  <text x="1004" y="220" class="s">rate limiting</text>
+  <text x="1004" y="244" class="s">conflict-safe saves</text>
+  <text x="1004" y="268" class="s">email links</text>
+
+  <rect x="980" y="320" width="180" height="130" rx="18" class="box"/>
+  <text x="1004" y="358" class="t">Database</text>
+  <text x="1004" y="386" class="s">Neon PostgreSQL</text>
+  <text x="1004" y="406" class="s">or local SQLite</text>
+  <text x="1004" y="430" class="s">storage.py backups</text>
+
+  <!-- flows -->
+  <path class="flow" d="M270 160 H340"/>
+  <path class="flow g" d="M270 365 H340"/>
+  <path class="flow" d="M600 175 H670"/>
+  <path class="flow g" d="M790 260 V290"/>
+  <path class="flow" d="M560 90 C 600 50, 1030 50, 1070 90"/>
+  <path class="flow" d="M1070 290 V320"/>
+  <text x="40" y="496" class="s">Every estimate is a rough reference: price × category factor, not a measured product footprint.</text>
+</svg>
