@@ -24,9 +24,6 @@
 
 <sub>
 <a href="https://canva.link/v8iiqeb2k0bxb1g">Canva deck (21 slides)</a> ·
-<a href="output/presentation/ShopImpact_Vibrant_Deck.pptx">PowerPoint</a> ·
-<a href="output/pdf/ShopImpact_10_Page_Explanation.pdf">10-page guide</a> ·
-<a href="#-run-it-locally">Run locally</a>
 </sub>
 
 </div>
