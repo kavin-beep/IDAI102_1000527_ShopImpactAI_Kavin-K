@@ -1,6 +1,6 @@
 # Assessment requirements status
 
-Current on 3 October 2026. The rubric totals 60 marks: planning 10, Python logic 15, interface 15, testing/creativity 10, GitHub/documentation 10. Distinguished is the highest named tier; no grade is guaranteed.
+Status refreshed 26 November 2026. The rubric totals 60 marks: planning 10, Python logic 15, interface 15, testing/creativity 10, GitHub/documentation 10. Distinguished is the highest named tier; no grade is guaranteed.
 
 | Requirement | Evidence and current status |
 | --- | --- |
@@ -17,11 +17,11 @@ Current on 3 October 2026. The rubric totals 60 marks: planning 10, Python logic
 | Creative additions | Private accounts, permanent saving, recovery, goals, search, comparison, backups, tips, contrast and deletion |
 | Email account features | Email/password login, verification, reset and account-change workflows are implemented and covered by automated tests; private Gmail sender setup and real inbox delivery remain external configuration |
 | Thorough testing | 94 automated tests pass; actual browser review and screenshots recorded |
-| Genuine usability feedback and refinement | Feedback record is prepared; no real participant feedback has been collected yet |
+| Genuine usability feedback and refinement | Feedback record is prepared; no real participant feedback has been collected. An AI heuristic screen inspection is documented in docs/testing.md and does not replace participant feedback |
 | app.py and requirements.txt | Present; dependencies installed and checked |
-| Detailed README | Overview, features, integration, run/deployment steps and screenshot evidence present; public links pending |
-| GitHub repository, naming and assessor access | Pending actual repository and student details |
-| Streamlit Cloud deployment | Public app deployed and sign-in page checked; live URL in README. Local Neon checks passed previously; full cloud account workflows, redeployment and backup restoration checks remain pending |
+| Detailed README | Overview, features, integration, run/deployment steps, screenshots, repository and public app links are present |
+| GitHub repository, naming and assessor access | Repository exists at kavin-beep/IDAI102_1000527_ShopImpactAI_Kavin-K and student details are present; assessor access is not independently verified |
+| Streamlit Cloud deployment | Public app and sign-in/recovery screens checked; live URL is in README. Earlier Neon checks passed, but full deployed account workflows, redeployment persistence and provider backup restoration remain pending |
 | Submission PDF | Pending real student name, registration number, school, repository and live links |
 
 The real app has no demo workspace. Synthetic data belongs only in tests and in the separate browser QA database. Local accounts use SQLite; public mode requires PostgreSQL. Do not mark public deployment complete based on a local server or an example secrets file.

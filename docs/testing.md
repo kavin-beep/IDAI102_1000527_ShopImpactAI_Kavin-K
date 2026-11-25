@@ -1,6 +1,6 @@
 # Test evidence
 
-Verified on 3 October 2026 with Python 3.12.14 and Streamlit 1.55.0.
+Automated suite last run on 25 November 2026 with Python 3.12 and Streamlit 1.55.0.
 
 ## Automated checks
 
@@ -23,6 +23,10 @@ On 3 October 2026, nine email-action tests and six SMTP/link tests passed with n
 Neon checks also passed for verification gating, verification completion, email-link password reset, session revocation and replay rejection. The temporary account was deleted. Real Gmail authentication and inbox delivery are awaiting private sender configuration; no genuine message delivery is claimed yet.
 
 ## Browser evidence
+
+On 26 November 2026, an AI heuristic inspection opened the deployed public sign-in, account-creation and recovery screens. The sign-in page has labelled email-or-username and password fields, and the account-creation form labels username, email, password and confirmation. The privacy notice says purchase data is visible to database administrators and is not end-to-end encrypted. The recovery screen explicitly warns that email delivery is unavailable, disables the email-reset action, and explains recovery-code reset and session sign-out. The same email-reset limitation is shown below the sign-in/account tabs.
+
+No account was created, no credentials were entered, and no account data was changed during this inspection. The screens communicate the fallback clearly, but real Gmail delivery, successful deployed account transactions and mobile interaction were not tested in this review. This AI heuristic inspection is not participant feedback, a human usability study or an accessibility certification.
 
 On 3 October 2026, the redesigned sign-in page, dashboard, Insights, filtered history, rewards and saved contrast settings were reviewed in Chrome. At 390 pixels, the sign-in and collapsed-sidebar dashboard had no horizontal document overflow. Searching to zero matches hides edit/delete controls without changing saved purchases. Caption opacity was corrected so the chosen text colours remain readable. Updated images use 15 synthetic entries in a separate SQLite database. Streamlit's startup secret-file loading required explicitly directing this preview to its own settings file; it did not use real Neon accounts. The actual Neon-configured app's sign-in screen also loaded successfully after the changes.
 

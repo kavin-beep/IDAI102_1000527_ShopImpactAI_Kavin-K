@@ -235,7 +235,7 @@ account functionality.
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
 
-94 automated tests pass (22 November 2026), and every push and pull request runs the suite on GitHub Actions. Tests use
+94 automated tests pass (25 November 2026), and every push and pull request runs the suite on GitHub Actions. Tests use
 disposable databases and never write to real accounts. See [test evidence](docs/testing.md).
 
 | Test file | What it checks |
