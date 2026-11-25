@@ -288,7 +288,6 @@ IDAI102_1000527_ShopImpactAI_Kavin-K/
 ## 🎓 Assessment and presentations
 
 - **Canva deck** (21 slides, with speaker notes): [canva.link/v8iiqeb2k0bxb1g](https://canva.link/v8iiqeb2k0bxb1g)
-- **PowerPoint** (18 slides): [`ShopImpact_Vibrant_Deck.pptx`](output/presentation/ShopImpact_Vibrant_Deck.pptx)
 - **10-page code and data guide**: [`ShopImpact_10_Page_Explanation.pdf`](output/pdf/ShopImpact_10_Page_Explanation.pdf)
 
 The PowerPoint deck and PDF guides are regenerated for the November 2026 current design and 94-test snapshot.
