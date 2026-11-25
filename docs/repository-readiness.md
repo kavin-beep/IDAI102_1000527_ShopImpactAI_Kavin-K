@@ -1,6 +1,7 @@
 # Repository readiness review
 
-Reviewed 3 October 2026 before creating a repository. The core application is ready to put under version control. The repository has not been created or pushed as part of this review.
+Reviewed 25 November 2026. The core application is maintained at
+`kavin-beep/IDAI102_1000527_ShopImpactAI_Kavin-K`.
 
 ## Small improvements completed
 
@@ -12,7 +13,7 @@ Reviewed 3 October 2026 before creating a repository. The core application is re
 
 ## Verification
 
-All 79 automated tests passed in the project Python 3.12 virtual environment. The dependency check found no broken requirements. Tests cover purchase calculations and validation, import/export, account isolation, signup/login, recovery, conflicting saves, email actions, Insights and Streamlit UI interactions. The new email-configuration regression test signs in and saves a purchase despite invalid SMTP settings.
+All 94 automated tests pass in the project Python 3.12 environment. The dependency check found no broken requirements. Tests cover purchase calculations and validation, import/export, account isolation, signup/login, recovery, conflicting saves, email actions, Insights and Streamlit UI interactions. The email-configuration regression test signs in and saves a purchase despite invalid SMTP settings.
 
 The supplied assessment brief was rechecked against docs/requirements.md. The required purchase fields, live calculations, monthly dashboard, badges, alternatives, Python data structures and conditional Turtle artwork are implemented. Existing screenshots and the 15-record synthetic test fixture are present. Turtle desktop preview and assessor acceptance of the SVG integration remain to be confirmed.
 
@@ -21,7 +22,7 @@ Private-file exclusions were verified using Git's own ignore handling with tempo
 ## Before public launch and final submission
 
 1. Rotate the Neon database password previously shared in chat, then update private local and hosted settings. Do not put the replacement connection string in the repository or chat.
-2. Create the repository using the required student naming convention, then add the real repository URL and arrange assessor access as specified by the brief.
+2. Confirm assessor access to `kavin-beep/IDAI102_1000527_ShopImpactAI_Kavin-K` as specified by the brief.
 3. Deploy app.py to Streamlit Cloud with private PostgreSQL settings. Verify two-account isolation, recovery, downloads and persistence after redeployment. Add the actual public URL to the README.
 4. If enabling email, complete private Gmail setup and check inbox delivery and reset links from the deployed app. Recovery codes remain available without email.
 5. Gather actual participant feedback using docs/usability-feedback.md; record changes and retest them. Complete keyboard and screen-reader checks and database backup restoration checks.

@@ -1,3 +1,5 @@
+"""Tests for eco points, wishlist resolution and journey summaries."""
+
 import unittest
 from datetime import date
 from decimal import Decimal

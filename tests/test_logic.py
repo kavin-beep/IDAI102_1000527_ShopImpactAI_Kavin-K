@@ -1,3 +1,5 @@
+"""Tests for purchase calculations, validation and data backup logic."""
+
 import json
 import unittest
 from datetime import date

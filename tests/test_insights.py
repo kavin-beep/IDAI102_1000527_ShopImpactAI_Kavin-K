@@ -1,3 +1,5 @@
+"""Tests for monthly trends, filtering and goal calculations."""
+
 import unittest
 from decimal import Decimal
 from insights import shift_month, monthly_trend, month_insights, filter_purchases

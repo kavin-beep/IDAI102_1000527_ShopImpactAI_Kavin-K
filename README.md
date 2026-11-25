@@ -11,7 +11,7 @@
 </p>
 
 <p>
-  <a href="https://github.com/kavin-beep/ShopImpact-KavinK-1000527/actions/workflows/tests.yml"><img src="https://github.com/kavin-beep/ShopImpact-KavinK-1000527/actions/workflows/tests.yml/badge.svg" alt="GitHub Actions test status"/></a>
+  <a href="https://github.com/kavin-beep/IDAI102_1000527_ShopImpactAI_Kavin-K/actions/workflows/tests.yml"><img src="https://github.com/kavin-beep/IDAI102_1000527_ShopImpactAI_Kavin-K/actions/workflows/tests.yml/badge.svg" alt="GitHub Actions test status"/></a>
   <img src="https://img.shields.io/badge/Python-3.12-f4ede1?style=flat-square&logo=python&logoColor=17140f&labelColor=e8b04a"/>
   <img src="https://img.shields.io/badge/Streamlit-1.55-f4ede1?style=flat-square&logo=streamlit&logoColor=FF4B4B&labelColor=211b14"/>
   <img src="https://img.shields.io/badge/Altair-charts-f4ede1?style=flat-square&labelColor=211b14"/>
@@ -44,6 +44,26 @@
 **ShopImpact** turns a purchase list into a calm, cinematic habit journal. You record what you buy, see where your money
 goes, picture a rough emissions estimate, pause before buying, and celebrate reuse and repair. It implements
 **Scenario 1** of the Year 1 Python Programming assessment.
+
+### Problem statement
+
+People can find it difficult to understand the possible environmental impact of everyday purchases, the money they
+spend over time, and which lower-impact alternatives are practical. ShopImpact presents these ideas in a simple,
+private shopping journal without pretending that rough estimates are exact product measurements.
+
+### Objectives
+
+- Record purchases, edit or delete them, and review monthly spending and estimated impact.
+- Explain broad category estimates and everyday equivalents clearly.
+- Encourage reuse, repair and a mindful 7-day wishlist without guilt.
+- Provide private, persistent accounts and usable export, import and backup tools.
+- Verify the implementation with 94 automated tests and accessible screenshots.
+
+### Target users
+
+ShopImpact is designed for students, young adults and families who want a plain-language overview of shopping habits.
+It is intended for people with no specialist carbon-accounting knowledge and may be used on desktop or a narrow
+mobile screen.
 
 > **An estimate, with a clear purpose.** CO₂e means carbon dioxide equivalent. ShopImpact estimates impact as
 > **price × category factor**. It does not measure a specific product's actual emissions.
@@ -163,8 +183,8 @@ The sidebar holds your account, **Theme & animation**, account email, monthly sp
 Clone the repository, open the folder in VS Code and run these in its PowerShell terminal:
 
 ```powershell
-git clone https://github.com/kavin-beep/ShopImpact-KavinK-1000527.git
-cd ShopImpact-KavinK-1000527
+git clone https://github.com/kavin-beep/IDAI102_1000527_ShopImpactAI_Kavin-K.git
+cd IDAI102_1000527_ShopImpactAI_Kavin-K
 py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt --no-cache-dir
 .\.venv\Scripts\python.exe -m streamlit run app.py --server.address 127.0.0.1
@@ -193,10 +213,10 @@ working Tk. The app shows the generated SVG when a qualifying choice exists; it 
 2. In the app's **Secrets**, add `SHOPIMPACT_PUBLIC = true` and `SHOPIMPACT_DATABASE_URL` for a persistent PostgreSQL database (see [`.streamlit/secrets.example.toml`](.streamlit/secrets.example.toml) and the [Neon walkthrough](docs/neon-setup.md)).
 3. Optional email delivery is described in the [Gmail setup guide](docs/email-setup.md). Full steps are in [deployment instructions](docs/deployment.md).
 
-Neon PostgreSQL was connected and verified on 2 October 2026: registration, login, account isolation, persistence across
-new connections, conflicting-save protection and logout passed. The public sign-in page has been checked in the
-browser. Full account workflows on the deployed app, redeployment persistence and provider backup restoration remain
-pending verification.
+Neon PostgreSQL was connected and verified for registration, login, account isolation, persistence across new
+connections, conflicting-save protection and logout. These account workflows are implemented and covered by automated
+tests. The remaining checks are real deployed-provider inbox delivery and provider backup restoration, not basic
+account functionality.
 
 ---
 
@@ -233,7 +253,7 @@ disposable databases and never write to real accounts. See [test evidence](docs/
 ## 🗂️ Project structure
 
 ```text
-ShopImpact-KavinK-1000527/
+IDAI102_1000527_ShopImpactAI_Kavin-K/
 ├── app.py              # Dashboard, wishlist, insights, journey, history and backups
 ├── account_ui.py       # Sign-in, registration, recovery and authenticated saves
 ├── accounts.py         # Argon2id passwords, sessions, recovery and database storage
@@ -271,10 +291,10 @@ ShopImpact-KavinK-1000527/
 - **PowerPoint** (18 slides): [`ShopImpact_Vibrant_Deck.pptx`](output/presentation/ShopImpact_Vibrant_Deck.pptx)
 - **10-page code and data guide**: [`ShopImpact_10_Page_Explanation.pdf`](output/pdf/ShopImpact_10_Page_Explanation.pdf)
 
-The decks and guide were made before the November 2026 cinematic redesign, so their screenshots show the earlier
-aurora design; the guide also describes the earlier 78-test snapshot. The [repository readiness review](docs/repository-readiness.md)
-records the final checks. Real participant feedback, assessor access and the final submission PDF remain pending; see
-[requirements](docs/requirements.md) and the [feedback template](docs/usability-feedback.md).
+The PowerPoint deck and PDF guides are regenerated for the November 2026 current design and 94-test snapshot.
+The [repository readiness review](docs/repository-readiness.md) records the implementation checks. No real participant
+feedback has been collected yet, so [requirements](docs/requirements.md) and the
+[feedback record/template](docs/usability-feedback.md) remain the accurate evidence for this assessment status.
 
 ---
 

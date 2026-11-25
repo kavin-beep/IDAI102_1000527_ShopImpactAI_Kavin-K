@@ -4,7 +4,7 @@ Verified on 3 October 2026 with Python 3.12.14 and Streamlit 1.55.0.
 
 ## Automated checks
 
-All 84 tests pass using `python -m unittest discover -s tests -v`. `python -m pip check` reports no broken requirements.
+All 94 tests pass using `python -m unittest discover -s tests -v`. `python -m pip check` reports no broken requirements.
 
 Twenty core tests cover Decimal arithmetic, validation, month/year boundaries, totals, badge thresholds, category alternatives, source-factor derivation, no invented reuse discount, backup validation, explicit legacy migration and CSV formula neutralization. Sixteen account tests cover isolation, persistence across a new database connection, salted hashes, weak/duplicate credentials, lockout, conflicting saves, recovery rotation, session revocation/expiry, password-reset races during login, deletion and rejection of SQLite in public mode. Thirteen Streamlit tests cover the login gate, empty state, invalid input, purchase editing/deletion, persistent preferences, registration, filtered edit choices and immediate goal changes in Insights.
 
@@ -42,7 +42,7 @@ The pre-repository review on 3 October 2026 reran all 79 tests successfully in t
 
 Git ignore rules were checked using temporary Git metadata without initializing a repository in this project. Private settings, databases, virtual environments, environment files and recovery-code downloads are excluded; example settings remain included. A targeted credential-pattern scan of eligible text files found no real credentials. Five matching database strings in setup tests were reviewed as synthetic fixtures. This is a targeted check, not an independent security audit.
 
-Neon PostgreSQL was verified separately on 2 October 2026. Live checks passed for connection, schema creation, registration, login, two-account isolation, saved purchases across new database connections, stale-edit rejection and logout. Temporary QA accounts were deleted. The actual app's sign-in page rendered with hosted settings. This is additional live evidence, separate from the 79 automated tests.
+Neon PostgreSQL was verified separately on 2 October 2026. Live checks passed for connection, schema creation, registration, login, two-account isolation, saved purchases across new database connections, stale-edit rejection and logout. Temporary QA accounts were deleted. The actual app's sign-in page rendered with hosted settings. This is additional live evidence, separate from the 94 automated tests.
 
 Full keyboard and screen-reader accessibility, human usability feedback, Streamlit Cloud deployment/redeployment and provider backup restoration remain unverified. The narrow-screen screenshot is evidence of that viewport only, not a certification for every browser/device. A source-backed estimate remains approximate and is not independently validated carbon accounting.
 
@@ -50,4 +50,4 @@ Collect real feedback with `docs/usability-feedback.md`, record improvements, an
 
 ## 2026 data and design update
 
-On 5 October 2026, all 84 tests passed. Three new checks cover older-backup opt-in, immutable recalculation and confirmation before changing saved estimates. See [2026 update](2026-update.md) for source evidence and compatibility. Earlier browser evidence and PDF guides describe the prior release.
+On 25 November 2026, all 94 tests passed. The suite includes older-backup opt-in, immutable recalculation and confirmation before changing saved estimates. See [2026 update](2026-update.md) for source evidence and compatibility. The presentation and PDF guides were refreshed for this repository state.
