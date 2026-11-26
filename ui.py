@@ -258,22 +258,31 @@ html,body {background:#0E0C09;}
 .si-alt p {margin:0;color:var(--si-ink);font-weight:500;line-height:1.55;}
 
 /* Tip, story, badges, empty */
-.si-plant-card {display:flex;align-items:center;gap:18px;padding:18px;border-radius:22px;
+.si-plant-card {position:relative;display:flex;align-items:center;gap:22px;min-height:230px;padding:20px;border-radius:24px;
   background:linear-gradient(135deg,rgba(163,197,133,.16),rgba(14,12,9,.68));border:1px solid rgba(163,197,133,.32);
   backdrop-filter:blur(14px);overflow:hidden;}
-.si-plant-art {width:112px;height:124px;flex:none;display:grid;place-items:center;}
+.si-plant-card::before {content:"";position:absolute;width:220px;height:220px;left:8px;top:50%;transform:translateY(-50%);
+  background:radial-gradient(circle,rgba(163,197,133,.22),rgba(163,197,133,0) 70%);pointer-events:none;}
+.si-plant-stage-4::before,.si-plant-stage-5::before {background:radial-gradient(circle,rgba(232,176,74,.24),rgba(163,197,133,0) 72%);}
+.si-plant-art {position:relative;z-index:1;width:168px;height:204px;flex:none;display:grid;place-items:center;}
 .si-plant-art svg {width:100%;height:100%;overflow:visible;}
 .si-plant-top {transform-box:fill-box;transform-origin:50% 90%;}
 .si-plant-leaf {transform-box:fill-box;transition:transform .35s var(--si-ease);}
+.si-plant-vein {fill:none;stroke:#688E51;stroke-width:2;stroke-linecap:round;opacity:.8;}
+.si-plant-blossom {transform-box:fill-box;transform-origin:center;}
+.si-plant-fruit {stroke:#8E4F38;stroke-width:1.5;}
+.si-plant-glow {fill:#F4D28A;opacity:.12;}
 .si-plant-happy .si-plant-leaf-left {transform:rotate(-8deg);}
 .si-plant-happy .si-plant-leaf-right {transform:rotate(8deg);}
 .si-plant-wilted .si-plant-leaf-left {transform:rotate(35deg) translate(2px,5px);}
 .si-plant-wilted .si-plant-leaf-right {transform:rotate(-35deg) translate(-2px,5px);}
+.si-plant-wilted .si-plant-leaf {filter:saturate(.58);}
 .si-plant-face {fill:#17140F;stroke:none;}
 .si-plant-mouth {fill:none;stroke:#17140F;stroke-width:3;stroke-linecap:round;}
 .si-plant-copy {min-width:0;}
 .si-plant-copy small {font-family:var(--si-mono);font-size:.64rem;letter-spacing:.14em;color:var(--si-moss);font-weight:600;}
 .si-plant-copy > p {margin:6px 0 10px;color:var(--si-ink);line-height:1.45;font-size:.92rem;}
+.si-plant-growth {margin:0 0 12px;color:var(--si-moss);font-size:.78rem;font-weight:600;}
 .si-plant-tip {border-top:1px solid var(--si-line);padding-top:9px;color:var(--si-muted);font-size:.84rem;line-height:1.45;}
 .si-plant-tip b {color:var(--si-amber);font-family:var(--si-mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;}
 .si-tip {position:relative;padding:22px 24px;border-radius:22px;background:linear-gradient(135deg,rgba(232,176,74,.16),rgba(14,12,9,.6));
@@ -408,6 +417,9 @@ body:has(.si-paused) {background:radial-gradient(80% 80% at 80% 0%,#2A2416,#0E0C
   .st-key-badges [data-testid="stAlert"] {animation:si-pop .8s var(--si-ease) backwards;}
   .si-equiv i {animation:si-bob 6s ease-in-out infinite;}
   .si-plant-card:hover .si-plant-top,.si-plant-card:focus-within .si-plant-top {animation:si-plant-wiggle .7s ease-in-out;}
+  .si-plant-leaf {animation:si-plant-unfurl .65s var(--si-ease) backwards;}
+  .si-plant-blossom {animation:si-bob 4.5s ease-in-out infinite;}
+  .si-plant-stage-5 .si-plant-glow {animation:si-glow 3s ease-in-out infinite alternate;}
   .si-blob {animation:si-blob 26s ease-in-out infinite alternate;} .si-blob-2 {animation-duration:32s;animation-delay:-10s;}
   .si-leaf {animation:si-leaf var(--t) linear infinite;animation-delay:var(--d);}
   .si-star {animation:si-fall 22s linear infinite;animation-delay:var(--delay);}
@@ -430,8 +442,9 @@ body:has(.si-paused) {background:radial-gradient(80% 80% at 80% 0%,#2A2416,#0E0C
 @keyframes si-drift {to {transform:translateX(120px);}}
 @keyframes si-glow {to {transform:scale(1.07);opacity:.95;}}
 @keyframes si-plant-wiggle {0%,100% {transform:rotate(0);} 20% {transform:rotate(-9deg);} 45% {transform:rotate(7deg);} 70% {transform:rotate(-4deg);}}
-.si-paused *,.si-paused *::before,.si-paused *::after {animation:none!important;}
-@media (prefers-reduced-motion:reduce) {.si-scenery *,.si-plant-card * {animation:none!important;} .si-leaf {display:none;} #si-video,#si-webgl {display:none;}}
+@keyframes si-plant-unfurl {from {opacity:0;transform:scale(.45);} to {opacity:1;transform:scale(1);}}
+.si-paused *,.si-paused *::before,.si-paused *::after {animation:none!important;transition:none!important;}
+@media (prefers-reduced-motion:reduce) {.si-scenery *,.si-plant-card * {animation:none!important;transition:none!important;} .si-leaf {display:none;} #si-video,#si-webgl {display:none;}}
 
 /* Responsive */
 @media (max-width:1100px) {
@@ -447,7 +460,7 @@ body:has(.si-paused) {background:radial-gradient(80% 80% at 80% 0%,#2A2416,#0E0C
   .si-alts,.si-equiv,.si-rings {grid-template-columns:1fr;} .si-level {grid-template-columns:1fr;text-align:center;}
   .si-level .si-big {margin:0 auto;}
   .si-plant-card {align-items:flex-start;gap:12px;padding:14px;}
-  .si-plant-art {width:84px;height:100px;}
+  .si-plant-art {width:112px;height:148px;}
   .stApp [data-testid="stMetric"] {min-height:104px;padding:16px 18px;}
 }
 </style>"""
@@ -730,44 +743,112 @@ def plant_mood(spend, carbon, budget, carbon_goal, purchase_count):
     return "growing"
 
 
-def plant_mascot(mood, tip):
-    """Show the animated plant pal and a practical tip in its voice."""
+_PLANT_STAGES = (
+    {"name": "Seedling", "leaves": 2, "blossoms": 0, "fruits": 0},
+    {"name": "Sprout", "leaves": 4, "blossoms": 1, "fruits": 0},
+    {"name": "Sapling", "leaves": 6, "blossoms": 2, "fruits": 0},
+    {"name": "Young tree", "leaves": 9, "blossoms": 3, "fruits": 2},
+    {"name": "Forest keeper", "leaves": 12, "blossoms": 5, "fruits": 4},
+)
+_PLANT_LEAVES = (
+    ("left", "M117 103 C93 100 78 82 79 61 C99 59 116 75 117 103Z", "M116 101 Q99 79 83 65", "#A3C585"),
+    ("right", "M123 95 C125 70 145 56 164 61 C162 82 145 97 123 95Z", "M124 94 Q143 73 160 65", "#82B66B"),
+    ("left", "M114 126 C91 133 71 123 63 106 C84 94 105 105 114 126Z", "M112 124 Q92 109 68 108", "#92C57B"),
+    ("right", "M127 120 C145 101 167 103 181 116 C169 133 147 137 127 120Z", "M130 119 Q153 110 176 118", "#A3C585"),
+    ("left", "M111 81 C93 63 94 42 108 29 C125 45 124 64 111 81Z", "M111 79 Q107 53 108 34", "#82B66B"),
+    ("right", "M126 81 C129 57 148 45 167 49 C165 69 148 83 126 81Z", "M128 79 Q147 60 163 53", "#A3C585"),
+    ("left", "M101 111 C76 115 56 101 53 83 C75 73 96 87 101 111Z", "M99 109 Q77 92 58 86", "#B5D895"),
+    ("right", "M139 107 C159 86 180 89 193 104 C179 121 158 123 139 107Z", "M142 106 Q165 95 189 105", "#82B66B"),
+    ("left", "M116 71 C102 49 110 29 126 19 C141 39 134 59 116 71Z", "M117 69 Q119 43 126 24", "#A3C585"),
+    ("right", "M125 71 C128 47 145 29 165 31 C166 51 149 69 125 71Z", "M127 69 Q147 46 161 35", "#92C57B"),
+    ("left", "M100 133 C78 146 57 139 49 122 C67 107 88 114 100 133Z", "M98 131 Q75 119 54 125", "#82B66B"),
+    ("right", "M140 130 C161 115 182 121 191 138 C174 152 153 148 140 130Z", "M143 130 Q165 125 187 138", "#B5D895"),
+)
+_PLANT_BLOSSOM_POSITIONS = ((72, 83), (170, 83), (121, 34), (53, 109), (189, 109))
+_PLANT_FRUIT_POSITIONS = ((78, 99), (165, 104), (94, 51), (151, 48))
+
+
+def plant_growth_stage(level_number):
+    """Return the plant features unlocked by an Eco Journey level."""
+    if type(level_number) is not int or not 1 <= level_number <= len(_PLANT_STAGES):
+        raise ValueError("Plant growth level must be between 1 and 5.")
+    return dict(_PLANT_STAGES[level_number - 1])
+
+
+def plant_illustration(level_number, mood):
+    """Build the level-specific SVG plant with its current expression."""
+    stage = plant_growth_stage(level_number)
+    if mood not in {"wilted", "happy", "growing"}:
+        raise ValueError(f"Unknown plant mood: {mood}")
+    leaves = []
+    for index, (side, shape, vein, color) in enumerate(_PLANT_LEAVES[:stage["leaves"]]):
+        leaves.append(
+            f'<g class="si-plant-leaf si-plant-leaf-{side}" style="animation-delay:{index * 0.06:.2f}s">'
+            f'<path d="{shape}" fill="{color}" stroke="#688E51" stroke-width="2.5" stroke-linejoin="round"/>'
+            f'<path class="si-plant-vein" d="{vein}"/></g>'
+        )
+    blossoms = []
+    for x, y in _PLANT_BLOSSOM_POSITIONS[:stage["blossoms"]]:
+        blossoms.append(
+            f'<g class="si-plant-blossom" transform="translate({x} {y})">'
+            '<circle cx="0" cy="-4" r="3.5" fill="#F6C9C0"/><circle cx="4" cy="0" r="3.5" fill="#F6C9C0"/>'
+            '<circle cx="0" cy="4" r="3.5" fill="#F6C9C0"/><circle cx="-4" cy="0" r="3.5" fill="#F6C9C0"/>'
+            '<circle r="2.3" fill="#E8B04A"/></g>'
+        )
+    fruits = "".join(
+        f'<g><circle class="si-plant-fruit" cx="{x}" cy="{y}" r="6" fill="#E07A5F"/>'
+        f'<path d="M{x} {y - 5}q1 -5 5 -5" fill="none" stroke="#688E51" stroke-width="2" stroke-linecap="round"/>'
+        f'<circle cx="{x - 2}" cy="{y - 2}" r="1.5" fill="#F6C9C0"/></g>'
+        for x, y in _PLANT_FRUIT_POSITIONS[:stage["fruits"]]
+    )
+    mouths = {
+        "wilted": '<path class="si-plant-mouth" d="M 105 148 Q 120 136 135 148"/>',
+        "happy": '<path class="si-plant-mouth" d="M 103 139 Q 120 155 137 139"/>',
+        "growing": '<path class="si-plant-mouth" d="M 105 144 Q 120 144 135 144"/>',
+    }
+    return f"""<svg viewBox="0 0 240 270" aria-hidden="true">
+<g class="si-plant-top">
+<circle class="si-plant-glow" cx="121" cy="100" r="88"/>
+<path d="M120 185 C118 151 121 117 120 73 M119 129 Q99 112 83 91 M122 119 Q145 101 164 86 M119 101 Q110 84 108 63 M122 91 Q139 75 151 58"
+ fill="none" stroke="#688E51" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+{"".join(leaves)}{"".join(blossoms)}{fruits}
+<ellipse cx="120" cy="144" rx="38" ry="33" fill="#B5D895" stroke="#688E51" stroke-width="3"/>
+<ellipse cx="106" cy="139" rx="4" ry="6" class="si-plant-face"/>
+<ellipse cx="134" cy="139" rx="4" ry="6" class="si-plant-face"/>
+<circle cx="107" cy="137" r="1.5" fill="#FFF"/><circle cx="135" cy="137" r="1.5" fill="#FFF"/>
+{mouths[mood]}
+<ellipse cx="95" cy="150" rx="5" ry="3" fill="#E99283" opacity=".65"/>
+<ellipse cx="145" cy="150" rx="5" ry="3" fill="#E99283" opacity=".65"/>
+</g>
+<ellipse cx="120" cy="188" rx="49" ry="10" fill="#49352A"/>
+<path d="M67 184 Q120 194 173 184 L160 245 Q159 252 151 252 H89 Q81 252 80 245Z" fill="#D88762" stroke="#754D39" stroke-width="3"/>
+<path d="M63 181 Q120 171 177 181 L174 195 Q120 206 66 195Z" fill="#E9A17D" stroke="#754D39" stroke-width="3"/>
+<path d="M89 220 Q120 231 151 220" fill="none" stroke="#F3C1A1" stroke-width="3" stroke-linecap="round"/>
+<circle cx="101" cy="205" r="2" fill="#F3C1A1"/><circle cx="139" cy="205" r="2" fill="#F3C1A1"/>
+</svg>"""
+
+
+def plant_mascot(mood, tip, level):
+    """Show the Eco Journey plant at the growth stage for the current level."""
     messages = {
         "wilted": "I'm a little wilted when spending goes over your goal. Pause and see what you can reuse, repair, or skip.",
         "happy": "I'm smiling! This month's estimated CO₂e is within your goal. Small thoughtful choices help me grow.",
         "growing": "Let's grow gently. One mindful choice at a time is plenty.",
     }
-    labels = {"wilted": "NEEDS A LITTLE CARE", "happy": "GROWING HAPPILY", "growing": "GROWING AT YOUR PACE"}
     if mood not in messages:
         raise ValueError(f"Unknown plant mood: {mood}")
-    mouth = {
-        "wilted": '<path class="si-plant-mouth" d="M 72 94 Q 82 82 92 94"/>',
-        "happy": '<path class="si-plant-mouth" d="M 70 84 Q 82 97 94 84"/>',
-        "growing": '<path class="si-plant-mouth" d="M 72 88 Q 82 88 92 88"/>',
-    }[mood]
-    html(f"""<div class="si-plant-card si-plant-{mood}">
-<div class="si-plant-art" aria-hidden="true"><svg viewBox="0 0 164 174" role="presentation">
-<g class="si-plant-top">
-<path d="M82 106 C82 83 80 66 82 50" fill="none" stroke="#688E51" stroke-width="8" stroke-linecap="round"/>
-<path class="si-plant-leaf si-plant-leaf-left" d="M81 61 C47 63 39 42 39 26 C63 25 84 36 81 61Z" fill="#A3C585" stroke="#688E51" stroke-width="3"/>
-<path d="M47 32 Q61 43 75 54" fill="none" stroke="#688E51" stroke-width="2.5" stroke-linecap="round"/>
-<path class="si-plant-leaf si-plant-leaf-right" d="M83 51 C84 23 105 13 128 16 C129 39 111 57 83 51Z" fill="#82B66B" stroke="#688E51" stroke-width="3"/>
-<path d="M91 46 Q105 31 122 22" fill="none" stroke="#688E51" stroke-width="2.5" stroke-linecap="round"/>
-<ellipse cx="82" cy="80" rx="38" ry="33" fill="#B5D895" stroke="#688E51" stroke-width="3"/>
-<ellipse cx="68" cy="78" rx="4" ry="6" class="si-plant-face"/>
-<ellipse cx="96" cy="78" rx="4" ry="6" class="si-plant-face"/>
-<circle cx="69" cy="76" r="1.5" fill="#FFF"/>
-<circle cx="97" cy="76" r="1.5" fill="#FFF"/>
-{mouth}
-<ellipse cx="57" cy="87" rx="5" ry="3" fill="#E99283" opacity=".65"/>
-<ellipse cx="107" cy="87" rx="5" ry="3" fill="#E99283" opacity=".65"/>
-</g>
-<path d="M48 105 H116 L108 153 Q107 161 99 161 H65 Q57 161 56 153Z" fill="#D88762" stroke="#754D39" stroke-width="3"/>
-<path d="M44 106 Q82 98 120 106 L117 117 Q82 124 47 117Z" fill="#E9A17D" stroke="#754D39" stroke-width="3"/>
-<path d="M68 137 Q82 143 96 137" fill="none" stroke="#F3C1A1" stroke-width="3" stroke-linecap="round"/>
-</svg></div>
-<div class="si-plant-copy"><small>🌱 PLANT PAL · {labels[mood]}</small>
+    stage = plant_growth_stage(level["number"])
+    growth = (
+        f"{level['to_next']} points to {escape(level['next_name'])} — new leaves and blooms await."
+        if level["next_name"] else "Forest keeper form reached — your plant is fully grown."
+    )
+    description = f"A potted {stage['name'].lower()} with {stage['leaves']} leaves, {stage['blossoms']} blossoms and {stage['fruits']} fruits."
+    illustration = plant_illustration(level["number"], mood)
+    html(f"""<div class="si-plant-card si-plant-{mood} si-plant-stage-{level['number']}">
+<div class="si-plant-art" role="img" aria-label="{escape(description)}">{illustration}</div>
+<div class="si-plant-copy"><small>🌱 ECO JOURNEY · LEVEL {level["number"]} · {escape(stage["name"].upper())}</small>
 <p>{escape(messages[mood])}</p>
+<div class="si-plant-growth">{growth}</div>
 <div class="si-plant-tip"><b>A little leaf tip</b><br>{escape(tip)}</div></div></div>""")
 
 

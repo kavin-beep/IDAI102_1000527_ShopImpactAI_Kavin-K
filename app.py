@@ -175,13 +175,6 @@ with entry:
                 st.write("Eco Saver: at least 3 purchases and a monthly estimated footprint of 50 kg CO₂e or less.")
                 st.write("Low Impact Shopper: at least 3 reuse, repair or reusable choices, making up at least 60% of the month. This rewards habits, not verified emissions savings.")
                 st.write("Repair Champion: at least one repair-service purchase this month.")
-        tips = json.loads((ROOT / "data/eco_tips.json").read_text(encoding="utf-8"))
-        mascot_mood = ui.plant_mood(totals["spend"], totals["co2"], budget, carbon_goal, totals["count"])
-        ui.plant_mascot(mascot_mood, tips[st.session_state.tip_index % len(tips)])
-        if st.button("Another leaf tip", icon="🌱", width="stretch"):
-            st.session_state.tip_index += 1
-            st.rerun()
-
     ui.section("🌍", "What this month's estimate looks like", "The same estimated kg CO₂e, pictured with everyday US averages.")
     ui.equivalents_cards(journey.equivalents(totals["co2"]))
     st.caption(f"Illustrations from the [US EPA Greenhouse Gas Equivalencies Calculator]({journey.EQUIVALENTS['url']}) (page updated {journey.EQUIVALENTS['page_updated']}). They help picture a rough estimate; they are not measurements, offsets or savings.")
@@ -290,6 +283,13 @@ with insights:
 
 with path:
     ui.level_card(level, journey.LEVELS)
+    ui.section("🌱", "Your growing plant", "It grows new leaves, blooms and fruit as you reach each Eco Journey level.")
+    tips = json.loads((ROOT / "data/eco_tips.json").read_text(encoding="utf-8"))
+    mascot_mood = ui.plant_mood(totals["spend"], totals["co2"], budget, carbon_goal, totals["count"])
+    ui.plant_mascot(mascot_mood, tips[st.session_state.tip_index % len(tips)], level)
+    if st.button("Another leaf tip", icon="🌱", width="stretch"):
+        st.session_state.tip_index += 1
+        st.rerun()
     ui.section("✨", "How your points add up", "Points celebrate logging and thoughtful habits — they never change badge rules.")
     ui.points_grid(breakdown)
     ui.section("🗺️", "Milestones", "Lifetime moments on your journey.")

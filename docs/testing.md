@@ -1,6 +1,6 @@
 # Test evidence
 
-On 26 November 2026, all 89 tests passed with Python 3.12 using:
+On 26 November 2026, all 90 tests passed with Python 3.12 using:
 
 ```powershell
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
@@ -12,8 +12,9 @@ hosted PostgreSQL persistence works. The current shared public page showed Strea
 
 The Streamlit tests verify the two-tab username login page, absence of email and recovery controls, account creation
 with passwords up to eight characters, and saved purchases after signing out and signing in again. They also cover
-the plant mascot's wilted, happy, growing and empty-month moods, plus shopping, wishlist, insights, themes and
-backups. Logic tests cover calculations, validation, estimate provenance, CSV safety, backups and wishlist rules.
+the Eco Journey plant's wilted, happy, growing and empty-month moods and its five evolving level forms, plus
+shopping, wishlist, insights, themes and backups. Logic tests cover calculations, validation, estimate provenance,
+CSV safety, backups and wishlist rules.
 
 The suite also includes tests for account services and legacy email/database setup modules. Email delivery and
 password recovery are not available in the current account UI.

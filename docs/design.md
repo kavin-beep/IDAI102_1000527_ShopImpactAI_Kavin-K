@@ -33,7 +33,7 @@ Use text labels with badge symbols so meaning is not conveyed by colour alone. K
 
 High contrast was reviewed in Chrome and primary-button text was corrected. Full keyboard navigation, zoom and screen-reader assessment remain pending; a contrast toggle alone is not an accessibility certification.
 
-The dashboard plant pal uses a small inline SVG face and CSS motion. Its leaves wiggle on hover when motion is allowed. It appears wilted when monthly spending exceeds the user's goal, happy when purchases exist and estimated CO₂e is within its goal, and gently growing otherwise. The tip rotates through the sourced eco-tip list and is framed as advice from the plant.
+The Eco Journey plant pal uses inline SVG and CSS motion. It grows from a two-leaf seedling through five level stages, gaining leaves, blossoms and fruit as the user's lifetime Eco Journey level rises. Its face looks wilted when monthly spending exceeds the user's goal, happy when purchases exist and estimated CO₂e is within its goal, and gently growing otherwise. The leaves wiggle on hover when motion is allowed, and a sourced eco-tip appears beside the plant.
 
 ## Feedback to collect
 

@@ -8,12 +8,12 @@ Reviewed 26 November 2026. The core application is maintained at
 - The app opens on a username/password sign-in page with only **Sign in** and **Create account** tabs. No email or password recovery option is shown.
 - New accounts accept passwords from 1–8 characters. Passwords are stored as salted Argon2id hashes and login attempts are rate-limited.
 - Purchases, wishlist entries and preferences are saved per account in SQLite locally or PostgreSQL when hosted.
-- A dashboard plant pal gives eco tips, wiggles leaves on hover (unless reduced motion is enabled), and changes expression against monthly spending and estimated CO₂e goals.
+- The Eco Journey plant evolves through five level-based forms, gaining leaves, blossoms and fruit; it gives eco tips and changes expression against monthly spending and estimated CO₂e goals.
 - Persistent data on Streamlit Cloud requires private PostgreSQL settings. Email setup files remain in the repository but are not used by the account UI.
 
 ## Verification
 
-The Python 3.12 suite has 89 passing tests covering username sign-in, account creation, database persistence, password hashing/rate limiting, plant mood rules and shopping interactions. Tests use disposable databases and synthetic data. A local Streamlit startup smoke test returned HTTP 200 on 26 November 2026.
+The Python 3.12 suite has 90 passing tests covering username sign-in, account creation, database persistence, password hashing/rate limiting, plant mood and growth rules, and shopping interactions. Tests use disposable databases and synthetic data. A local Streamlit startup smoke test returned HTTP 200 on 26 November 2026.
 
 All 23 Python source, test and tool files were checked; each has a module-level docstring describing its purpose. Inline comments are used where they clarify non-obvious behavior rather than repeating the code.
 

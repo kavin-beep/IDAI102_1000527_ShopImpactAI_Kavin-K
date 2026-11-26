@@ -68,6 +68,23 @@ class AppTests(unittest.TestCase):
         self.assertEqual(plant_mood(900, 12, 1000, 10, 2), "growing")
         self.assertEqual(plant_mood(0, 0, 1000, 10, 0), "growing")
 
+    def test_plant_illustration_evolves_with_eco_journey_levels(self):
+        from ui import plant_growth_stage, plant_illustration
+
+        stages = [plant_growth_stage(level) for level in range(1, 6)]
+        self.assertEqual([stage["name"] for stage in stages],
+                         ["Seedling", "Sprout", "Sapling", "Young tree", "Forest keeper"])
+        self.assertTrue(all(left["leaves"] < right["leaves"] for left, right in zip(stages, stages[1:])))
+        self.assertGreater(stages[-1]["blossoms"], stages[0]["blossoms"])
+        self.assertGreater(stages[-1]["fruits"], stages[0]["fruits"])
+        self.assertLess(plant_illustration(1, "growing").count('class="si-plant-leaf '),
+                        plant_illustration(5, "growing").count('class="si-plant-leaf '))
+        self.assertIn("si-plant-fruit", plant_illustration(5, "growing"))
+        with self.assertRaises(ValueError):
+            plant_growth_stage(0)
+        with self.assertRaises(ValueError):
+            plant_illustration(6, "growing")
+
     def test_registration_password_limit_and_saved_login_after_sign_out(self):
         app = self.start()
         by_label(app.text_input, "Choose a username").set_value("newuser")
