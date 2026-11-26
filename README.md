@@ -11,6 +11,7 @@
 </p>
 
 <p>
+  <a href="https://github.com/kavin-beep/IDAI102_1000527_ShopImpactAI_Kavin-K"><img src="https://img.shields.io/badge/GitHub-IDAI102__1000527__ShopImpactAI__Kavin--K-f4ede1?style=flat-square&logo=github&logoColor=17140f&labelColor=e8b04a" alt="GitHub repository: IDAI102_1000527_ShopImpactAI_Kavin-K"/></a>
   <a href="https://github.com/kavin-beep/IDAI102_1000527_ShopImpactAI_Kavin-K/actions/workflows/tests.yml"><img src="https://github.com/kavin-beep/IDAI102_1000527_ShopImpactAI_Kavin-K/actions/workflows/tests.yml/badge.svg" alt="GitHub Actions test status"/></a>
   <img src="https://img.shields.io/badge/Python-3.12-f4ede1?style=flat-square&logo=python&logoColor=17140f&labelColor=e8b04a"/>
   <img src="https://img.shields.io/badge/Streamlit-1.55-f4ede1?style=flat-square&logo=streamlit&logoColor=FF4B4B&labelColor=211b14"/>
@@ -177,6 +178,8 @@ The sidebar holds account controls, **Theme & animation**, saved monthly spendin
 ## 🚀 Run it locally
 
 Clone the repository, open the folder in VS Code and run these in its PowerShell terminal:
+
+**Repository:** [kavin-beep/IDAI102_1000527_ShopImpactAI_Kavin-K](https://github.com/kavin-beep/IDAI102_1000527_ShopImpactAI_Kavin-K)
 
 ```powershell
 git clone https://github.com/kavin-beep/IDAI102_1000527_ShopImpactAI_Kavin-K.git
