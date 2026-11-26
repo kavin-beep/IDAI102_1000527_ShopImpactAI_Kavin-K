@@ -17,7 +17,7 @@
   <img src="https://img.shields.io/badge/Altair-charts-f4ede1?style=flat-square&labelColor=211b14"/>
   <img src="https://img.shields.io/badge/Data-Persistent%20accounts-f4ede1?style=flat-square&labelColor=211b14"/>
   <img src="https://img.shields.io/badge/Three.js-WebGL-f4ede1?style=flat-square&logo=three.js&logoColor=white&labelColor=211b14"/>
-  <img src="https://img.shields.io/badge/Tests-88%20passing-f4ede1?style=flat-square&labelColor=5f7a45"/>
+  <img src="https://img.shields.io/badge/Tests-89%20passing-f4ede1?style=flat-square&labelColor=5f7a45"/>
 </p>
 
 **🌐 Live app → [shopimpact-duy7hphexgoshhqfexfmkt.streamlit.app](https://shopimpact-duy7hphexgoshhqfexfmkt.streamlit.app/)**
@@ -91,6 +91,7 @@ mobile screen.
 - **Eco journey:** eco points, five levels from *Seedling* to *Forest keeper*, a reuse and repair streak and seven lifetime milestones. Points never change the fixed badge rules.
 - **Everyday equivalents:** each month's estimate pictured as car kilometres, smartphone charges and tree-months using US EPA factors.
 - **Ideas before buying:** category alternatives, named reuse and repair options with official links, rotating tips and a Turtle-drawn leaf reward.
+- **Plant pal:** a cute animated plant shares gentle tips, wiggles its leaves on hover, looks happy when estimates are within the CO₂e goal, and wilts when spending goes over budget.
 
 ### 🔐 Username accounts
 - Sign in with a username and password, or create an account. No email address or password recovery flow is shown.
@@ -222,7 +223,7 @@ working Tk. The app shows the generated SVG when a qualifying choice exists; it 
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
 
-88 automated tests pass (26 November 2026), and every push and pull request runs the suite on GitHub Actions. Tests use disposable data and do not write to real users. See [test evidence](docs/testing.md).
+89 automated tests pass (26 November 2026), and every push and pull request runs the suite on GitHub Actions. Tests use disposable data and do not write to real users. See [test evidence](docs/testing.md).
 
 | Test file | What it checks |
 | --- | --- |
@@ -276,7 +277,7 @@ IDAI102_1000527_ShopImpactAI_Kavin-K/
 - **Canva deck** (21 slides, with speaker notes): [canva.link/v8iiqeb2k0bxb1g](https://canva.link/v8iiqeb2k0bxb1g)
 - **10-page code and data guide**: [`ShopImpact_10_Page_Explanation.pdf`](output/pdf/ShopImpact_10_Page_Explanation.pdf)
 
-The PowerPoint deck and PDF guides are regenerated for the November 2026 current design and 94-test snapshot.
+The PowerPoint deck and PDF guides are refreshed for the November 2026 account flow, plant pal and 89-test snapshot.
 The [repository readiness review](docs/repository-readiness.md) records the implementation checks. No real participant
 feedback has been collected yet, so [requirements](docs/requirements.md) and the
 [feedback record/template](docs/usability-feedback.md) remain the accurate evidence for this assessment status.

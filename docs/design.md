@@ -17,8 +17,8 @@ The 2026 "Conscious Market Journal" design places the app over slow, crossfading
 | Estimated CO2e       | Product type | Price | Brand | Date              |
 |                      | Live impact preview                [Add purchase]|
 | Session backup note  | Category chart             | Achievements      |
-|                      | Goal progress              | Turtle leaf       |
-|                      |                            | Rotating tip      |
+|                      | Goal progress              | Plant pal mascot  |
+|                      |                            | Plant tip         |
 |                      | Alternatives and comparison                      |
 +----------------------+--------------------------------------------------+
 ```
@@ -32,6 +32,8 @@ History combines search, month and category filters with date/price/impact sorti
 Use text labels with badge symbols so meaning is not conveyed by colour alone. Keep the most important totals above the chart. Present alternatives as options, without guilt or unsupported brand endorsements. Keep each active browser session separate and explain that its entries are temporary. Encourage JSON backup before ending the session. Synthetic test entries never populate real user sessions.
 
 High contrast was reviewed in Chrome and primary-button text was corrected. Full keyboard navigation, zoom and screen-reader assessment remain pending; a contrast toggle alone is not an accessibility certification.
+
+The dashboard plant pal uses a small inline SVG face and CSS motion. Its leaves wiggle on hover when motion is allowed. It appears wilted when monthly spending exceeds the user's goal, happy when purchases exist and estimated CO₂e is within its goal, and gently growing otherwise. The tip rotates through the sourced eco-tip list and is framed as advice from the plant.
 
 ## Feedback to collect
 

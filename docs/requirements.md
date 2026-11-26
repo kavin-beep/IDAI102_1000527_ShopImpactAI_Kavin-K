@@ -14,9 +14,9 @@ Status refreshed 26 November 2026. The rubric totals 60 marks: planning 10, Pyth
 | Lists, dictionaries, control structures, datetime and modular code | Implemented in logic, storage and interface modules |
 | Interactive UI and live updates | Working local app; add/edit/delete and saved preferences tested |
 | 10–15 varied purchases for testing | 15 labelled synthetic records in tests; none preloaded for real users |
-| Creative additions | Persistent username accounts, goals, search, comparison, backups, tips and contrast |
+| Creative additions | Persistent username accounts, goals, search, comparison, backups, animated plant pal tips and contrast |
 | Sign-in and email features | Username/password sign-in and account creation are available; no email or password recovery option is shown |
-| Thorough testing | Automated tests cover sign-in, account persistence and core app features |
+| Thorough testing | 89 automated tests cover sign-in, account persistence, plant mood rules and core app features |
 | Genuine usability feedback and refinement | Feedback record is prepared; no real participant feedback has been collected. An AI heuristic screen inspection is documented in docs/testing.md and does not replace participant feedback |
 | app.py and requirements.txt | Present; dependencies installed and checked |
 | Detailed README | Overview, features, integration, run/deployment steps, screenshots, repository and public app links are present |

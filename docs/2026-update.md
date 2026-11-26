@@ -32,7 +32,7 @@ Earlier source/catalog snapshots are archived in data/archive/. Earlier EPA v2 a
 
 The refreshed header, source-review label, rounded navigation, metric cards and data-freshness panel improve clarity. Decorative leaf motion respects reduced-motion settings. All compulsory features remain available.
 
-94 automated tests passed on 25 November 2026, including explicit backup migration, preserving original records, and confirmed UI recalculation. Tests use disposable databases; no real accounts are modified. The explanation PDFs and presentation deck have been regenerated for the current design and test count. Real participant feedback and full accessibility checks remain pending.
+89 automated tests passed on 26 November 2026, including explicit backup migration, preserving original records, confirmed UI recalculation, username/password account flow and plant mascot goal moods. Tests use disposable databases; no real accounts are modified. The explanation PDFs and presentation deck are refreshed for the username-only login and current mascot. Real participant feedback and full accessibility checks remain pending.
 
 ## Primary references
 

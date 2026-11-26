@@ -176,8 +176,9 @@ with entry:
                 st.write("Low Impact Shopper: at least 3 reuse, repair or reusable choices, making up at least 60% of the month. This rewards habits, not verified emissions savings.")
                 st.write("Repair Champion: at least one repair-service purchase this month.")
         tips = json.loads((ROOT / "data/eco_tips.json").read_text(encoding="utf-8"))
-        ui.tip_card(tips[st.session_state.tip_index % len(tips)])
-        if st.button("Another tip", icon="✨", width="stretch"):
+        mascot_mood = ui.plant_mood(totals["spend"], totals["co2"], budget, carbon_goal, totals["count"])
+        ui.plant_mascot(mascot_mood, tips[st.session_state.tip_index % len(tips)])
+        if st.button("Another leaf tip", icon="🌱", width="stretch"):
             st.session_state.tip_index += 1
             st.rerun()
 

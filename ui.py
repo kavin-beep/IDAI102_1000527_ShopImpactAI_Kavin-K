@@ -258,6 +258,24 @@ html,body {background:#0E0C09;}
 .si-alt p {margin:0;color:var(--si-ink);font-weight:500;line-height:1.55;}
 
 /* Tip, story, badges, empty */
+.si-plant-card {display:flex;align-items:center;gap:18px;padding:18px;border-radius:22px;
+  background:linear-gradient(135deg,rgba(163,197,133,.16),rgba(14,12,9,.68));border:1px solid rgba(163,197,133,.32);
+  backdrop-filter:blur(14px);overflow:hidden;}
+.si-plant-art {width:112px;height:124px;flex:none;display:grid;place-items:center;}
+.si-plant-art svg {width:100%;height:100%;overflow:visible;}
+.si-plant-top {transform-box:fill-box;transform-origin:50% 90%;}
+.si-plant-leaf {transform-box:fill-box;transition:transform .35s var(--si-ease);}
+.si-plant-happy .si-plant-leaf-left {transform:rotate(-8deg);}
+.si-plant-happy .si-plant-leaf-right {transform:rotate(8deg);}
+.si-plant-wilted .si-plant-leaf-left {transform:rotate(35deg) translate(2px,5px);}
+.si-plant-wilted .si-plant-leaf-right {transform:rotate(-35deg) translate(-2px,5px);}
+.si-plant-face {fill:#17140F;stroke:none;}
+.si-plant-mouth {fill:none;stroke:#17140F;stroke-width:3;stroke-linecap:round;}
+.si-plant-copy {min-width:0;}
+.si-plant-copy small {font-family:var(--si-mono);font-size:.64rem;letter-spacing:.14em;color:var(--si-moss);font-weight:600;}
+.si-plant-copy > p {margin:6px 0 10px;color:var(--si-ink);line-height:1.45;font-size:.92rem;}
+.si-plant-tip {border-top:1px solid var(--si-line);padding-top:9px;color:var(--si-muted);font-size:.84rem;line-height:1.45;}
+.si-plant-tip b {color:var(--si-amber);font-family:var(--si-mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;}
 .si-tip {position:relative;padding:22px 24px;border-radius:22px;background:linear-gradient(135deg,rgba(232,176,74,.16),rgba(14,12,9,.6));
   border:1px solid rgba(232,176,74,.3);backdrop-filter:blur(14px);}
 .si-tip small {font-family:var(--si-mono);font-weight:600;letter-spacing:.16em;font-size:.64rem;color:var(--si-amber);}
@@ -389,6 +407,7 @@ body:has(.si-paused) {background:radial-gradient(80% 80% at 80% 0%,#2A2416,#0E0C
   .si-bar i {animation:si-grow 1.8s var(--si-ease) backwards .3s;transform-origin:left;}
   .st-key-badges [data-testid="stAlert"] {animation:si-pop .8s var(--si-ease) backwards;}
   .si-equiv i {animation:si-bob 6s ease-in-out infinite;}
+  .si-plant-card:hover .si-plant-top,.si-plant-card:focus-within .si-plant-top {animation:si-plant-wiggle .7s ease-in-out;}
   .si-blob {animation:si-blob 26s ease-in-out infinite alternate;} .si-blob-2 {animation-duration:32s;animation-delay:-10s;}
   .si-leaf {animation:si-leaf var(--t) linear infinite;animation-delay:var(--d);}
   .si-star {animation:si-fall 22s linear infinite;animation-delay:var(--delay);}
@@ -410,8 +429,9 @@ body:has(.si-paused) {background:radial-gradient(80% 80% at 80% 0%,#2A2416,#0E0C
 @keyframes si-fall {0%,6% {opacity:0;transform:translate(0,0) rotate(35deg);} 8% {opacity:.7;} 16% {opacity:0;transform:translate(340px,238px) rotate(35deg);} 100% {opacity:0;}}
 @keyframes si-drift {to {transform:translateX(120px);}}
 @keyframes si-glow {to {transform:scale(1.07);opacity:.95;}}
+@keyframes si-plant-wiggle {0%,100% {transform:rotate(0);} 20% {transform:rotate(-9deg);} 45% {transform:rotate(7deg);} 70% {transform:rotate(-4deg);}}
 .si-paused *,.si-paused *::before,.si-paused *::after {animation:none!important;}
-@media (prefers-reduced-motion:reduce) {.si-scenery * {animation:none!important;} .si-leaf {display:none;} #si-video,#si-webgl {display:none;}}
+@media (prefers-reduced-motion:reduce) {.si-scenery *,.si-plant-card * {animation:none!important;} .si-leaf {display:none;} #si-video,#si-webgl {display:none;}}
 
 /* Responsive */
 @media (max-width:1100px) {
@@ -426,6 +446,8 @@ body:has(.si-paused) {background:radial-gradient(80% 80% at 80% 0%,#2A2416,#0E0C
   .si-brand {min-height:420px;margin-right:0;} .si-brand > div {padding:22px;} .si-feats {display:none;}
   .si-alts,.si-equiv,.si-rings {grid-template-columns:1fr;} .si-level {grid-template-columns:1fr;text-align:center;}
   .si-level .si-big {margin:0 auto;}
+  .si-plant-card {align-items:flex-start;gap:12px;padding:14px;}
+  .si-plant-art {width:84px;height:100px;}
   .stApp [data-testid="stMetric"] {min-height:104px;padding:16px 18px;}
 }
 </style>"""
@@ -449,7 +471,7 @@ CONTRAST_CSS = """<style>
 html,body {background:#000!important;}
 .stApp {--si-ink:#FFFFFF;--si-muted:#FFFFFF;--si-dim:#FFFFFF;--si-line:#FFFFFF;--si-line-2:#FFFFFF;--si-surface:#000000;--si-solid:#000000;--si-raise:#000;
   --si-amber:#FFD400;--si-moss:#FFD400;--si-clay:#FFD400;--si-grad:linear-gradient(#FFD400,#FFD400);--si-shadow:none;background:#000!important;color:#FFF;}
-.si-hero,.si-brand,.si-level,.si-equiv div,.si-tip,.si-hero-side {background:#000!important;box-shadow:none!important;border:2px solid #FFF!important;}
+.si-hero,.si-brand,.si-level,.si-equiv div,.si-tip,.si-plant-card,.si-hero-side {background:#000!important;box-shadow:none!important;border:2px solid #FFF!important;}
 .si-hero video,.si-brand video,.si-hero::before,.si-brand::before,.si-equiv div::before {display:none!important;}
 .si-hero p,.si-hero h1,.si-brand p,.si-brand h2,.si-mini small,.si-meta,.si-ticker span {color:#FFF!important;}
 .stApp [data-testid="stBaseButton-primary"],.stApp [data-testid="stBaseButton-primaryFormSubmit"] {background:#FFD400;}
@@ -699,8 +721,54 @@ def alternatives_cards(ideas):
     html(f'<div class="si-alts">{cards}</div>')
 
 
-def tip_card(tip):
-    html(f'<div class="si-tip"><small>✨ A SMALL IDEA</small><p>{escape(tip)}</p></div>')
+def plant_mood(spend, carbon, budget, carbon_goal, purchase_count):
+    """Choose a gentle mascot mood from the current month's goals."""
+    if spend > budget:
+        return "wilted"
+    if purchase_count and carbon <= carbon_goal:
+        return "happy"
+    return "growing"
+
+
+def plant_mascot(mood, tip):
+    """Show the animated plant pal and a practical tip in its voice."""
+    messages = {
+        "wilted": "I'm a little wilted when spending goes over your goal. Pause and see what you can reuse, repair, or skip.",
+        "happy": "I'm smiling! This month's estimated CO₂e is within your goal. Small thoughtful choices help me grow.",
+        "growing": "Let's grow gently. One mindful choice at a time is plenty.",
+    }
+    labels = {"wilted": "NEEDS A LITTLE CARE", "happy": "GROWING HAPPILY", "growing": "GROWING AT YOUR PACE"}
+    if mood not in messages:
+        raise ValueError(f"Unknown plant mood: {mood}")
+    mouth = {
+        "wilted": '<path class="si-plant-mouth" d="M 72 94 Q 82 82 92 94"/>',
+        "happy": '<path class="si-plant-mouth" d="M 70 84 Q 82 97 94 84"/>',
+        "growing": '<path class="si-plant-mouth" d="M 72 88 Q 82 88 92 88"/>',
+    }[mood]
+    html(f"""<div class="si-plant-card si-plant-{mood}">
+<div class="si-plant-art" aria-hidden="true"><svg viewBox="0 0 164 174" role="presentation">
+<g class="si-plant-top">
+<path d="M82 106 C82 83 80 66 82 50" fill="none" stroke="#688E51" stroke-width="8" stroke-linecap="round"/>
+<path class="si-plant-leaf si-plant-leaf-left" d="M81 61 C47 63 39 42 39 26 C63 25 84 36 81 61Z" fill="#A3C585" stroke="#688E51" stroke-width="3"/>
+<path d="M47 32 Q61 43 75 54" fill="none" stroke="#688E51" stroke-width="2.5" stroke-linecap="round"/>
+<path class="si-plant-leaf si-plant-leaf-right" d="M83 51 C84 23 105 13 128 16 C129 39 111 57 83 51Z" fill="#82B66B" stroke="#688E51" stroke-width="3"/>
+<path d="M91 46 Q105 31 122 22" fill="none" stroke="#688E51" stroke-width="2.5" stroke-linecap="round"/>
+<ellipse cx="82" cy="80" rx="38" ry="33" fill="#B5D895" stroke="#688E51" stroke-width="3"/>
+<ellipse cx="68" cy="78" rx="4" ry="6" class="si-plant-face"/>
+<ellipse cx="96" cy="78" rx="4" ry="6" class="si-plant-face"/>
+<circle cx="69" cy="76" r="1.5" fill="#FFF"/>
+<circle cx="97" cy="76" r="1.5" fill="#FFF"/>
+{mouth}
+<ellipse cx="57" cy="87" rx="5" ry="3" fill="#E99283" opacity=".65"/>
+<ellipse cx="107" cy="87" rx="5" ry="3" fill="#E99283" opacity=".65"/>
+</g>
+<path d="M48 105 H116 L108 153 Q107 161 99 161 H65 Q57 161 56 153Z" fill="#D88762" stroke="#754D39" stroke-width="3"/>
+<path d="M44 106 Q82 98 120 106 L117 117 Q82 124 47 117Z" fill="#E9A17D" stroke="#754D39" stroke-width="3"/>
+<path d="M68 137 Q82 143 96 137" fill="none" stroke="#F3C1A1" stroke-width="3" stroke-linecap="round"/>
+</svg></div>
+<div class="si-plant-copy"><small>🌱 PLANT PAL · {labels[mood]}</small>
+<p>{escape(messages[mood])}</p>
+<div class="si-plant-tip"><b>A little leaf tip</b><br>{escape(tip)}</div></div></div>""")
 
 
 def story_card(text):

@@ -60,6 +60,14 @@ class AppTests(unittest.TestCase):
         self.assertNotIn("Email address", labels)
         self.assertFalse(any("Recover" in item.label for item in app.button))
 
+    def test_plant_mood_tracks_monthly_spending_and_carbon_goals(self):
+        from ui import plant_mood
+
+        self.assertEqual(plant_mood(1200, 5, 1000, 10, 2), "wilted")
+        self.assertEqual(plant_mood(900, 8, 1000, 10, 2), "happy")
+        self.assertEqual(plant_mood(900, 12, 1000, 10, 2), "growing")
+        self.assertEqual(plant_mood(0, 0, 1000, 10, 0), "growing")
+
     def test_registration_password_limit_and_saved_login_after_sign_out(self):
         app = self.start()
         by_label(app.text_input, "Choose a username").set_value("newuser")
