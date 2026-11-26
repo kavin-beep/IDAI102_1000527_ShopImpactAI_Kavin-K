@@ -2,12 +2,12 @@
 
 <img src="docs/media/banner.svg" alt="ShopImpact — a conscious shopping journal. Small choices. A clearer picture." width="100%"/>
 
-<a href="https://shopimpact-duy7hphexgoshhqfexfmkt.streamlit.app/">
+<a href="https://idai1021000527shopimpactaikavin-k-dt4pcaipehuzgmnvp9gr4b.streamlit.app/">
   <img src="https://readme-typing-svg.demolab.com?font=Fraunces&size=30&duration=3200&pause=900&color=E8B04A&center=true&vCenter=true&width=860&height=56&lines=Understand+your+shopping;Picture+your+estimated+CO%E2%82%82e;Pause+before+you+buy;Celebrate+every+thoughtful+choice" alt="Typing tagline"/>
 </a>
 
 <p>
-  <a href="https://shopimpact-duy7hphexgoshhqfexfmkt.streamlit.app/"><img src="https://img.shields.io/badge/▶%20Open%20the%20live%20app-shopimpact.streamlit.app-e8b04a?style=for-the-badge&labelColor=17140f" alt="Open the live app"/></a>
+  <a href="https://idai1021000527shopimpactaikavin-k-dt4pcaipehuzgmnvp9gr4b.streamlit.app/"><img src="https://img.shields.io/badge/▶%20Open%20the%20app-shopimpact.streamlit.app-e8b04a?style=for-the-badge&labelColor=17140f" alt="Open the ShopImpact app"/></a>
 </p>
 
 <p>
@@ -68,7 +68,7 @@ mobile screen.
 
 | Built with | Account data | Checks | Release status |
 | :---: | :---: | :---: | :---: |
-| Python 3.12 · Streamlit · Altair | SQLite locally · PostgreSQL hosted | Automated tests · 26 Nov 2026 | Live on Streamlit Cloud |
+| Python 3.12 · Streamlit · Altair | SQLite locally · PostgreSQL hosted | Automated tests · 26 Nov 2026 | Hosted app link present; health unverified |
 
 ---
 

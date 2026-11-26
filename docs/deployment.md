@@ -1,6 +1,10 @@
 # Public deployment
 
-Live app: [ShopImpact on Streamlit Community Cloud](https://shopimpact-duy7hphexgoshhqfexfmkt.streamlit.app/).
+Live app: [ShopImpact on Streamlit Community Cloud](https://idai1021000527shopimpactaikavin-k-dt4pcaipehuzgmnvp9gr4b.streamlit.app/).
+
+On 26 November 2026, the shared app page showed Streamlit's **Not found** screen, and direct checks redirected
+to Streamlit's app-auth route. The deployment and its hosted database are therefore not verified from this
+workspace; the deployment owner must confirm the app exists and is publicly accessible.
 
 ShopImpact uses username/password accounts and saves purchases and preferences in a database. For Streamlit Community
 Cloud, configure a persistent PostgreSQL database before relying on account data surviving deployments or restarts.

@@ -13,7 +13,7 @@ Reviewed 26 November 2026. The core application is maintained at
 
 ## Verification
 
-The Python 3.12 suite has 89 passing tests covering username sign-in, account creation, database persistence, password hashing/rate limiting, plant mood rules and shopping interactions. Tests use disposable databases and synthetic data.
+The Python 3.12 suite has 89 passing tests covering username sign-in, account creation, database persistence, password hashing/rate limiting, plant mood rules and shopping interactions. Tests use disposable databases and synthetic data. A local Streamlit startup smoke test returned HTTP 200 on 26 November 2026.
 
 All 23 Python source, test and tool files were checked; each has a module-level docstring describing its purpose. Inline comments are used where they clarify non-obvious behavior rather than repeating the code.
 
@@ -24,7 +24,7 @@ Private-file exclusions were verified using Git's own ignore handling with tempo
 ## Before public launch and final submission
 
 1. Confirm assessor access to `kavin-beep/IDAI102_1000527_ShopImpactAI_Kavin-K` as specified by the brief.
-2. Verify Streamlit Cloud has a persistent PostgreSQL URL configured and confirm account data survives sign-out, sign-in and redeployment.
+2. The shared public app page currently shows Streamlit's **Not found** screen. Restore or confirm the deployment, then verify its private persistent PostgreSQL configuration and check that account data survives sign-out, sign-in and redeployment.
 3. Five informal feedback responses are recorded in the README. If a structured usability study is required, use `docs/usability-feedback.md` to observe tasks, record changes and retest them; do not describe the informal comments or AI inspection as a formal study.
 4. Complete the assessment submission PDF with the actual student name, registration number, school, course and project links. The ten-page explanation PDF is a learning guide, not that completed submission.
 

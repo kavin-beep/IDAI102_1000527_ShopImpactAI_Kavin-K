@@ -6,6 +6,10 @@ On 26 November 2026, all 89 tests passed with Python 3.12 using:
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
 
+The local Streamlit app also started successfully and returned HTTP 200 from its root page on
+`127.0.0.1:8504`. This is a local startup smoke test, not evidence that the public deployment or its
+hosted PostgreSQL persistence works. The current shared public page showed Streamlit's **Not found** screen.
+
 The Streamlit tests verify the two-tab username login page, absence of email and recovery controls, account creation
 with passwords up to eight characters, and saved purchases after signing out and signing in again. They also cover
 the plant mascot's wilted, happy, growing and empty-month moods, plus shopping, wishlist, insights, themes and
