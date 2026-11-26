@@ -2,30 +2,29 @@
 
 Live app: [ShopImpact on Streamlit Community Cloud](https://shopimpact-duy7hphexgoshhqfexfmkt.streamlit.app/).
 
-The current app opens directly to the dashboard. It does not require sign-in, email, database configuration or private
-secrets. Deploy `app.py` from this repository on Streamlit Community Cloud and install the pinned dependencies from
-`requirements.txt`.
+ShopImpact uses username/password accounts and saves purchases and preferences in a database. For Streamlit Community
+Cloud, configure a persistent PostgreSQL database before relying on account data surviving deployments or restarts.
 
-## Data behavior
+## Configure
 
-Purchases, wishlist entries and preferences are held in Streamlit session state only. The app does not save them to a
-database. Sessions are separate, but anyone using the same active browser session can see its workspace. Data may be
-lost after a refresh, reconnect, deployment or server restart. Download a JSON backup before ending the session if
-you need to keep entries.
+Add these values to the app's private Streamlit Secrets, using a real provider connection string:
+
+```toml
+SHOPIMPACT_PUBLIC = true
+SHOPIMPACT_DATABASE_URL = "postgresql+psycopg://USER:PASSWORD@HOST:5432/DATABASE?sslmode=require"
+```
+
+Never commit database credentials. The app creates its schema on startup. Public mode rejects a local SQLite
+database. For local development, no secrets are required; the app stores data in the ignored
+`personal_data/shopimpact.db` file.
 
 ## Publish and verify
 
 1. Push the repository to GitHub and create a Streamlit Community Cloud app with `app.py` as the entry point.
-2. Deploy without database or email secrets.
-3. Confirm the dashboard opens without a sign-in screen and that no email or account forms are shown.
-4. Add a test purchase, confirm the totals update, then download and restore a JSON backup.
-5. Confirm a fresh browser session starts with an empty workspace. Do not expect records to survive session loss or
-   an app restart.
+2. Add the persistent PostgreSQL secrets above and deploy.
+3. Create an account with a username and password of 1–8 characters. The UI has only **Sign in** and **Create account**; no email or recovery flow is shown.
+4. Add a purchase, sign out, sign in again, and confirm purchases and preferences remain.
+5. Confirm account isolation with a second account and test JSON backup export/import.
 6. Check narrow screens, keyboard use, contrast, uploads and downloads.
 
-## Legacy setup files
-
-The repository retains account, email and database setup modules and their unit tests for historical compatibility.
-They are not imported or used by the current app. The [Neon guide](neon-setup.md) and
-[Gmail guide](email-setup.md) are not required for this release. Do not configure a database or email provider for
-the current deployment.
+The [Neon guide](neon-setup.md) contains hosted database setup details. The Gmail guide is not needed by this account UI.

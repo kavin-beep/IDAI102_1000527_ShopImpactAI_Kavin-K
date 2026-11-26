@@ -15,9 +15,9 @@
   <img src="https://img.shields.io/badge/Python-3.12-f4ede1?style=flat-square&logo=python&logoColor=17140f&labelColor=e8b04a"/>
   <img src="https://img.shields.io/badge/Streamlit-1.55-f4ede1?style=flat-square&logo=streamlit&logoColor=FF4B4B&labelColor=211b14"/>
   <img src="https://img.shields.io/badge/Altair-charts-f4ede1?style=flat-square&labelColor=211b14"/>
-  <img src="https://img.shields.io/badge/Data-Session%20only-f4ede1?style=flat-square&labelColor=211b14"/>
+  <img src="https://img.shields.io/badge/Data-Persistent%20accounts-f4ede1?style=flat-square&labelColor=211b14"/>
   <img src="https://img.shields.io/badge/Three.js-WebGL-f4ede1?style=flat-square&logo=three.js&logoColor=white&labelColor=211b14"/>
-  <img src="https://img.shields.io/badge/Tests-86%20passing-f4ede1?style=flat-square&labelColor=5f7a45"/>
+  <img src="https://img.shields.io/badge/Tests-88%20passing-f4ede1?style=flat-square&labelColor=5f7a45"/>
 </p>
 
 **🌐 Live app → [shopimpact-duy7hphexgoshhqfexfmkt.streamlit.app](https://shopimpact-duy7hphexgoshhqfexfmkt.streamlit.app/)**
@@ -30,10 +30,10 @@
 
 ---
 
-## 🏠 Open the app
+## 🔐 Sign in to ShopImpact
 
-The app opens directly to the dashboard. No sign-in or email setup is required. The current workspace is temporary
-and belongs only to the active Streamlit session; download a JSON backup to keep entries.
+Sign in with a username and password, or create a new account. No email address or password recovery flow is shown.
+Account data is saved in the configured database.
 
 ---
 
@@ -54,7 +54,7 @@ private shopping journal without pretending that rough estimates are exact produ
 - Record purchases, edit or delete them, and review monthly spending and estimated impact.
 - Explain broad category estimates and everyday equivalents clearly.
 - Encourage reuse, repair and a mindful 7-day wishlist without guilt.
-- Open directly into a private, session-only workspace with usable export, import and backup tools.
+- Provide persistent username accounts with usable export, import and backup tools.
 - Verify the implementation with automated tests and documented screenshots.
 
 ### Target users
@@ -66,9 +66,9 @@ mobile screen.
 > **An estimate, with a clear purpose.** CO₂e means carbon dioxide equivalent. ShopImpact estimates impact as
 > **price × category factor**. It does not measure a specific product's actual emissions.
 
-| Built with | Workspace data | Checks | Release status |
+| Built with | Account data | Checks | Release status |
 | :---: | :---: | :---: | :---: |
-| Python 3.12 · Streamlit · Altair | Current browser session only | 86 tests passed · 26 Nov 2026 | Live on Streamlit Cloud |
+| Python 3.12 · Streamlit · Altair | SQLite locally · PostgreSQL hosted | Automated tests · 26 Nov 2026 | Live on Streamlit Cloud |
 
 ---
 
@@ -92,10 +92,10 @@ mobile screen.
 - **Everyday equivalents:** each month's estimate pictured as car kilometres, smartphone charges and tree-months using US EPA factors.
 - **Ideas before buying:** category alternatives, named reuse and repair options with official links, rotating tips and a Turtle-drawn leaf reward.
 
-### 🏠 No sign-in required
-- The app opens directly to the dashboard with a separate in-memory workspace for each active Streamlit session.
-- Purchases, wishlist items and preferences are temporary; refreshes, reconnects or app restarts may clear them.
-- Download a JSON backup to keep entries. Anyone using the same active browser session can see its workspace.
+### 🔐 Username accounts
+- Sign in with a username and password, or create an account. No email address or password recovery flow is shown.
+- New passwords may contain 1–8 characters. Passwords are stored as salted Argon2id hashes, not plaintext.
+- Purchases, wishlist items and preferences are saved to the account database so they are available after signing in again.
 
 ---
 
@@ -104,7 +104,7 @@ mobile screen.
 <table>
   <tr>
     <td width="50%"><img src="docs/media/02-hero.jpg" alt="Video hero with serif headline, level orb and ticker"/><br/><sub><b>Home</b> — video hero, level orb, counting stats</sub></td>
-    <td width="50%"><b>Direct home</b><br/><sub>The app opens directly without sign-in or email verification. Current direct-home screenshot pending.</sub></td>
+    <td width="50%"><b>Sign in</b><br/><sub>Username and password; updated screenshot pending.</sub></td>
   </tr>
   <tr>
     <td><img src="docs/media/03-add-purchase.jpg" alt="Monthly KPIs and the add a purchase form with a live estimate"/><br/><sub><b>Add a purchase</b> — KPIs and a live receipt-style estimate</sub></td>
@@ -124,17 +124,17 @@ mobile screen.
   </tr>
 </table>
 
-<sub>Existing images show the previous account-enabled design and fictional purchases; they do not represent the current session-only app. No real user data is shown.</sub>
+<sub>Existing account-flow images are historical and may show the former email/recovery controls. No real user data is shown.</sub>
 
 ---
 
 ## ⚙️ How it works
 
-<div align="center"><img src="docs/media/architecture.svg" alt="Architecture: browser session, motion layer, Streamlit app, Python logic and reference data" width="100%"/></div>
+<div align="center"><img src="docs/media/architecture.svg" alt="Architecture: browser, Streamlit app, Python logic, reference data and account database" width="100%"/></div>
 
 ```mermaid
 flowchart LR
-    A[Private browser session] --> B[Log a purchase]
+    A[Your account] --> B[Log a purchase]
     A --> W[Mindful wishlist]
     W -- buy --> B
     W -- skip --> J[Eco journey]
@@ -142,7 +142,7 @@ flowchart LR
     C --> D[Dashboard and Insights]
     C --> Q[Everyday equivalents]
     B --> J
-    B --> S[Session-only workspace]
+    B --> S[(Account database)]
     W --> S
     S --> D
     D --> F[CSV reports and JSON backups]
@@ -167,7 +167,7 @@ flowchart LR
 | 🧾 **History & backups** | Search, filter, sort, edit, delete, export CSV, and back up or restore JSON |
 | 📚 **How it works** | Assumptions, factor table, privacy notes and estimate recalculation |
 
-The sidebar holds **Theme & animation**, session-only monthly spending and CO₂e goals, and high contrast.
+The sidebar holds account controls, **Theme & animation**, saved monthly spending and CO₂e goals, and high contrast.
 
 ---
 
@@ -183,10 +183,9 @@ py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe -m streamlit run app.py --server.address 127.0.0.1
 ```
 
-Open the URL printed in the terminal (normally http://localhost:8501). The dashboard opens immediately with an empty
-session workspace; no account or email setup is required. Purchases and preferences exist only for the active
-Streamlit session and may be cleared by a refresh, reconnect or app restart. Download a JSON backup before ending the
-session if you need to keep entries. VS Code tasks and a *Run ShopImpact* debug configuration are included (they need
+Open the URL printed in the terminal (normally http://localhost:8501). Create an account with a username and password
+of up to 8 characters, then sign in again any time to access saved purchases. Local data is stored in
+`personal_data/shopimpact.db`. VS Code tasks and a *Run ShopImpact* debug configuration are included (they need
 Microsoft's Python and Python Debugger extensions).
 
 **Turtle reward artwork**
@@ -204,17 +203,16 @@ working Tk. The app shows the generated SVG when a qualifying choice exists; it 
 ## ☁️ Deploy on Streamlit Community Cloud
 
 1. Push this repository to GitHub and create an app on [share.streamlit.io](https://share.streamlit.io) with `app.py` as the entry point.
-2. No database or email secrets are required for the current session-only app. See [deployment instructions](docs/deployment.md).
-3. Each active visitor session has separate in-memory data. It is not durable across refreshes, reconnects, or server restarts; users should download backups.
+2. Configure `SHOPIMPACT_PUBLIC = true` and `SHOPIMPACT_DATABASE_URL` with a persistent PostgreSQL database in the app's private Secrets. See [deployment instructions](docs/deployment.md).
+3. Without hosted database configuration, the app uses local SQLite, which is not guaranteed to persist on hosted instances.
 
 ---
 
 ## 🔒 Storage and privacy
 
-- No account, password, database or email address is used by the current app interface.
-- Purchases, wishlist items and preferences are held in Streamlit session state, not written to a database. Sessions are separate, but anyone sharing the same active session can see its data.
-- Session data may disappear after refresh, reconnect, deployment or server restart. JSON backups let users keep a copy; exports do not contain account credentials because there are no app accounts.
-- Account and email backend modules remain in the repository for legacy tests/tools, but are not connected to the running app.
+- Account passwords are stored as salted Argon2id hashes. The UI offers username sign-in and account creation only; it has no email or password recovery option.
+- Purchases, wishlist items and preferences are saved per account in SQLite locally or PostgreSQL when hosted. Configure a persistent hosted database to retain data through deployments and restarts.
+- JSON backups contain purchase records, not account credentials. Do not share backup files.
 
 ---
 
@@ -224,16 +222,16 @@ working Tk. The app shows the generated SVG when a qualifying choice exists; it 
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
 
-86 automated tests pass (26 November 2026), and every push and pull request runs the suite on GitHub Actions. Tests use disposable data and do not write to real users. See [test evidence](docs/testing.md).
+88 automated tests pass (26 November 2026), and every push and pull request runs the suite on GitHub Actions. Tests use disposable data and do not write to real users. See [test evidence](docs/testing.md).
 
 | Test file | What it checks |
 | --- | --- |
 | [tests/test_logic.py](tests/test_logic.py) | Decimal rounding, price and date validation, factor provenance, summaries and badge rules |
 | [tests/test_insights.py](tests/test_insights.py) | Six-month trends, month shifting, goal balance and history filters |
 | [tests/test_journey.py](tests/test_journey.py) | Eco points, levels, streaks, milestones, EPA equivalents and the wishlist lifecycle |
-| [tests/test_accounts.py](tests/test_accounts.py) | Legacy account service behavior; the running app no longer uses this service |
-| [tests/test_app.py](tests/test_app.py) | Streamlit flows: direct home access, no login/email controls, isolated sessions, themes, purchases, insights and wishlist |
-| [tests/test_email_actions.py](tests/test_email_actions.py), [tests/test_email_delivery.py](tests/test_email_delivery.py) | Legacy verification/reset services; these flows are not part of the running app |
+| [tests/test_accounts.py](tests/test_accounts.py) | Hashed passwords, rate limiting, account isolation and persistent saves |
+| [tests/test_app.py](tests/test_app.py) | Streamlit flows: username sign-in, account creation, persistent login, themes, purchases, insights and wishlist |
+| [tests/test_email_actions.py](tests/test_email_actions.py), [tests/test_email_delivery.py](tests/test_email_delivery.py) | Legacy email service tests; email is not part of the account UI |
 | [tests/test_database_setup.py](tests/test_database_setup.py) | Hosted database configuration helpers |
 
 ---
@@ -243,18 +241,18 @@ working Tk. The app shows the generated SVG when a qualifying choice exists; it 
 ```text
 IDAI102_1000527_ShopImpactAI_Kavin-K/
 ├── app.py              # Dashboard, wishlist, insights, journey, history and backups
-├── account_ui.py       # In-memory guest workspace for the active Streamlit session
-├── accounts.py         # Legacy account service; not connected to the running app
+├── account_ui.py       # Username sign-in and account creation screens
+├── accounts.py         # Argon2id passwords, sessions, rate limiting and database storage
 ├── logic.py            # Decimal calculations, purchases, monthly summaries, badge rules
 ├── insights.py         # Six-month trends, goal balance and filtered history views
 ├── journey.py          # Eco points, levels, streaks, milestones, equivalents, wishlist
 ├── ui.py               # Cinematic design system, background footage, themes, HTML components
 ├── charts.py           # Earthy Altair bars, donuts and trend areas
 ├── storage.py          # Validated JSON import/export and spreadsheet-safe CSV
-├── email_delivery.py   # Legacy optional email helpers; not connected to the running app
+├── email_delivery.py   # Legacy email helpers; not connected to the account UI
 ├── data/               # Product catalog, source evidence, EPA equivalents, tips, links
 ├── tools/              # Turtle leaf, database and email setup helpers
-├── tests/              # 86 app, logic and legacy service tests
+├── tests/              # App, account, logic and legacy service tests
 ├── docs/               # Design, methodology, testing, deployment; docs/media holds README art
 └── output/             # 10-page guide (PDF) and PowerPoint presentation
 ```

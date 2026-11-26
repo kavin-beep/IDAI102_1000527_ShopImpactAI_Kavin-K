@@ -17,7 +17,7 @@ if backup_storage.VERSION != shopping_rules.VERSION:
 
 from logic import ROOT, CATALOG, SOURCE, VERSION, impact, make_purchase, month_records, summary, badges, update_purchase, recalculate_purchases
 from storage import export_json, export_csv, import_json
-from account_ui import guest_workspace, save_workspace
+from account_ui import require_account, save_account, sign_out
 import ui
 import journey
 # Refresh presentation code when Community Cloud retains an earlier module.
@@ -33,7 +33,7 @@ st.set_page_config(page_title="ShopImpact | Conscious shopping", page_icon="🌿
 brand_slot = st.sidebar.container()
 theme_controls()
 apply_styles()
-account = guest_workspace()
+service, account = require_account()
 if "tip_index" not in st.session_state:
     st.session_state.tip_index = 0
 settings = account["settings"]
@@ -48,22 +48,24 @@ wish_totals = journey.wishlist_summary(wishlist)
 
 
 def save_wishlist(updated, purchases=None):
-    """Keep wishlist updates inside this browser session."""
-    return save_workspace(account, purchases=purchases, settings={**account["settings"], "wishlist": updated})
+    """Persist wishlist updates with this account."""
+    return save_account(service, account, purchases=purchases, settings={**account["settings"], "wishlist": updated})
 
 
 with brand_slot:
     ui.sidebar_brand(account["username"], level)
 
 with st.sidebar:
-    st.info("This private workspace exists only for this browser session. Refreshing, reconnecting or restarting the app may clear it. Download a backup to keep your entries.")
+    st.info("Your purchases and preferences are saved to your account.")
+    if st.button("Sign out", key="sign_out", width="stretch"):
+        sign_out(service)
     with st.form("goals"):
         st.subheader("🎯 Your monthly goals")
         high_contrast = st.checkbox("High contrast", value=settings["contrast"], key="contrast")
         budget = st.number_input("Spending goal (INR)", min_value=100.0, value=float(settings["budget"]), step=100.0, key="budget")
         carbon_goal = st.slider("Estimated CO₂e goal (kg)", 10, 1000, int(settings["carbon_goal"]), step=10, key="carbon_goal")
         if st.form_submit_button("Save goals & appearance", type="primary", width="stretch"):
-            if save_workspace(account, settings={**account["settings"], "budget": budget, "carbon_goal": carbon_goal, "contrast": high_contrast}):
+            if save_account(service, account, settings={**account["settings"], "budget": budget, "carbon_goal": carbon_goal, "contrast": high_contrast}):
                 settings = account["settings"]
                 st.success("Preferences saved.")
     st.caption("Goals help you reflect. They do not change the fixed badge rules.")
@@ -123,7 +125,7 @@ with entry:
                 if len(records) >= 1000:
                     raise ValueError("This workspace supports 1,000 purchases. Export a backup before starting a new one.")
                 updated = records + [make_purchase(category, price, brand, purchased_on)]
-                if save_workspace(account, purchases=updated):
+                if save_account(service, account, purchases=updated):
                     records = updated
                     st.session_state.tip_index += 1
                     st.session_state.purchase_saved = True
@@ -332,13 +334,13 @@ with history:
                 if st.form_submit_button("Save changes", type="primary"):
                     try:
                         replacement = make_purchase(edit_type, edit_price, edit_brand, edit_date, selected)
-                        if save_workspace(account, purchases=update_purchase(records, replacement)):
+                        if save_account(service, account, purchases=update_purchase(records, replacement)):
                             st.rerun()
                     except ValueError as error:
                         st.error(str(error))
             confirm_delete = st.checkbox("Confirm deletion of this purchase", key=f"confirm_{key}_{selected}")
             if st.button("Delete selected purchase", disabled=not confirm_delete, icon="🗑️"):
-                if save_workspace(account, purchases=[p for p in records if p["id"] != selected]):
+                if save_account(service, account, purchases=[p for p in records if p["id"] != selected]):
                     st.rerun()
         else:
             ui.empty_state("🔍", "No purchases match these filters. Try a different month, category or search.")
@@ -354,7 +356,7 @@ with history:
     if st.button("Restore backup", disabled=uploaded is None or not confirm_restore, icon="♻️"):
         try:
             restored = import_json(uploaded.getvalue(), allow_legacy=legacy)
-            if save_workspace(account, purchases=restored):
+            if save_account(service, account, purchases=restored):
                 st.rerun()
         except ValueError as error:
             st.error(str(error))
@@ -383,7 +385,7 @@ with about:
             approve_recalculation = st.checkbox("Use the updated reference data for all my purchases", key="approve_recalculation")
             if st.button("Recalculate saved estimates", disabled=not approve_recalculation):
                 try:
-                    if save_workspace(account, purchases=recalculate_purchases(records)):
+                    if save_account(service, account, purchases=recalculate_purchases(records)):
                         st.rerun()
                 except ValueError as error:
                     st.error(str(error))

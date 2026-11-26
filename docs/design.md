@@ -4,12 +4,12 @@ Students, young adults and families may want to understand purchases without spe
 
 ## Current layout
 
-The 2026 "Conscious Market Journal" design places the app over slow, crossfading second-hand market, clothes-rack and forest footage (Mixkit, free licence) with a warm grain and bokeh layer. Panels are dark glass with Fraunces serif headlines, mono kickers and numbered section headings. The app opens directly on the dashboard without sign-in or email forms. Day warms the footage with a sun glow, Night tints it blue with stars, and turning off animated scenery (or the device's reduced-motion setting) removes the video. High contrast switches to black, white and yellow with no footage. Captions keep their intended text colour without Streamlit's default opacity reduction. A shared stylesheet supports the shopping pages.
+The 2026 "Conscious Market Journal" design places the app over slow, crossfading second-hand market, clothes-rack and forest footage (Mixkit, free licence) with a warm grain and bokeh layer. Panels are dark glass with Fraunces serif headlines, mono kickers and numbered section headings. The sign-in page reuses the established brand panel with username and password forms in two tabs; it does not ask for email or offer password recovery. Day warms the footage with a sun glow, Night tints it blue with stars, and turning off animated scenery (or the device's reduced-motion setting) removes the video. High contrast switches to black, white and yellow with no footage. Captions keep their intended text colour without Streamlit's default opacity reduction. A shared stylesheet supports the shopping pages.
 
 ```text
 +----------------------+--------------------------------------------------+
 | ShopImpact           | Title and reference estimate notice              |
-| Session-only data    | Dashboard | Insights | History | How it works     |
+| Account / sign out   | Dashboard | Insights | History | How it works     |
 | High contrast        |                                                  |
 |                      | Month selection                                  |
 | Monthly goals        | Spending total | CO2 estimate | Lower choices    |

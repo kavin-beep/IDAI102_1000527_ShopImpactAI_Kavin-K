@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" width="1200" height="520" role="img" aria-label="How ShopImpact works: a browser session uses the Streamlit app, Python calculations, reference data and temporary session storage">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" width="1200" height="520" role="img" aria-label="How ShopImpact works: a browser uses the Streamlit app, Python calculations, reference data and a persistent account database">
   <style>
     .box{fill:#17140f;stroke:#3a342a;stroke-width:1.5}
     .hot{stroke:#e8b04a}
@@ -62,21 +62,21 @@
   <text x="694" y="396" class="s">US EPA equivalents</text>
   <text x="694" y="416" class="s">alternatives · eco tips</text>
 
-  <!-- column 4: temporary session state -->
+  <!-- column 4: accounts and storage -->
   <rect x="980" y="90" width="180" height="200" rx="18" class="box hot"/>
-  <text x="1004" y="128" class="t">Session data</text>
-  <text x="1004" y="156" class="s">One workspace per</text>
-  <text x="1004" y="176" class="s">active browser session</text>
+  <text x="1004" y="128" class="t">Accounts</text>
+  <text x="1004" y="156" class="s">Username · password</text>
+  <text x="1004" y="176" class="s">Argon2id password hash</text>
   <text x="1004" y="200" class="s">Purchases · goals</text>
   <text x="1004" y="220" class="s">wishlist · appearance</text>
-  <text x="1004" y="244" class="s">not saved to a database</text>
-  <text x="1004" y="268" class="s">download JSON backup</text>
+  <text x="1004" y="244" class="s">private account data</text>
+  <text x="1004" y="268" class="s">CSV / JSON backups</text>
 
   <rect x="980" y="320" width="180" height="130" rx="18" class="box"/>
-  <text x="1004" y="358" class="t">Backups</text>
-  <text x="1004" y="386" class="s">JSON export / import</text>
-  <text x="1004" y="406" class="s">user-controlled copy</text>
-  <text x="1004" y="430" class="s">storage.py validation</text>
+  <text x="1004" y="358" class="t">Database</text>
+  <text x="1004" y="386" class="s">Neon PostgreSQL</text>
+  <text x="1004" y="406" class="s">or local SQLite</text>
+  <text x="1004" y="430" class="s">storage.py backups</text>
 
   <!-- flows -->
   <path class="flow" d="M270 160 H340"/>

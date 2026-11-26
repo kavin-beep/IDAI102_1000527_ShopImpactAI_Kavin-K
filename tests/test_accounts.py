@@ -44,6 +44,14 @@ class AccountTests(unittest.TestCase):
             with self.assertRaises(AccountError):
                 self.db.register(name, password)
 
+    def test_username_password_registration_accepts_one_to_eight_characters(self):
+        self.db.register_username_password("shortpass", "x")
+        self.db.register_username_password("eightchr", "12345678")
+        with self.assertRaisesRegex(AccountError, "1–8 characters"):
+            self.db.register_username_password("toolong", "123456789")
+        self.assertTrue(self.db.login("shortpass", "x"))
+        self.assertTrue(self.db.login("eightchr", "12345678"))
+
     def test_failed_login_rate_limit(self):
         for _ in range(5):
             with self.assertRaises(AccountError):

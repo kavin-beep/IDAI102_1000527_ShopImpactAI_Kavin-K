@@ -14,14 +14,14 @@ Status refreshed 26 November 2026. The rubric totals 60 marks: planning 10, Pyth
 | Lists, dictionaries, control structures, datetime and modular code | Implemented in logic, storage and interface modules |
 | Interactive UI and live updates | Working local app; add/edit/delete and saved preferences tested |
 | 10–15 varied purchases for testing | 15 labelled synthetic records in tests; none preloaded for real users |
-| Creative additions | Session-only workspace, goals, search, comparison, backups, tips and contrast |
-| Sign-in and email features | Removed from the active app; users open the dashboard directly and no email workflow is required |
-| Thorough testing | 86 automated tests pass; focused tests confirm direct home access and session isolation |
+| Creative additions | Persistent username accounts, goals, search, comparison, backups, tips and contrast |
+| Sign-in and email features | Username/password sign-in and account creation are available; no email or password recovery option is shown |
+| Thorough testing | Automated tests cover sign-in, account persistence and core app features |
 | Genuine usability feedback and refinement | Feedback record is prepared; no real participant feedback has been collected. An AI heuristic screen inspection is documented in docs/testing.md and does not replace participant feedback |
 | app.py and requirements.txt | Present; dependencies installed and checked |
 | Detailed README | Overview, features, integration, run/deployment steps, screenshots, repository and public app links are present |
 | GitHub repository, naming and assessor access | Repository exists at kavin-beep/IDAI102_1000527_ShopImpactAI_Kavin-K and student details are present; assessor access is not independently verified |
-| Streamlit Cloud deployment | Public app URL is in README. The app now uses temporary session-only storage and does not require database or email secrets; session persistence after refresh/restart is not promised |
+| Streamlit Cloud deployment | Public app URL is in README. Persistent hosted PostgreSQL configuration is required for account data to survive hosted restarts and redeployment |
 | Submission PDF | Pending real student name, registration number, school, repository and live links |
 
-The app has no demo workspace. Synthetic data belongs only in tests. Purchases, wishlist entries and preferences live only in the active Streamlit session and may be lost after refresh, reconnect or restart. Account and email backend modules remain in the repository as legacy code, but the running app does not import or expose them.
+The app has no demo workspace. Synthetic data belongs only in tests. Purchases, wishlist entries and preferences are account-scoped and stored in the configured database. New account passwords may be 1–8 characters; passwords are stored as Argon2id hashes. No email or password recovery flow is exposed.
