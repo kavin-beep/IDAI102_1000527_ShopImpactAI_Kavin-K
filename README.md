@@ -20,10 +20,10 @@
   <img src="https://img.shields.io/badge/Tests-89%20passing-f4ede1?style=flat-square&labelColor=5f7a45"/>
 </p>
 
-**🌐 Live app → [shopimpact-duy7hphexgoshhqfexfmkt.streamlit.app](https://shopimpact-duy7hphexgoshhqfexfmkt.streamlit.app/)**
+**🌐 Live app → [shopimpact.streamlit.app](https://idai1021000527shopimpactaikavin-k-dt4pcaipehuzgmnvp9gr4b.streamlit.app/)**
 
 <sub>
-<a href="https://canva.link/v8iiqeb2k0bxb1g">Canva deck (21 slides)</a> ·
+<a href="https://canva.link/v8iiqeb2k0bxb1g">**CANVA LINK**</a> ·
 </sub>
 
 </div>
