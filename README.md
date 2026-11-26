@@ -2,12 +2,12 @@
 
 <img src="docs/media/banner.svg" alt="ShopImpact — a conscious shopping journal. Small choices. A clearer picture." width="100%"/>
 
-<a href="https://idai1021000527shopimpactaikavin-k-dt4pcaipehuzgmnvp9gr4b.streamlit.app/">
+<a href="https://idai1021000527shopimpactaikavin-k-2dkopim5bjdcqyfavjqqfb.streamlit.app/">
   <img src="https://readme-typing-svg.demolab.com?font=Fraunces&size=30&duration=3200&pause=900&color=E8B04A&center=true&vCenter=true&width=860&height=56&lines=Understand+your+shopping;Picture+your+estimated+CO%E2%82%82e;Pause+before+you+buy;Celebrate+every+thoughtful+choice" alt="Typing tagline"/>
 </a>
 
 <p>
-  <a href="https://idai1021000527shopimpactaikavin-k-dt4pcaipehuzgmnvp9gr4b.streamlit.app/"><img src="https://img.shields.io/badge/▶%20Open%20the%20app-shopimpact.streamlit.app-e8b04a?style=for-the-badge&labelColor=17140f" alt="Open the ShopImpact app"/></a>
+  <a href="https://idai1021000527shopimpactaikavin-k-2dkopim5bjdcqyfavjqqfb.streamlit.app/"><img src="https://img.shields.io/badge/▶%20Open%20the%20app-shopimpact.streamlit.app-e8b04a?style=for-the-badge&labelColor=17140f" alt="Open the ShopImpact app"/></a>
 </p>
 
 <p>
@@ -68,7 +68,7 @@ mobile screen.
 
 | Built with | Account data | Checks | Release status |
 | :---: | :---: | :---: | :---: |
-| Python 3.12 · Streamlit · Altair | SQLite locally · PostgreSQL hosted | Automated tests · 26 Nov 2026 | Hosted app link present; health unverified |
+| Python 3.12 · Streamlit · Altair | SQLite locally · PostgreSQL hosted | 90 tests passing · 26 Nov 2026 | Latest app link published; public health unverified |
 
 ---
 
@@ -98,6 +98,7 @@ mobile screen.
 - Sign in with a username and password, or create an account. No email address or password recovery flow is shown.
 - New passwords may contain 1–8 characters. Passwords are stored as salted Argon2id hashes, not plaintext.
 - Purchases, wishlist items and preferences are saved to the account database so they are available after signing in again.
+- Account sessions and saved data survive sign-out and repeated sign-in; persistent PostgreSQL configuration is required for reliable hosted retention.
 
 ---
 
@@ -209,6 +210,10 @@ a live browser SVG animation of a turtle tracing a leaf; it does not open a desk
 2. Configure `SHOPIMPACT_PUBLIC = true` and `SHOPIMPACT_DATABASE_URL` with a persistent PostgreSQL database in the app's private Secrets. See [deployment instructions](docs/deployment.md).
 3. Without hosted database configuration, the app uses local SQLite, which is not guaranteed to persist on hosted instances.
 
+**Deployment status:** the latest shared link is documented above, but public HTTP checks still need to confirm a live
+deployment. Streamlit may show a **Not found** page until the app owner restores, redeploys or confirms the public URL.
+Local startup and the 90-test suite are verified independently of that hosted deployment.
+
 ---
 
 ## 🔒 Storage and privacy
@@ -227,13 +232,17 @@ a live browser SVG animation of a turtle tracing a leaf; it does not open a desk
 
 90 automated tests pass (26 November 2026), and every push and pull request runs the suite on GitHub Actions. Tests use disposable data and do not write to real users. See [test evidence](docs/testing.md).
 
+The Python source, test and tool files have module-level docstrings describing their purpose. Inline comments explain
+important account, calculation and migration rules without restating straightforward code. The Eco Journey test
+covers both the five evolving plant forms and the Turtle animation's animated and static states.
+
 | Test file | What it checks |
 | --- | --- |
 | [tests/test_logic.py](tests/test_logic.py) | Decimal rounding, price and date validation, factor provenance, summaries and badge rules |
 | [tests/test_insights.py](tests/test_insights.py) | Six-month trends, month shifting, goal balance and history filters |
 | [tests/test_journey.py](tests/test_journey.py) | Eco points, levels, streaks, milestones, EPA equivalents and the wishlist lifecycle |
 | [tests/test_accounts.py](tests/test_accounts.py) | Hashed passwords, rate limiting, account isolation and persistent saves |
-| [tests/test_app.py](tests/test_app.py) | Streamlit flows: username sign-in, account creation, persistent login, themes, purchases, insights and wishlist |
+| [tests/test_app.py](tests/test_app.py) | Streamlit flows: username sign-in, account creation, persistent login, themes, purchases, insights, wishlist, plant evolution and Turtle animation |
 | [tests/test_email_actions.py](tests/test_email_actions.py), [tests/test_email_delivery.py](tests/test_email_delivery.py) | Legacy email service tests; email is not part of the account UI |
 | [tests/test_database_setup.py](tests/test_database_setup.py) | Hosted database configuration helpers |
 
@@ -241,14 +250,13 @@ a live browser SVG animation of a turtle tracing a leaf; it does not open a desk
 
 ## User Feedback
 
-
-| Respondent | Date | Feedback |
-|---|---|---|
-| Friend 1 | 3 November 2026 | The purchase tracking and monthly spending dashboard are useful. It would be helpful to include more product categories. |
-| Mother | 6 November 2026 | The application helps users understand their shopping habits and environmental impact. The 7-day wishlist encourages more thoughtful purchases. |
-| Friend 2 | 10 November 2026 | The eco-points and achievement system make the application engaging. More guidance for first-time users would improve the experience. |
-| Father | 15 November 2026 | The spending insights and charts are useful. Adding region-specific product information could make the suggestions more relevant. |
-| Classmate | 19 November 2026 | The interface is creative and easy to navigate. The reuse and repair suggestions are helpful, and more sustainable alternatives would improve the application. |
+| No. | Respondent | Date | Feedback |
+|---:|---|---|---|
+| 1 | Friend 1 | 3 November 2026 | I found the purchase tracking feature really useful. The monthly dashboard makes it easier to understand where my money goes. I would like to see more product categories added. |
+| 2 | Mother | 6 November 2026 | The application gives a good overview of our shopping habits and their estimated environmental impact. The 7-day wishlist is a thoughtful feature that encourages us to reconsider unnecessary purchases. |
+| 3 | Friend 2 | 10 November 2026 | I liked the eco points and achievement system because it makes sustainable shopping more engaging. The interface looks attractive, although some features could have more guidance for first-time users. |
+| 4 | Father | 15 November 2026 | The monthly spending insights and charts are helpful. I particularly liked how the application connects spending habits with environmental awareness. Adding more region-specific product information could improve its accuracy. |
+| 5 | Classmate | 19 November 2026 | The application is creative and easy to navigate. The reuse and repair suggestions are useful, and the CO₂e equivalents make environmental impact easier to understand. I would recommend adding more alternative suggestions for different products. |
 
 ---
 
@@ -262,7 +270,7 @@ IDAI102_1000527_ShopImpactAI_Kavin-K/
 ├── logic.py            # Decimal calculations, purchases, monthly summaries, badge rules
 ├── insights.py         # Six-month trends, goal balance and filtered history views
 ├── journey.py          # Eco points, levels, streaks, milestones, equivalents, wishlist
-├── ui.py               # Cinematic design system, background footage, themes, HTML components
+├── ui.py               # Cinematic design system, plant mascot, live Turtle, themes and HTML components
 ├── charts.py           # Earthy Altair bars, donuts and trend areas
 ├── storage.py          # Validated JSON import/export and spreadsheet-safe CSV
 ├── email_delivery.py   # Legacy email helpers; not connected to the account UI
@@ -280,7 +288,7 @@ IDAI102_1000527_ShopImpactAI_Kavin-K/
 | Layer | Tools |
 | --- | --- |
 | App | Python 3.12, Streamlit, Vega-Altair, pandas |
-| Motion and design | CSS animation, Three.js (WebGL bokeh), Mixkit footage, Fraunces, Inter, JetBrains Mono |
+| Motion and design | CSS and SVG animation, Three.js (WebGL bokeh), Mixkit footage, Fraunces, Inter, JetBrains Mono |
 | Data | USEEIO v1.4, World Bank 2024 INR rate, US EPA equivalencies |
 | Accounts and storage | SQLAlchemy, Neon PostgreSQL or SQLite, argon2-cffi |
 | Quality | unittest + Streamlit AppTest, GitHub Actions |
@@ -292,7 +300,8 @@ IDAI102_1000527_ShopImpactAI_Kavin-K/
 - **Canva deck** (21 slides, with speaker notes): [canva.link/v8iiqeb2k0bxb1g](https://canva.link/v8iiqeb2k0bxb1g)
 - **10-page code and data guide**: [`ShopImpact_10_Page_Explanation.pdf`](output/pdf/ShopImpact_10_Page_Explanation.pdf)
 
-The PowerPoint deck and PDF guides are refreshed for the November 2026 account flow, Eco Journey plant and 90-test snapshot.
+The PowerPoint deck and PDF guides are refreshed for the November 2026 account flow, Eco Journey plant and 90-test
+snapshot.
 Five informal feedback responses from friends, family and a classmate are recorded in the User Feedback section
 above. They are genuine comments, but they are not a structured task-based usability study. The
 [reusable feedback template](docs/usability-feedback.md) can be used to collect more detailed observations.
