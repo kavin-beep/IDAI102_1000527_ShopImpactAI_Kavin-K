@@ -236,6 +236,15 @@ working Tk. The app shows the generated SVG when a qualifying choice exists; it 
 | [tests/test_database_setup.py](tests/test_database_setup.py) | Hosted database configuration helpers |
 
 ---
+## User Feedback
+No.	Respondent	Date	Feedback
+1	Friend 1	November 3, 2026	I found the purchase tracking feature really useful. The monthly dashboard makes it easier to understand where my money goes. I would like to see more product categories added.
+2	Mother	November 6, 2026	The application gives a good overview of our shopping habits and their estimated environmental impact. The 7-day wishlist is a thoughtful feature that encourages us to reconsider unnecessary purchases.
+3	Friend 2	November 10, 2026	I liked the eco points and achievement system because it makes sustainable shopping more engaging. The interface looks attractive, although some features could have more guidance for first-time users.
+4	Father	November 15, 2026	The monthly spending insights and charts are helpful. I particularly liked how the application connects spending habits with environmental awareness. Adding more region-specific product information could improve its accuracy.
+5	Classmate	November 19, 2026	The application is creative and easy to navigate. The reuse and repair suggestions are useful, and the CO₂e equivalents make environmental impact easier to understand. I would recommend adding more alternative suggestions for different products.
+
+---
 
 ## 🗂️ Project structure
 
