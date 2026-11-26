@@ -19,9 +19,10 @@ password recovery are not available in the current account UI.
 The app saves user purchases and preferences to the configured account database. Local development uses SQLite;
 public hosting requires persistent PostgreSQL configuration. JSON export/import is also provided for user backups.
 
-The [usability feedback template](usability-feedback.md) is not evidence of participant testing. No genuine
-participant feedback has been collected. Earlier AI heuristic inspections are not participant feedback or evidence
-about the current interface.
+Five genuine, dated informal feedback responses from friends, family and a classmate are recorded in the README.
+They are self-reported impressions, not a structured task-based usability study. The
+[usability feedback template](usability-feedback.md) supports more detailed follow-up; earlier AI heuristic
+inspections are not participant observations.
 
 The Turtle artwork is generated as SVG through Python Turtle navigation; the browser displays that image rather than
 running a live Turtle animation.

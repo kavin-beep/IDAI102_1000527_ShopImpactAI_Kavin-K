@@ -15,7 +15,7 @@ Neon provides managed PostgreSQL and offers a Free plan. Review the plan display
 
 5. Paste the connection string into the hidden terminal prompt and press Enter. The script checks the connection, creates the account tables and saves `.streamlit/secrets.toml`, which Git ignores. It does not print the credential.
    If terminal pasting does not work on Windows, run the helper with `--clipboard`. Copy the URI from Neon, return to the setup window and press Enter. No pasting is needed; the helper reads the local clipboard privately.
-6. Restart the app. Register a new hosted account and test saving a purchase, refreshing and signing in again. Local SQLite accounts are not automatically migrated. You can export purchases from the local account before switching and restore them into your hosted account; recovery codes and passwords are not part of purchase exports.
+6. Restart the app. Register a new hosted account and test saving a purchase, refreshing and signing in again. Local SQLite accounts are not automatically migrated. You can export purchases from the local account before switching and restore them into your hosted account; passwords and other account credentials are not part of purchase exports.
 
 When publishing to Streamlit Cloud, put the same private settings into the app's Secrets panel. Do not upload the secrets file to GitHub or paste the connection string into chat. Complete the two-account isolation and restart checks in `deployment.md` before marking the public launch ready.
 

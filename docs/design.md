@@ -37,4 +37,4 @@ The dashboard plant pal uses a small inline SVG face and CSS motion. Its leaves 
 
 ## Feedback to collect
 
-Ask real participants to add a purchase, find a monthly total, edit a mistake, compare two choices, and save/restore a backup. Record their observations and permission-appropriate notes. No user research or usability feedback has been conducted yet.
+Five informal feedback responses from friends, family and a classmate are recorded in the README. These comments are genuine but are not a structured task-based usability study. For follow-up, ask participants to add a purchase, find a monthly total, edit a mistake, compare two choices, and save/restore a backup; record observations and permission-appropriate notes.

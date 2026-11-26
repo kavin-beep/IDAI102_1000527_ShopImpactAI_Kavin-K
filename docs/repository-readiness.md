@@ -25,7 +25,7 @@ Private-file exclusions were verified using Git's own ignore handling with tempo
 
 1. Confirm assessor access to `kavin-beep/IDAI102_1000527_ShopImpactAI_Kavin-K` as specified by the brief.
 2. Verify Streamlit Cloud has a persistent PostgreSQL URL configured and confirm account data survives sign-out, sign-in and redeployment.
-3. Gather actual participant feedback using `docs/usability-feedback.md`; record changes and retest them. Do not present AI inspection as participant feedback.
+3. Five informal feedback responses are recorded in the README. If a structured usability study is required, use `docs/usability-feedback.md` to observe tasks, record changes and retest them; do not describe the informal comments or AI inspection as a formal study.
 4. Complete the assessment submission PDF with the actual student name, registration number, school, course and project links. The ten-page explanation PDF is a learning guide, not that completed submission.
 
-Real participant feedback and final submission details remain pending. Passing automated tests alone does not establish those outcomes or guarantee an assessment grade.
+Structured usability testing and final submission details remain pending. Passing automated tests alone does not establish those outcomes or guarantee an assessment grade.

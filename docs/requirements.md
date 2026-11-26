@@ -17,7 +17,7 @@ Status refreshed 26 November 2026. The rubric totals 60 marks: planning 10, Pyth
 | Creative additions | Persistent username accounts, goals, search, comparison, backups, animated plant pal tips and contrast |
 | Sign-in and email features | Username/password sign-in and account creation are available; no email or password recovery option is shown |
 | Thorough testing | 89 automated tests cover sign-in, account persistence, plant mood rules and core app features |
-| Genuine usability feedback and refinement | Feedback record is prepared; no real participant feedback has been collected. An AI heuristic screen inspection is documented in docs/testing.md and does not replace participant feedback |
+| Genuine usability feedback and refinement | Five genuine, dated informal responses are recorded in the README. A structured task-based usability study and documented refinement/retest are still pending; AI heuristic inspection does not replace them |
 | app.py and requirements.txt | Present; dependencies installed and checked |
 | Detailed README | Overview, features, integration, run/deployment steps, screenshots, repository and public app links are present |
 | GitHub repository, naming and assessor access | Repository exists at kavin-beep/IDAI102_1000527_ShopImpactAI_Kavin-K and student details are present; assessor access is not independently verified |

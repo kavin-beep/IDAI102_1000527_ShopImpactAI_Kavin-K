@@ -287,9 +287,9 @@ IDAI102_1000527_ShopImpactAI_Kavin-K/
 - **10-page code and data guide**: [`ShopImpact_10_Page_Explanation.pdf`](output/pdf/ShopImpact_10_Page_Explanation.pdf)
 
 The PowerPoint deck and PDF guides are refreshed for the November 2026 account flow, plant pal and 89-test snapshot.
-The [repository readiness review](docs/repository-readiness.md) records the implementation checks. No real participant
-feedback has been collected yet, so [requirements](docs/requirements.md) and the
-[feedback record/template](docs/usability-feedback.md) remain the accurate evidence for this assessment status.
+Five informal feedback responses from friends, family and a classmate are recorded in the User Feedback section
+above. They are genuine comments, but they are not a structured task-based usability study. The
+[reusable feedback template](docs/usability-feedback.md) can be used to collect more detailed observations.
 
 ---
 
