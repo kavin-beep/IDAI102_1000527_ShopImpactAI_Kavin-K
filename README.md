@@ -104,7 +104,7 @@ mobile screen.
 <table>
   <tr>
     <td width="50%"><img src="docs/media/02-hero.jpg" alt="Video hero with serif headline, level orb and ticker"/><br/><sub><b>Home</b> — video hero, level orb, counting stats</sub></td>
-    <td width="50%"><b>Sign in</b><br/><sub>Username and password; updated screenshot pending.</sub></td>
+    <td width="50%"><img src="docs/screenshots/sign-in.png" alt="ShopImpact username sign-in page with Sign in and Create account tabs"/><br/><sub><b>Sign in</b> — username and password, with Create account</sub></td>
   </tr>
   <tr>
     <td><img src="docs/media/03-add-purchase.jpg" alt="Monthly KPIs and the add a purchase form with a live estimate"/><br/><sub><b>Add a purchase</b> — KPIs and a live receipt-style estimate</sub></td>
@@ -124,7 +124,7 @@ mobile screen.
   </tr>
 </table>
 
-<sub>Existing account-flow images are historical and may show the former email/recovery controls. No real user data is shown.</sub>
+<sub>Other account-flow images are historical and may show former email/recovery controls. No real user data is shown.</sub>
 
 ---
 

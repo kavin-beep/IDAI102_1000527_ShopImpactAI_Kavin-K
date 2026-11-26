@@ -1,6 +1,6 @@
 # Browser screenshots
 
-These screenshots were captured on 11 November 2026 from the previous account-enabled design and a separate local test database. The username and purchases are fictional inputs, not a demo mode or a real user's history. The current sign-in page uses username/password with no email or recovery controls; any older account screenshots show the previous controls and are historical.
+Most screenshots were captured on 11 November 2026 from the previous account-enabled design and a separate local test database. The username and purchases are fictional inputs, not a demo mode or a real user's history. `sign-in.png` was refreshed from the user-provided screenshot on 26 November 2026; it shows the current username/password layout with no email or recovery controls. Older account screenshots show the previous controls and are historical.
 
 - sign-in.png: account entry screen with the animated aurora panel
 - mobile-sign-in.png: stacked account entry layout
