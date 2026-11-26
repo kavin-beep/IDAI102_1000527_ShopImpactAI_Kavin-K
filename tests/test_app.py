@@ -68,8 +68,8 @@ class AppTests(unittest.TestCase):
         self.assertEqual(plant_mood(900, 12, 1000, 10, 2), "growing")
         self.assertEqual(plant_mood(0, 0, 1000, 10, 0), "growing")
 
-    def test_plant_illustration_evolves_with_eco_journey_levels(self):
-        from ui import plant_growth_stage, plant_illustration
+    def test_eco_journey_visuals_include_plant_growth_and_turtle_animation(self):
+        from ui import BASE_CSS, plant_growth_stage, plant_illustration, turtle_animation
 
         stages = [plant_growth_stage(level) for level in range(1, 6)]
         self.assertEqual([stage["name"] for stage in stages],
@@ -80,6 +80,16 @@ class AppTests(unittest.TestCase):
         self.assertLess(plant_illustration(1, "growing").count('class="si-plant-leaf '),
                         plant_illustration(5, "growing").count('class="si-plant-leaf '))
         self.assertIn("si-plant-fruit", plant_illustration(5, "growing"))
+        with patch("ui.st.markdown") as markdown:
+            turtle_animation()
+        markup = markdown.call_args.args[0]
+        self.assertIn('role="img"', markup)
+        self.assertIn('aria-label="A small turtle walks around a leaf outline, drawing the leaf and its center vein."', markup)
+        self.assertIn("<animateMotion", markup)
+        self.assertIn('class="si-turtle-path"', markup)
+        self.assertIn('class="si-turtle-static"', markup)
+        self.assertIn("@media (prefers-reduced-motion:reduce)", BASE_CSS)
+        self.assertIn("body:has(.si-paused) .si-turtle-static", BASE_CSS)
         with self.assertRaises(ValueError):
             plant_growth_stage(0)
         with self.assertRaises(ValueError):

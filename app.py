@@ -290,6 +290,8 @@ with path:
     if st.button("Another leaf tip", icon="🌱", width="stretch"):
         st.session_state.tip_index += 1
         st.rerun()
+    ui.section("🐢", "A turtle draws a leaf", "Follow a little turtle as it traces a leaf and its center vein.")
+    ui.turtle_animation()
     ui.section("✨", "How your points add up", "Points celebrate logging and thoughtful habits — they never change badge rules.")
     ui.points_grid(breakdown)
     ui.section("🗺️", "Milestones", "Lifetime moments on your journey.")

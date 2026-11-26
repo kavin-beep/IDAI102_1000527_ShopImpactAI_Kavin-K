@@ -79,7 +79,7 @@ mobile screen.
 - **Video hero:** a masked serif headline ("A little more *mindful*, every month."), a level orb that draws itself, counting stats and a scrolling ticker of habits.
 - **Editorial details:** dark glass panels, Fraunces serif headlines, mono kickers, numbered section headings, a pill tab index, gentle 3D card tilt and an earthy chart palette.
 - **Themes for every mood:** **Normal** (natural footage), **Day** (warm golden grade with sun and clouds) and **Night** (blue-graded footage, crescent moon and falling stars).
-- **Respectful motion:** turning off *Animated scenery*, or the device's reduced-motion setting, removes the video and animations. **High contrast** switches to black, white and yellow with no footage.
+- **Respectful motion:** when *Animated scenery* is off or the device requests reduced motion, the video is hidden and the Turtle animation shows a complete leaf with a stationary turtle. **High contrast** switches to black, white and yellow with no footage.
 
 ### 🧾 A shopping journal you can trust
 - Product type (with icons), brand or shop, price and date, plus a **live receipt-style estimate** that shows the kg CO₂e, a reuse/new tag and an everyday equivalent as you type.
@@ -92,6 +92,7 @@ mobile screen.
 - **Everyday equivalents:** each month's estimate pictured as car kilometres, smartphone charges and tree-months using US EPA factors.
 - **Ideas before buying:** category alternatives, named reuse and repair options with official links, rotating tips and a Turtle-drawn leaf reward.
 - **Growing plant pal in Eco Journey:** it evolves from a seedling into a forest keeper as you level up, adding leaves, blossoms and fruit. Its expression reflects monthly goals; hover for a leafy wiggle and a gentle tip.
+- **Live Turtle animation in Eco Journey:** a little browser-rendered turtle walks around a leaf outline as the leaf and its center vein are drawn. It respects the app's motion toggle and the device's reduced-motion preference.
 
 ### 🔐 Username accounts
 - Sign in with a username and password, or create an account. No email address or password recovery flow is shown.
@@ -197,7 +198,8 @@ Microsoft's Python and Python Debugger extensions).
 ```
 
 The default command uses `turtle.TNavigator` with an SVG pen adapter. `--preview` uses `turtle.Turtle` and needs a
-working Tk. The app shows the generated SVG when a qualifying choice exists; it is not a live browser Turtle animation.
+working Tk. The app shows the generated reward SVG when a qualifying choice exists. Separately, Eco Journey includes
+a live browser SVG animation of a turtle tracing a leaf; it does not open a desktop Tk Turtle window.
 
 ---
 

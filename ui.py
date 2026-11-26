@@ -285,6 +285,17 @@ html,body {background:#0E0C09;}
 .si-plant-growth {margin:0 0 12px;color:var(--si-moss);font-size:.78rem;font-weight:600;}
 .si-plant-tip {border-top:1px solid var(--si-line);padding-top:9px;color:var(--si-muted);font-size:.84rem;line-height:1.45;}
 .si-plant-tip b {color:var(--si-amber);font-family:var(--si-mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;}
+.si-turtle-animation {display:flex;align-items:center;justify-content:center;min-height:190px;padding:12px;border-radius:22px;
+  background:radial-gradient(circle at 50% 45%,rgba(163,197,133,.18),rgba(14,12,9,.48) 72%);border:1px solid rgba(163,197,133,.28);}
+.si-turtle-animation svg {display:block;width:min(100%,390px);height:auto;overflow:visible;}
+.si-turtle-path {fill:rgba(163,197,133,.08);stroke:#A3C585;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;}
+.si-turtle-vein {fill:none;stroke:#688E51;stroke-width:3;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;}
+.si-turtle-motion {filter:drop-shadow(0 3px 4px rgba(0,0,0,.24));}
+.si-turtle-static {display:none;}
+.si-turtle-shell {fill:#486746;stroke:#233F31;stroke-width:2;}
+.si-turtle-shell-mark {fill:none;stroke:#A3C585;stroke-width:1.5;stroke-linecap:round;}
+.si-turtle-skin {fill:#A3C585;stroke:#486746;stroke-width:1.5;}
+.si-turtle-ground {stroke:rgba(163,197,133,.35);stroke-width:2;stroke-linecap:round;}
 .si-tip {position:relative;padding:22px 24px;border-radius:22px;background:linear-gradient(135deg,rgba(232,176,74,.16),rgba(14,12,9,.6));
   border:1px solid rgba(232,176,74,.3);backdrop-filter:blur(14px);}
 .si-tip small {font-family:var(--si-mono);font-weight:600;letter-spacing:.16em;font-size:.64rem;color:var(--si-amber);}
@@ -444,7 +455,17 @@ body:has(.si-paused) {background:radial-gradient(80% 80% at 80% 0%,#2A2416,#0E0C
 @keyframes si-plant-wiggle {0%,100% {transform:rotate(0);} 20% {transform:rotate(-9deg);} 45% {transform:rotate(7deg);} 70% {transform:rotate(-4deg);}}
 @keyframes si-plant-unfurl {from {opacity:0;transform:scale(.45);} to {opacity:1;transform:scale(1);}}
 .si-paused *,.si-paused *::before,.si-paused *::after {animation:none!important;transition:none!important;}
-@media (prefers-reduced-motion:reduce) {.si-scenery *,.si-plant-card * {animation:none!important;transition:none!important;} .si-leaf {display:none;} #si-video,#si-webgl {display:none;}}
+body:has(.si-paused) .si-turtle-motion {display:none;}
+body:has(.si-paused) .si-turtle-static {display:block;}
+body:has(.si-paused) .si-turtle-path,body:has(.si-paused) .si-turtle-vein {stroke-dashoffset:0;}
+body:has(.si-paused) .si-turtle-path animate,body:has(.si-paused) .si-turtle-vein animate {display:none;}
+@media (prefers-reduced-motion:reduce) {
+  .si-scenery *,.si-plant-card * {animation:none!important;transition:none!important;}
+  .si-leaf {display:none;} #si-video,#si-webgl {display:none;}
+  .si-turtle-motion {display:none;} .si-turtle-static {display:block;}
+  .si-turtle-path,.si-turtle-vein {stroke-dashoffset:0;}
+  .si-turtle-path animate,.si-turtle-vein animate {display:none;}
+}
 
 /* Responsive */
 @media (max-width:1100px) {
@@ -850,6 +871,40 @@ def plant_mascot(mood, tip, level):
 <p>{escape(messages[mood])}</p>
 <div class="si-plant-growth">{growth}</div>
 <div class="si-plant-tip"><b>A little leaf tip</b><br>{escape(tip)}</div></div></div>""")
+
+
+def turtle_animation():
+    """Show a browser-animated turtle tracing a leaf and its center vein."""
+    html("""<div class="si-turtle-animation" role="img" aria-label="A small turtle walks around a leaf outline, drawing the leaf and its center vein.">
+<svg viewBox="0 0 240 210" aria-hidden="true">
+<defs>
+<path id="si-turtle-trace" d="M120 159 C74 145 57 100 80 54 C124 55 163 82 160 121 C158 143 139 156 120 159Z"/>
+<g id="si-turtle-character">
+<ellipse class="si-turtle-skin" cx="-7" cy="8" rx="4" ry="3"/>
+<ellipse class="si-turtle-skin" cx="1" cy="9" rx="4" ry="3"/>
+<ellipse class="si-turtle-skin" cx="-7" cy="-8" rx="4" ry="3"/>
+<ellipse class="si-turtle-skin" cx="1" cy="-9" rx="4" ry="3"/>
+<ellipse class="si-turtle-shell" cx="-4" cy="0" rx="12" ry="9"/>
+<path class="si-turtle-shell-mark" d="M-12 0Q-4 -5 4 0M-4 -8V8"/>
+<circle class="si-turtle-skin" cx="10" cy="-1" r="6"/>
+<circle cx="12" cy="-3" r="1.2" fill="#17140F"/>
+<path d="M12 2q2 2 4 0" fill="none" stroke="#486746" stroke-width="1" stroke-linecap="round"/>
+</g>
+</defs>
+<ellipse cx="120" cy="177" rx="82" ry="8" fill="rgba(163,197,133,.12)"/>
+<path class="si-turtle-ground" d="M36 181H204"/>
+<path class="si-turtle-path" pathLength="1" d="M120 159 C74 145 57 100 80 54 C124 55 163 82 160 121 C158 143 139 156 120 159Z">
+<animate attributeName="stroke-dashoffset" from="1" to="0" dur="8s" repeatCount="indefinite"/>
+</path>
+<path class="si-turtle-vein" pathLength="1" d="M120 159 C111 125 95 87 82 57">
+<animate attributeName="stroke-dashoffset" from="1" to="0" dur="8s" repeatCount="indefinite"/>
+</path>
+<g class="si-turtle-motion">
+<use href="#si-turtle-character"/>
+<animateMotion dur="8s" repeatCount="indefinite" rotate="auto"><mpath href="#si-turtle-trace"/></animateMotion>
+</g>
+<g class="si-turtle-static" transform="translate(120 159) rotate(-163)"><use href="#si-turtle-character"/></g>
+</svg></div>""")
 
 
 def story_card(text):

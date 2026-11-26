@@ -12,9 +12,9 @@ hosted PostgreSQL persistence works. The current shared public page showed Strea
 
 The Streamlit tests verify the two-tab username login page, absence of email and recovery controls, account creation
 with passwords up to eight characters, and saved purchases after signing out and signing in again. They also cover
-the Eco Journey plant's wilted, happy, growing and empty-month moods and its five evolving level forms, plus
-shopping, wishlist, insights, themes and backups. Logic tests cover calculations, validation, estimate provenance,
-CSV safety, backups and wishlist rules.
+the Eco Journey plant's wilted, happy, growing and empty-month moods and its five evolving level forms, the Turtle
+animation's accessible animated and static states, plus shopping, wishlist, insights, themes and backups. Logic tests
+cover calculations, validation, estimate provenance, CSV safety, backups and wishlist rules.
 
 The suite also includes tests for account services and legacy email/database setup modules. Email delivery and
 password recovery are not available in the current account UI.
@@ -29,5 +29,6 @@ They are self-reported impressions, not a structured task-based usability study.
 [usability feedback template](usability-feedback.md) supports more detailed follow-up; earlier AI heuristic
 inspections are not participant observations.
 
-The Turtle artwork is generated as SVG through Python Turtle navigation; the browser displays that image rather than
-running a live Turtle animation.
+The achievement reward is generated as SVG through Python Turtle navigation. Separately, Eco Journey shows a live,
+browser-rendered SVG turtle animation tracing a leaf and its center vein. The app motion toggle and the device's
+reduced-motion preference switch it to a completed leaf with a stationary turtle.
