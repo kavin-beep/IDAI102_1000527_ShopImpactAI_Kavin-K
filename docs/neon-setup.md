@@ -1,5 +1,7 @@
 # Set up the hosted database with Neon
 
+> **Not required by the current app.** The active app has no sign-in or persistent database storage; it opens directly to a session-only workspace. This guide and the database setup helpers remain for legacy repository code and tests. Do not provision Neon just to run or deploy the current app.
+
 Neon provides managed PostgreSQL and offers a Free plan. Review the plan displayed during signup; do not choose a paid plan or add billing unless you intend to do so. See https://neon.com/pricing for current limits.
 
 1. Open https://console.neon.tech/ and sign up or sign in. You can choose the GitHub sign-in option for your own GitHub account.

@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" width="1200" height="520" role="img" aria-label="How ShopImpact works: the browser talks to the Streamlit app, which uses Python calculations, reference data and an account database">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" width="1200" height="520" role="img" aria-label="How ShopImpact works: a browser session uses the Streamlit app, Python calculations, reference data and temporary session storage">
   <style>
     .box{fill:#17140f;stroke:#3a342a;stroke-width:1.5}
     .hot{stroke:#e8b04a}
@@ -18,7 +18,7 @@
   <rect x="40" y="90" width="230" height="140" rx="18" class="box hot"/>
   <circle cx="64" cy="118" r="5" fill="#a3c585" class="dot"/>
   <text x="78" y="123" class="t">You, in a browser</text>
-  <text x="64" y="156" class="s">Sign in · log a purchase</text>
+  <text x="64" y="156" class="s">Open home · log a purchase</text>
   <text x="64" y="176" class="s">Park a wish · read insights</text>
   <text x="64" y="196" class="s">Download CSV / JSON</text>
 
@@ -33,7 +33,7 @@
   <!-- column 2: app -->
   <rect x="340" y="90" width="260" height="360" rx="18" class="box hot"/>
   <text x="364" y="128" class="t">Streamlit app</text>
-  <text x="364" y="152" class="s">app.py · account_ui.py</text>
+  <text x="364" y="152" class="s">app.py · guest workspace</text>
   <g class="s">
     <text x="364" y="196">🌿 Dashboard</text>
     <text x="364" y="222">⏸️ Mindful wishlist</text>
@@ -62,21 +62,21 @@
   <text x="694" y="396" class="s">US EPA equivalents</text>
   <text x="694" y="416" class="s">alternatives · eco tips</text>
 
-  <!-- column 4: storage -->
+  <!-- column 4: temporary session state -->
   <rect x="980" y="90" width="180" height="200" rx="18" class="box hot"/>
-  <text x="1004" y="128" class="t">Accounts</text>
-  <text x="1004" y="156" class="s">accounts.py</text>
-  <text x="1004" y="180" class="s">Argon2id hashes</text>
-  <text x="1004" y="200" class="s">hashed sessions</text>
-  <text x="1004" y="220" class="s">rate limiting</text>
-  <text x="1004" y="244" class="s">conflict-safe saves</text>
-  <text x="1004" y="268" class="s">email links</text>
+  <text x="1004" y="128" class="t">Session data</text>
+  <text x="1004" y="156" class="s">One workspace per</text>
+  <text x="1004" y="176" class="s">active browser session</text>
+  <text x="1004" y="200" class="s">Purchases · goals</text>
+  <text x="1004" y="220" class="s">wishlist · appearance</text>
+  <text x="1004" y="244" class="s">not saved to a database</text>
+  <text x="1004" y="268" class="s">download JSON backup</text>
 
   <rect x="980" y="320" width="180" height="130" rx="18" class="box"/>
-  <text x="1004" y="358" class="t">Database</text>
-  <text x="1004" y="386" class="s">Neon PostgreSQL</text>
-  <text x="1004" y="406" class="s">or local SQLite</text>
-  <text x="1004" y="430" class="s">storage.py backups</text>
+  <text x="1004" y="358" class="t">Backups</text>
+  <text x="1004" y="386" class="s">JSON export / import</text>
+  <text x="1004" y="406" class="s">user-controlled copy</text>
+  <text x="1004" y="430" class="s">storage.py validation</text>
 
   <!-- flows -->
   <path class="flow" d="M270 160 H340"/>

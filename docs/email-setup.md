@@ -1,5 +1,7 @@
 # Gmail verification and password-reset delivery
 
+> **Not used by the current app.** The sign-in, verification and reset screens have been removed. The active app opens directly to a session-only workspace and does not send email. Do not configure this guide for the current deployment; the setup helper and service code remain only as legacy repository files.
+
 The flows are implemented, but live delivery remains disabled until private sender settings are configured and checked. Neon stores accounts and hashed action tokens; Gmail delivers the emails.
 
 ## Connect Gmail locally

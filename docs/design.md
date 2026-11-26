@@ -4,19 +4,19 @@ Students, young adults and families may want to understand purchases without spe
 
 ## Current layout
 
-The 2026 "Conscious Market Journal" design places the app over slow, crossfading second-hand market, clothes-rack and forest footage (Mixkit, free licence) with a warm grain and bokeh layer. Panels are dark glass with Fraunces serif headlines, mono kickers and numbered section headings. The sign-in page pairs a video cover panel with labelled account forms; on narrow screens the panels stack. Day warms the footage with a sun glow, Night tints it blue with stars, and turning off animated scenery (or the device's reduced-motion setting) removes the video. High contrast switches to black, white and yellow with no footage. Captions keep their intended text colour without Streamlit's default opacity reduction. A shared stylesheet supports the same appearance across account and shopping pages.
+The 2026 "Conscious Market Journal" design places the app over slow, crossfading second-hand market, clothes-rack and forest footage (Mixkit, free licence) with a warm grain and bokeh layer. Panels are dark glass with Fraunces serif headlines, mono kickers and numbered section headings. The app opens directly on the dashboard without sign-in or email forms. Day warms the footage with a sun glow, Night tints it blue with stars, and turning off animated scenery (or the device's reduced-motion setting) removes the video. High contrast switches to black, white and yellow with no footage. Captions keep their intended text colour without Streamlit's default opacity reduction. A shared stylesheet supports the shopping pages.
 
 ```text
 +----------------------+--------------------------------------------------+
 | ShopImpact           | Title and reference estimate notice              |
-| Account / sign out   | Dashboard | Insights | History | How it works     |
+| Session-only data    | Dashboard | Insights | History | How it works     |
 | High contrast        |                                                  |
 |                      | Month selection                                  |
 | Monthly goals        | Spending total | CO2 estimate | Lower choices    |
 | Spending             |                                                  |
 | Estimated CO2e       | Product type | Price | Brand | Date              |
 |                      | Live impact preview                [Add purchase]|
-| Backup reminder      | Category chart             | Achievements      |
+| Session backup note  | Category chart             | Achievements      |
 |                      | Goal progress              | Turtle leaf       |
 |                      |                            | Rotating tip      |
 |                      | Alternatives and comparison                      |
@@ -29,7 +29,7 @@ History combines search, month and category filters with date/price/impact sorti
 
 ## Design choices
 
-Use text labels with badge symbols so meaning is not conveyed by colour alone. Keep the most important totals above the chart. Present alternatives as options, without guilt or unsupported brand endorsements. Require sign-in before showing purchase data. Keep each account separate and show that entries save automatically. Recovery codes and explicit deletion support account ownership. Synthetic test entries never populate live accounts.
+Use text labels with badge symbols so meaning is not conveyed by colour alone. Keep the most important totals above the chart. Present alternatives as options, without guilt or unsupported brand endorsements. Keep each active browser session separate and explain that its entries are temporary. Encourage JSON backup before ending the session. Synthetic test entries never populate real user sessions.
 
 High contrast was reviewed in Chrome and primary-button text was corrected. Full keyboard navigation, zoom and screen-reader assessment remain pending; a contrast toggle alone is not an accessibility certification.
 
