@@ -1,4 +1,4 @@
-"""Trends and history views calculated only from the user's logged purchases."""
+"""Trends and history views calculated only from logged purchases."""
 from decimal import Decimal, ROUND_HALF_UP
 from logic import month_records, summary
 

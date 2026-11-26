@@ -1,34 +1,42 @@
 # Public deployment
 
-Live app: [ShopImpact on Streamlit Community Cloud](https://idai1021000527shopimpactaikavin-k-dt4pcaipehuzgmnvp9gr4b.streamlit.app/).
+Live app: [ShopImpact on Streamlit Community Cloud](https://shopimpact-duy7hphexgoshhqfexfmkt.streamlit.app/). I checked the public sign-in page in the browser after deployment: it loads without a startup error and shows Sign in, Create account and Recover account. I did not create or modify a live account during this check.
 
-On 26 November 2026, the shared app page showed Streamlit's **Not found** screen, and direct checks redirected
-to Streamlit's app-auth route. The deployment and its hosted database are therefore not verified from this
-workspace; the deployment owner must confirm the app exists and is publicly accessible.
+I use Neon PostgreSQL through ignored private settings in this workspace. On 2 October 2026, I passed local Neon checks for connection, schema creation, registration, login, two-account isolation, persistence across new connections, stale-edit rejection and logout. I deleted the temporary QA accounts. I still need to verify full account workflows on the public deployment, server redeployment and provider backup restoration. Without hosted settings, I use local SQLite.
 
-ShopImpact uses username/password accounts and saves purchases and preferences in a database. For Streamlit Community
-Cloud, configure a persistent PostgreSQL database before relying on account data surviving deployments or restarts.
+## Prerequisites
+
+Choose a GitHub repository, a hosted PostgreSQL provider and Streamlit Community Cloud account. Confirm database pricing and backup retention with the provider before provisioning. Use the assessment repository naming convention with my actual student ID and name. Never commit connection strings, private databases, session tokens or recovery codes.
 
 ## Configure
 
-Add these values to the app's private Streamlit Secrets, using a real provider connection string:
+For first-time hosted setup, follow the [Neon walkthrough](neon-setup.md). The terminal helper validates the connection and saves credentials in ignored private settings.
+
+Put these values in Streamlit Cloud's private Secrets settings, using real values from the database provider:
 
 ```toml
 SHOPIMPACT_PUBLIC = true
 SHOPIMPACT_DATABASE_URL = "postgresql+psycopg://USER:PASSWORD@HOST:5432/DATABASE?sslmode=require"
 ```
 
-Never commit database credentials. The app creates its schema on startup. Public mode rejects a local SQLite
-database. For local development, no secrets are required; the app stores data in the ignored
-`personal_data/shopimpact.db` file.
+Use the provider's recommended TLS connection string, preferably certificate-verified when supported. URL-encode special characters in credentials. Use a dedicated database user with access only to this app's database. The app creates users, sessions, attempts, email_actions and email_requests tables on first startup; the account needs those initial permissions. Consider reducing privileges after provisioning.
+
+For local configuration, copy `.streamlit/secrets.example.toml` to ignored `.streamlit/secrets.toml` and replace the placeholders. Environment variables with the same names are also supported. Do not enable public mode with SQLite: startup will reject it. Streamlit's authentication and data connections must be served over HTTPS when public.
 
 ## Publish and verify
 
-1. Push the repository to GitHub and create a Streamlit Community Cloud app with `app.py` as the entry point.
-2. Add the persistent PostgreSQL secrets above and deploy.
-3. Create an account with a username and password of 1–8 characters. The UI has only **Sign in** and **Create account**; no email or recovery flow is shown.
-4. Add a purchase, sign out, sign in again, and confirm purchases and preferences remain.
-5. Confirm account isolation with a second account and test JSON backup export/import.
-6. Check narrow screens, keyboard use, contrast, uploads and downloads.
+1. Upload source, data, assets, tests and documentation. Exclude `.venv`, `personal_data`, real secrets and scratch files.
+2. Set app entrypoint `app.py`, Python 3.12 and install the pinned requirements.
+3. Add the database secrets and deploy on Streamlit Community Cloud.
+4. Create two temporary accounts. Verify one cannot see the other's purchases, exports or preferences. Verify recovery and sign-out.
+5. Confirm saved entries survive a server restart/redeployment and that the database provider's backup restoration works.
+6. Check narrow screens, keyboard use, contrast, uploads/downloads and recovery-code visibility.
+7. Delete temporary test accounts. Add the actual live URL, GitHub URL and screenshots to the README and final submission.
 
-The [Neon guide](neon-setup.md) contains hosted database setup details. The Gmail guide is not needed by this account UI.
+## Operations and limits
+
+Local and hosted modes share the SQLAlchemy storage layer. PostgreSQL-specific execution still needs the above deployment smoke tests. SQLite file backup is sufficient for local development only; back up safely while the local app is stopped. Account deletion removes live account data and sessions; provider backups may retain deleted records until their retention period ends.
+
+This release supports email-or-username/password login and uses recovery codes for password recovery. I implemented email verification and password-reset links, and I am waiting for private Gmail sender setup and real delivery checks; see email-setup.md. Signup opens the home page immediately. Verification is optional for dashboard access; email reset links require a verified address. I need to configure the actual public HTTPS app URL for links, check SMTP access from the hosting environment, and verify inbox delivery before public launch. Existing databases receive a nullable email column and unique index automatically; existing accounts keep working with their usernames and can link an email after confirming the password. New UI registrations require email. I require account holders to store recovery codes; I cannot retrieve the originals. Session expiry is 12 hours. Email and username aliases share a failed-attempt counter for an existing account; public growth would also require infrastructure-level abuse controls, monitoring, dependency updates and an independent security review. I will not describe the application as independently audited.
+
+Official persistence guidance: https://docs.streamlit.io/develop/concepts/connections/connecting-to-data

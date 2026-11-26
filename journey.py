@@ -1,8 +1,8 @@
 """Eco Journey rules: points, levels, streaks, milestones, everyday equivalents
 and the mindful wishlist. Pure Python with no interface code, so it is easy to test.
 
-Journey points reward logging and reflective habits. They are encouragement only:
-they never change the fixed monthly badge rules in logic.py and are not a
+Journey points reward logging and reflective habits. I use them only for encouragement:
+I never allow them to change the fixed monthly badge rules in logic.py, and they are not a
 measurement of real-world emissions savings.
 """
 import json

@@ -18,7 +18,7 @@ The EPA source column is Supply Chain Emission Factors with Margins. The source 
 
 ## Category mappings and limitations
 
-Apparel maps to NAICS 315990; footwear to 316210; electronics to electronic-computer manufacturing 334111; household goods to plastics-bottle manufacturing 326160; repair to personal/household goods repair 811490. These broad mappings are screening proxies and do not fit every item within the user-facing category. Each category displays its mapping limitation.
+I map apparel to NAICS 315990, footwear to 316210, electronics to electronic-computer manufacturing 334111, household goods to plastics-bottle manufacturing 326160 and repair to personal/household goods repair 811490. These broad mappings are screening proxies and do not fit every item within the on-screen category. I display each category's mapping limitation.
 
 New and second-hand clothing share an apparel factor. New and refurbished electronics share a computer factor. Single-use and reusable household goods share a plastics-bottle factor. The model does not assign unsupported discounts to reuse, refurbishment or repeated use. Price differences therefore drive differences for these pairs; they must not be described as measured emissions avoided.
 
@@ -37,7 +37,7 @@ Empty histories earn no badges. The catalog's internal `lower_impact` flag ident
 
 ## Compatibility
 
-Old `illustrative-inr-v1` JSON backups require an explicit migration opt-in. Import recomputes estimates with current sourced factors and validates IDs, dates, prices, categories, version and currency before any database write. Existing source files were not overwritten or deleted. Source changes require a methodology version change and an explicit migration policy.
+Old `illustrative-inr-v1` JSON backups require an explicit migration opt-in. Import recomputes estimates with current sourced factors and validates IDs, dates, prices, categories, version and currency before any database write. I did not overwrite or delete existing source files. I require a methodology version change and an explicit migration policy for source changes.
 
 ## Sources
 

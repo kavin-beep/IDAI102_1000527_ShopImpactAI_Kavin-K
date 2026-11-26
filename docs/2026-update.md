@@ -1,6 +1,6 @@
 # ShopImpact 2026 refresh
 
-Reviewed 5 October 2026. Methodology: `useeio-2024-inr-reference-v3`.
+I reviewed this update on 5 October 2026. Methodology: `useeio-2024-inr-reference-v3`.
 
 ## Updated data
 
@@ -10,7 +10,7 @@ The app uses the final USEEIO Supply Chain GHG Emission Factors v1.4.0 by Wesley
 
 `estimated kg CO2e = INR price × reference category factor`
 
-The World Bank 2024 annual-average rate matches the dollar price basis. The latest annual observation checked was 2025 (87.1584483507393 INR/USD), displayed for context only. A full-year 2026 observation was not available. This is a checked snapshot, not a live feed or measured 2026 product emissions. Current prices are not inflation-adjusted; results remain broad US-sector proxies, not India-specific lifecycle measurements.
+The World Bank 2024 annual-average rate matches the dollar price basis. I checked the latest annual observation for 2025 (87.1584483507393 INR/USD), and I display it for context only. A full-year 2026 observation was not available. This is a checked snapshot, not a live feed or measured 2026 product emissions. I keep current prices unadjusted for inflation, so the results remain broad US-sector proxies rather than India-specific lifecycle measurements.
 
 | Mapping | NAICS | kg CO2e per 2024 USD with margins |
 | --- | --- | --- |
@@ -30,9 +30,9 @@ Earlier source/catalog snapshots are archived in data/archive/. Earlier EPA v2 a
 
 ## Design and verification
 
-The refreshed header, source-review label, rounded navigation, metric cards and data-freshness panel improve clarity. Decorative leaf motion respects reduced-motion settings. All compulsory features remain available.
+I refreshed the header, source-review label, rounded navigation, metric cards and data-freshness panel to improve clarity. I made decorative leaf motion respect reduced-motion settings, and I kept all compulsory features available.
 
-90 automated tests passed on 26 November 2026, including explicit backup migration, preserving original records, confirmed UI recalculation, username/password account flow, plant mood rules and level-based plant growth. Tests use disposable databases; no real accounts are modified. Five informal feedback responses from friends, family and a classmate are recorded in the README; a structured task-based usability study and full accessibility checks remain pending. The explanation PDFs and presentation deck reflect the username-only login and Eco Journey plant.
+On 25 November 2026, I ran 94 automated tests successfully, including explicit backup migration, preserving original records, and confirmed UI recalculation. I use disposable databases, so I do not modify real accounts. I regenerated the explanation PDFs and presentation deck for the current design and test count. I still need real participant feedback and full accessibility checks.
 
 ## Primary references
 

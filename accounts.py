@@ -102,15 +102,6 @@ class Accounts:
         username = username_key(username)
         email = email_key(email) if email is not None else None
         check_password(password)
-        return self._create_account(username, password, email)
-
-    def register_username_password(self, username, password):
-        username = username_key(username)
-        if not isinstance(password, str) or not 1 <= len(password) <= 8:
-            raise AccountError("Choose a password containing 1–8 characters.")
-        return self._create_account(username, password)
-
-    def _create_account(self, username, password, email=None):
         recovery = secrets.token_urlsafe(32)
         values = {"id": secrets.token_hex(16), "name": username, "email": email,
                   "password": HASHER.hash(password), "recovery": digest(recovery),

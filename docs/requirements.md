@@ -1,6 +1,6 @@
 # Assessment requirements status
 
-Status refreshed 26 November 2026. The rubric totals 60 marks: planning 10, Python logic 15, interface 15, testing/creativity 10, GitHub/documentation 10. Distinguished is the highest named tier; no grade is guaranteed.
+Current on 3 October 2026. The rubric totals 60 marks: planning 10, Python logic 15, interface 15, testing/creativity 10, GitHub/documentation 10. Distinguished is the highest named tier; no grade is guaranteed.
 
 | Requirement | Evidence and current status |
 | --- | --- |
@@ -11,17 +11,17 @@ Status refreshed 26 November 2026. The rubric totals 60 marks: planning 10, Pyth
 | Badges and rules | Implemented and boundary-tested |
 | Alternatives for each product type | Three shopping approaches per category plus named options with official source links; no unsupported ethical certification |
 | Turtle footprint, leaf or badge | Turtle-generated SVG displayed conditionally; source included; desktop preview and assessor interpretation remain to be confirmed |
-| Lists, dictionaries, control structures, datetime and modular code | Implemented in logic, storage and interface modules |
+| Lists, dictionaries, control structures, datetime and modular code | Implemented in logic, storage, accounts and interface modules |
 | Interactive UI and live updates | Working local app; add/edit/delete and saved preferences tested |
 | 10–15 varied purchases for testing | 15 labelled synthetic records in tests; none preloaded for real users |
-| Creative additions | Persistent username accounts, goals, search, comparison, backups, a level-evolving Eco Journey plant pal and contrast |
-| Sign-in and email features | Username/password sign-in and account creation are available; no email or password recovery option is shown |
-| Thorough testing | 90 automated tests cover sign-in, account persistence, plant mood and growth rules, and core app features |
-| Genuine usability feedback and refinement | Five genuine, dated informal responses are recorded in the README. A structured task-based usability study and documented refinement/retest are still pending; AI heuristic inspection does not replace them |
+| Creative additions | Private accounts, permanent saving, recovery, goals, search, comparison, backups, tips, contrast and deletion |
+| Email account features | Email/password login, verification, reset and account-change workflows are implemented and covered by automated tests; private Gmail sender setup and real inbox delivery remain external configuration |
+| Thorough testing | 94 automated tests pass; actual browser review and screenshots recorded |
+| Genuine usability feedback and refinement | I prepared the feedback record; I have not collected real feedback yet |
 | app.py and requirements.txt | Present; dependencies installed and checked |
-| Detailed README | Overview, features, integration, run/deployment steps, screenshots, repository and public app links are present |
-| GitHub repository, naming and assessor access | Repository exists at kavin-beep/IDAI102_1000527_ShopImpactAI_Kavin-K and student details are present; assessor access is not independently verified |
-| Streamlit Cloud deployment | Public app URL is in README. Persistent hosted PostgreSQL configuration is required for account data to survive hosted restarts and redeployment |
-| Submission PDF | Pending real student name, registration number, school, repository and live links |
+| Detailed README | Overview, features, integration, run/deployment steps and screenshot evidence present; public links pending |
+| GitHub repository, naming and assessor access | Pending my actual repository and student details |
+| Streamlit Cloud deployment | Public app deployed and sign-in page checked; live URL in README. Local Neon checks passed previously; full cloud account workflows, redeployment and backup restoration checks remain pending |
+| Submission PDF | Pending my real name, registration number, school, repository and live links |
 
-The app has no demo workspace. Synthetic data belongs only in tests. Purchases, wishlist entries and preferences are account-scoped and stored in the configured database. New account passwords may be 1–8 characters; passwords are stored as Argon2id hashes. No email or password recovery flow is exposed.
+The real app has no demo workspace. Synthetic data belongs only in tests and in the separate browser QA database. Local accounts use SQLite; public mode requires PostgreSQL. Do not mark public deployment complete based on a local server or an example secrets file.

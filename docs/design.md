@@ -1,10 +1,10 @@
-# Design and user needs
+# Design and intended needs
 
-Students, young adults and families may want to understand purchases without specialist knowledge. Their main needs are quick entry, understandable totals, suggestions they can act on and encouragement without guilt. The first design uses an earthy green and cream palette, visible labels, whitespace, and a separate explanation of the model's limitations.
+I designed ShopImpact for students, young adults and families who want to understand purchases without specialist knowledge. I prioritised quick entry, understandable totals, practical suggestions and encouragement without guilt. I used an earthy green and cream palette, visible labels, whitespace and a separate explanation of the model's limitations.
 
 ## Current layout
 
-The 2026 "Conscious Market Journal" design places the app over slow, crossfading second-hand market, clothes-rack and forest footage (Mixkit, free licence) with a warm grain and bokeh layer. Panels are dark glass with Fraunces serif headlines, mono kickers and numbered section headings. The sign-in page reuses the established brand panel with username and password forms in two tabs; it does not ask for email or offer password recovery. Day warms the footage with a sun glow, Night tints it blue with stars, and turning off animated scenery (or the device's reduced-motion setting) removes the video. High contrast switches to black, white and yellow with no footage. Captions keep their intended text colour without Streamlit's default opacity reduction. A shared stylesheet supports the shopping pages.
+The 2026 "Conscious Market Journal" design places the app over slow, crossfading second-hand market, clothes-rack and forest footage (Mixkit, free licence) with a warm grain and bokeh layer. Panels are dark glass with Fraunces serif headlines, mono kickers and numbered section headings. The sign-in page pairs a video cover panel with labelled account forms; on narrow screens the panels stack. Day warms the footage with a sun glow, Night tints it blue with stars, and turning off animated scenery (or the device's reduced-motion setting) removes the video. High contrast switches to black, white and yellow with no footage. Captions keep their intended text colour without Streamlit's default opacity reduction. A shared stylesheet supports the same appearance across account and shopping pages.
 
 ```text
 +----------------------+--------------------------------------------------+
@@ -16,25 +16,23 @@ The 2026 "Conscious Market Journal" design places the app over slow, crossfading
 | Spending             |                                                  |
 | Estimated CO2e       | Product type | Price | Brand | Date              |
 |                      | Live impact preview                [Add purchase]|
-| Session backup note  | Category chart             | Achievements      |
-|                      | Goal progress              | Plant pal mascot  |
-|                      |                            | Plant tip         |
+| Backup reminder      | Category chart             | Achievements      |
+|                      | Goal progress              | Turtle leaf       |
+|                      |                            | Rotating tip      |
 |                      | Alternatives and comparison                      |
 +----------------------+--------------------------------------------------+
 ```
 
 Insights shows six calendar months ending at a chosen month, average purchase, remaining or exceeded spending goal, previous-month change and largest spending category. Missing entries are described explicitly and are not treated as proof of zero spending or emissions.
 
-History combines search, month and category filters with date/price/impact sorting. Filtered results have their own totals and CSV download. The edit selector follows the displayed results; a zero-result view hides edit/delete controls while full backups remain available. Editing, explicit delete confirmation and confirmed JSON restoration remain supported. The explanation tab describes assumptions and privacy. Browser review confirmed stacked inputs at a 390-pixel viewport with the sidebar collapsed; no horizontal document overflow was detected in that view.
+History combines search, month and category filters with date/price/impact sorting. Filtered results have their own totals and CSV download. The edit selector follows the displayed results; a zero-result view hides edit/delete controls while full backups remain available. Editing, explicit delete confirmation and confirmed JSON restoration remain supported. The explanation tab describes assumptions and privacy. I reviewed the browser at a 390-pixel viewport with the sidebar collapsed and confirmed that the inputs stacked correctly; I detected no horizontal document overflow.
 
 ## Design choices
 
-Use text labels with badge symbols so meaning is not conveyed by colour alone. Keep the most important totals above the chart. Present alternatives as options, without guilt or unsupported brand endorsements. Keep each active browser session separate and explain that its entries are temporary. Encourage JSON backup before ending the session. Synthetic test entries never populate real user sessions.
+Use text labels with badge symbols so meaning is not conveyed by colour alone. Keep the most important totals above the chart. Present alternatives as options, without guilt or unsupported brand endorsements. Require sign-in before showing purchase data. Keep each account separate and show that entries save automatically. Recovery codes and explicit deletion support account ownership. Synthetic test entries never populate live accounts.
 
-High contrast was reviewed in Chrome and primary-button text was corrected. Full keyboard navigation, zoom and screen-reader assessment remain pending; a contrast toggle alone is not an accessibility certification.
-
-The Eco Journey plant pal uses inline SVG and CSS motion. It grows from a two-leaf seedling through five level stages, gaining leaves, blossoms and fruit as the user's lifetime Eco Journey level rises. Its face looks wilted when monthly spending exceeds the user's goal, happy when purchases exist and estimated CO₂e is within its goal, and gently growing otherwise. The leaves wiggle on hover when motion is allowed, and a sourced eco-tip appears beside the plant.
+I reviewed high contrast in Chrome and corrected the primary-button text. I still need to complete full keyboard navigation, zoom and screen-reader assessments; a contrast toggle alone is not an accessibility certification.
 
 ## Feedback to collect
 
-Five informal feedback responses from friends, family and a classmate are recorded in the README. These comments are genuine but are not a structured task-based usability study. For follow-up, ask participants to add a purchase, find a monthly total, edit a mistake, compare two choices, and save/restore a backup; record observations and permission-appropriate notes.
+I will ask real people to add a purchase, find a monthly total, edit a mistake, compare two choices and save/restore a backup. I will record my observations and permission-appropriate notes. I have not conducted usability feedback yet.

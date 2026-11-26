@@ -17,7 +17,10 @@ if backup_storage.VERSION != shopping_rules.VERSION:
 
 from logic import ROOT, CATALOG, SOURCE, VERSION, impact, make_purchase, month_records, summary, badges, update_purchase, recalculate_purchases
 from storage import export_json, export_csv, import_json
-from account_ui import require_account, save_account, sign_out
+from account_ui import require_account, save_account, sign_out, EMAIL_REQUEST_MESSAGE
+from email_delivery import queue_email_action, queue_notice
+from accounts import AccountError
+from sqlalchemy.exc import SQLAlchemyError
 import ui
 import journey
 # Refresh presentation code when Community Cloud retains an earlier module.
@@ -33,7 +36,7 @@ st.set_page_config(page_title="ShopImpact | Conscious shopping", page_icon="🌿
 brand_slot = st.sidebar.container()
 theme_controls()
 apply_styles()
-service, account = require_account()
+service, account, mailer = require_account()
 if "tip_index" not in st.session_state:
     st.session_state.tip_index = 0
 settings = account["settings"]
@@ -48,7 +51,7 @@ wish_totals = journey.wishlist_summary(wishlist)
 
 
 def save_wishlist(updated, purchases=None):
-    """Persist wishlist updates with this account."""
+    """Wishlist items live in the account's saved settings, beside goals."""
     return save_account(service, account, purchases=purchases, settings={**account["settings"], "wishlist": updated})
 
 
@@ -56,9 +59,41 @@ with brand_slot:
     ui.sidebar_brand(account["username"], level)
 
 with st.sidebar:
-    st.info("Your purchases and preferences are saved to your account.")
-    if st.button("Sign out", key="sign_out", width="stretch"):
+    with st.expander("✉️ Account email"):
+        if account.get("email"):
+            st.caption(f"Sign-in email: {account['email']}")
+            st.caption("Verified" if account.get("email_verified") else "Email not verified yet")
+            if mailer and not account.get("email_verified") and st.button("Send verification email"):
+                queue_email_action(service, mailer, account["email"], "verify")
+                st.success(EMAIL_REQUEST_MESSAGE)
+        else:
+            st.write("Add an email to sign in with it next time.")
+        with st.form("account_email", clear_on_submit=True):
+            email = st.text_input("Sign-in email", max_chars=254, placeholder="name@example.com")
+            email_password = st.text_input("Current password", type="password", max_chars=128)
+            if st.form_submit_button("Save sign-in email"):
+                try:
+                    old_email = account.get("email")
+                    account["email"] = service.set_email(st.session_state.auth_token, email, email_password)
+                    account.update(service.load(st.session_state.auth_token))
+                    if mailer and old_email != account["email"]:
+                        queue_email_action(service, mailer, account["email"], "verify")
+                        if old_email:
+                            queue_notice(mailer, old_email, "ShopImpact email address changed",
+                                         "Your ShopImpact sign-in email was changed after password confirmation. If you did not make this change, use your recovery code to secure your account.")
+                    st.success("Email saved. You can sign in immediately; verify it from your inbox to enable email password resets." if mailer else "Email saved. You can sign in with your email or username.")
+                except AccountError as error:
+                    st.error(str(error))
+                except SQLAlchemyError:
+                    st.error("Your email could not be saved. Please try again.")
+    left, right = st.columns(2)
+    if left.button("Sign out", width="stretch"):
         sign_out(service)
+    if right.button("Reload saved data", help="Load the latest saved data after changes in another tab.", width="stretch"):
+        st.session_state.pop("account_data", None)
+        for widget in ["contrast", "budget", "carbon_goal"]:
+            st.session_state.pop(widget, None)
+        st.rerun()
     with st.form("goals"):
         st.subheader("🎯 Your monthly goals")
         high_contrast = st.checkbox("High contrast", value=settings["contrast"], key="contrast")
@@ -68,7 +103,8 @@ with st.sidebar:
             if save_account(service, account, settings={**account["settings"], "budget": budget, "carbon_goal": carbon_goal, "contrast": high_contrast}):
                 settings = account["settings"]
                 st.success("Preferences saved.")
-    st.caption("Goals help you reflect. They do not change the fixed badge rules.")
+    st.caption("Goals help you reflect. I keep them separate from the fixed badge rules.")
+    st.info("Purchases save to your account. Sign in again after a refresh to continue. Download a backup whenever you want a separate copy.")
 
 apply_styles(high_contrast)
 night = st.session_state.get("visual_theme") == "Night" and not high_contrast
@@ -80,10 +116,32 @@ for message in st.session_state.pop("toasts", []):
     st.toast(message[0], icon=message[1])
 
 ui.hero(account["username"], level, streak, wish_totals["skipped"], date.today().strftime("%B %Y"))
+if st.session_state.get("account_created"):
+    st.success("Your account is ready. Welcome to ShopImpact!")
+    with st.expander("Save your account recovery code"):
+        st.write("Keep this code privately. It lets you recover your account if you forget your password.")
+        st.code(st.session_state.recovery_code)
+        st.download_button("Download recovery code", st.session_state.recovery_code,
+                           "shopimpact-recovery-code.txt", "text/plain")
+        if st.button("I saved my recovery code"):
+            st.session_state.pop("account_created", None)
+            st.session_state.pop("recovery_code", None)
+            st.rerun()
 st.caption("INR · USEEIO v1.4 reference factors · Sources reviewed 5 October 2026. Rough US-sector estimates, not product measurements.")
 older_estimates = sum(p.get("methodology") != VERSION for p in records)
 if older_estimates:
     st.info(f"{older_estimates} purchases retain their earlier reference estimates. New or edited entries use the updated data. Recalculate your history in How it works to compare all entries on the same basis.")
+
+if st.session_state.get("personal"):
+    with st.expander("Save entries from your previous session"):
+        st.write("Your earlier session entries can be saved to this account. Estimates will be recalculated using the new sourced factors.")
+        if st.button("Import my earlier session entries"):
+            old = [make_purchase(p["product_type"], p["price"], p["brand"], p["purchase_date"], p["id"]) for p in st.session_state.personal]
+            existing = {p["id"] for p in records}
+            merged = records + [p for p in old if p["id"] not in existing]
+            if save_account(service, account, purchases=merged):
+                del st.session_state["personal"]
+                st.rerun()
 
 entry, wishes, insights, path, history, about = st.tabs(
     ["🌿 Dashboard", "⏸️ Mindful wishlist", "📈 Insights", "🏆 Eco journey", "🧾 History & backups", "📚 How it works"])
@@ -175,6 +233,12 @@ with entry:
                 st.write("Eco Saver: at least 3 purchases and a monthly estimated footprint of 50 kg CO₂e or less.")
                 st.write("Low Impact Shopper: at least 3 reuse, repair or reusable choices, making up at least 60% of the month. This rewards habits, not verified emissions savings.")
                 st.write("Repair Champion: at least one repair-service purchase this month.")
+        tips = json.loads((ROOT / "data/eco_tips.json").read_text(encoding="utf-8"))
+        ui.tip_card(tips[st.session_state.tip_index % len(tips)])
+        if st.button("Another tip", icon="✨", width="stretch"):
+            st.session_state.tip_index += 1
+            st.rerun()
+
     ui.section("🌍", "What this month's estimate looks like", "The same estimated kg CO₂e, pictured with everyday US averages.")
     ui.equivalents_cards(journey.equivalents(totals["co2"]))
     st.caption(f"Illustrations from the [US EPA Greenhouse Gas Equivalencies Calculator]({journey.EQUIVALENTS['url']}) (page updated {journey.EQUIVALENTS['page_updated']}). They help picture a rough estimate; they are not measurements, offsets or savings.")
@@ -249,7 +313,7 @@ with wishes:
             if st.button("Clear decided items", icon="🧹"):
                 if save_wishlist([w for w in wishlist if w["status"] == "waiting"]):
                     st.rerun()
-    st.caption("Skipped items are not purchases, so they never enter your history or totals. 'Estimated CO₂e not added' uses the same rough price × category model and is not a verified saving.")
+    st.caption("Skipped items are not purchases, so I keep them out of your history and totals. 'Estimated CO₂e not added' uses the same rough price × category model and is not a verified saving.")
 
 with insights:
     ui.section("📈", "See the bigger picture", "Six months of your recorded shopping, measured against your goals.")
@@ -283,16 +347,7 @@ with insights:
 
 with path:
     ui.level_card(level, journey.LEVELS)
-    ui.section("🌱", "Your growing plant", "It grows new leaves, blooms and fruit as you reach each Eco Journey level.")
-    tips = json.loads((ROOT / "data/eco_tips.json").read_text(encoding="utf-8"))
-    mascot_mood = ui.plant_mood(totals["spend"], totals["co2"], budget, carbon_goal, totals["count"])
-    ui.plant_mascot(mascot_mood, tips[st.session_state.tip_index % len(tips)], level)
-    if st.button("Another leaf tip", icon="🌱", width="stretch"):
-        st.session_state.tip_index += 1
-        st.rerun()
-    ui.section("🐢", "A turtle draws a leaf", "Follow a little turtle as it traces a leaf and its center vein.")
-    ui.turtle_animation()
-    ui.section("✨", "How your points add up", "Points celebrate logging and thoughtful habits — they never change badge rules.")
+    ui.section("✨", "How your points add up", "Points celebrate logging and thoughtful habits — I keep them separate from badge rules.")
     ui.points_grid(breakdown)
     ui.section("🗺️", "Milestones", "Lifetime moments on your journey.")
     ui.medal_grid(journey.milestones(records, wishlist, this_month, budget, carbon_goal))
@@ -371,7 +426,7 @@ with about:
     st.write("The base currency is INR. A higher price can increase this estimate without changing physical emissions. Free items return zero in this model; that does not mean they have zero environmental impact.")
     st.write(f"The reference conversion is {SOURCE['fx_inr_per_usd']} INR per USD, the World Bank's annual average for {SOURCE['fx_year']}, matching the factors' 2024 dollar price basis. It is not a live exchange rate. Current prices are not inflation-adjusted; US sector averages may differ substantially from Indian products. Treat results as rough estimates, not certified carbon accounting.")
     st.write(f"Everyday equivalents (car kilometres, phone charges, tree months) divide the estimate by US EPA averages: {', '.join(f['derivation'] for f in journey.EQUIVALENTS['factors'].values())}. They are pictures of the estimate, not separate measurements.")
-    st.write("The Mindful wishlist stores items you are considering in this browser session. Skipped items never become purchases; the 'not added' figure applies the same model to their expected prices and is not a verified saving.")
+    st.write("The Mindful wishlist stores items you are considering in your account settings. Skipped items never become purchases; the 'not added' figure applies the same model to their expected prices and is not a verified saving.")
     with st.expander("Data freshness and reference years"):
         st.write("Reviewed 5 October 2026. A 2026 refresh means the latest verified source release available at review, not measured 2026 product emissions.")
         st.write(f"Factor release: v1.4.0 · Published {SOURCE['published']} · Dollar price basis: 2024 · Warming method: {SOURCE['gwp']}.")
@@ -392,6 +447,20 @@ with about:
                         st.rerun()
                 except ValueError as error:
                     st.error(str(error))
-    st.write("No account or sign-in is required. Purchases and preferences exist only in this browser session and are not written to a database. Refreshing, reconnecting or restarting the app may clear them. Anyone using this same active browser session can see its entries; download a backup if you want to keep a copy.")
+    st.write("Purchases and preferences are saved separately for each account. Passwords are protected with Argon2id hashing. The database administrator can access purchase data; it is not end-to-end encrypted. Sign out on a shared computer. Sessions expire after 12 hours and a page refresh requires another sign-in.")
     st.write("Dates may include planned purchases. Your dashboard groups all entries by their selected purchase month and year.")
     st.caption("Built with Python, Streamlit, Altair, datetime, lists, dictionaries, and genuine Turtle-generated artwork.")
+    with st.expander("Delete my account and purchases"):
+        st.write("Download a backup first if you want to keep your purchase history. This permanently deletes your account and its data.")
+        with st.form("delete_account"):
+            password = st.text_input("Confirm your password", type="password", max_chars=128)
+            confirmed = st.checkbox("I understand my account and purchases will be deleted")
+            if st.form_submit_button("Permanently delete my account") and confirmed:
+                try:
+                    service.delete_account(st.session_state.auth_token, password)
+                    st.session_state.clear()
+                    st.rerun()
+                except AccountError as error:
+                    st.error(str(error))
+                except SQLAlchemyError:
+                    st.error("Account deletion failed. Please try again.")

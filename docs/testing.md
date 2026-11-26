@@ -1,34 +1,53 @@
 # Test evidence
 
-On 26 November 2026, all 90 tests passed with Python 3.12 using:
+I verified this with Python 3.12.14 and Streamlit 1.55.0 on 3 October 2026.
 
-```powershell
-.\.venv\Scripts\python.exe -m unittest discover -s tests -v
-```
+## Automated checks
 
-The local Streamlit app also started successfully and returned HTTP 200 from its root page on
-`127.0.0.1:8504`. This is a local startup smoke test, not evidence that the public deployment or its
-hosted PostgreSQL persistence works. The current shared public page showed Streamlit's **Not found** screen.
+I ran all 94 tests successfully using `python -m unittest discover -s tests -v`. I ran `python -m pip check`, and it reported no broken requirements.
 
-The Streamlit tests verify the two-tab username login page, absence of email and recovery controls, account creation
-with passwords up to eight characters, and saved purchases after signing out and signing in again. They also cover
-the Eco Journey plant's wilted, happy, growing and empty-month moods and its five evolving level forms, the Turtle
-animation's accessible animated and static states, plus shopping, wishlist, insights, themes and backups. Logic tests
-cover calculations, validation, estimate provenance, CSV safety, backups and wishlist rules.
+Twenty core tests cover Decimal arithmetic, validation, month/year boundaries, totals, badge thresholds, category alternatives, source-factor derivation, no invented reuse discount, backup validation, explicit legacy migration and CSV formula neutralization. Sixteen account tests cover isolation, persistence across a new database connection, salted hashes, weak/duplicate credentials, lockout, conflicting saves, recovery rotation, session revocation/expiry, password-reset races during login, deletion and rejection of SQLite in public mode. Thirteen Streamlit tests cover the login gate, empty state, invalid input, purchase editing/deletion, persistent preferences, registration, filtered edit choices and immediate goal changes in Insights.
 
-The suite also includes tests for account services and legacy email/database setup modules. Email delivery and
-password recovery are not available in the current account UI.
+Seven Insights tests cover year boundaries, empty calendar months, exact totals and rounded averages, missing versus zero-spend baselines, combined filters and numeric sorting without changing saved records.
 
-## Manual review and evidence limits
+I wrote seven setup-helper tests to verify TLS requirements, provider parameters, hidden credentials in error messages and unchanged settings after connection failure, including clipboard setup and safe connection diagnostics. I use mocks, so these tests do not connect to an external database.
 
-The app saves user purchases and preferences to the configured account database. Local development uses SQLite;
-public hosting requires persistent PostgreSQL configuration. JSON export/import is also provided for user backups.
+I use temporary databases in all automated account tests. I do not write to personal accounts. I keep 15 synthetic records in the sample fixture without loading them into the live application.
 
-Five genuine, dated informal feedback responses from friends, family and a classmate are recorded in the README.
-They are self-reported impressions, not a structured task-based usability study. The
-[usability feedback template](usability-feedback.md) supports more detailed follow-up; earlier AI heuristic
-inspections are not participant observations.
+Email coverage includes case-insensitive matching, invalid and duplicate email rejection, shared login lockout across aliases, password-confirmed linking/change, recovery by email and repeatable migration of an existing SQLite database with purchases and sessions preserved. UI checks exercise email registration/login and adding an email to an existing account. Explicit environment settings override private file settings, so UI tests stay isolated even when this workspace is configured for Neon.
 
-The achievement reward is generated as SVG through Python Turtle navigation. Separately, Eco Journey shows a live,
-browser-rendered SVG turtle animation tracing a leaf and its center vein. The app motion toggle and the device's
-reduced-motion preference switch it to a completed leaf with a stationary turtle.
+I applied and verified the email migration with Neon using a temporary account. Case-insensitive email login, username login, duplicate-email rejection and password-confirmed email change passed. I deleted the temporary account. I confirmed in Chrome that the hosted-configured app shows the email-or-username sign-in field and email registration field, then I refreshed the sign-in screenshot.
+
+On 3 October 2026, I passed nine email-action tests and six SMTP/link tests without real email delivery. I covered verification gating, hashed and single-use tokens, expiry, purpose isolation, resend cooldown, email-change invalidation, recovery-code invalidation, concurrent token claims, reset session revocation, deletion cleanup, trusted link addresses and verified SSL/STARTTLS. I also passed three interface tests covering verification confirmation, query-token removal, reset completion and immediate home-page access after signup even when delivery is enabled. I kept the sign-in screen free of a Verify email tab; optional verification remains in the signed-in sidebar.
+
+I ran Neon checks that passed for verification gating, verification completion, email-link password reset, session revocation and replay rejection. I deleted the temporary account. I am still awaiting private sender configuration for real Gmail authentication and inbox delivery; I claim no genuine message delivery yet.
+
+## Browser evidence
+
+On 3 October 2026, I reviewed the redesigned sign-in page, dashboard, Insights, filtered history, rewards and saved contrast settings in Chrome. At 390 pixels, the sign-in and collapsed-sidebar dashboard had no horizontal document overflow. I confirmed that searching to zero matches hides edit/delete controls without changing saved purchases. I corrected caption opacity so the chosen text colours remain readable. I updated the images using 15 synthetic entries in a separate SQLite database. Streamlit's startup secret-file loading required me to direct this preview to its own settings file; I did not use real Neon accounts. The actual Neon-configured app's sign-in screen also loaded successfully after I made the changes.
+
+After I simplified signup on 3 October 2026, I used Chrome to verify the running Neon-backed app: the Verify email tab is absent, registration immediately opens the home dashboard, and subsequent sign-in works with both a case-normalized email and username. I deleted the synthetic QA account and refreshed the sign-in screenshot.
+
+A service-cache regression test verifies that a reloaded account implementation receives a fresh cached service. This prevents stale exception classes from escaping interface error handling while developing. A separate interface test confirms incorrect credentials produce a normal message without crashing. Existing SQLite accounts still do not automatically migrate to Neon.
+
+I used an isolated QA server and test database for actual Chrome browser checks. I verified registration, sign-in, purchase entry, Repair Champion/Turtle display, JSON download, deletion followed by JSON restoration, saved contrast preferences and persistence after refresh. I confirmed that the 390-pixel mobile view with the sidebar collapsed had no horizontal document overflow. I inspected the desktop and mobile screenshots and stored the evidence in `docs/screenshots/`. I used fictional test identities and shop inputs in the screenshots.
+
+I found low-contrast primary-button text under the contrast override during my review. I updated the stylesheet to preserve white text on a dark green primary button and darken captions. I did not collect feedback for this change; this was an implementation review.
+
+The Turtle SVG is generated successfully through Python Turtle navigation. The optional desktop preview still depends on working Tk and remains unverified in the bundled runtime.
+
+## Remaining checks
+
+In my pre-repository review on 3 October 2026, I reran all 79 tests successfully in the project virtual environment and found no broken installed requirements. I added a UI regression test that deliberately supplies invalid email settings, verifies a safe warning without exposing the setting, signs in, saves a purchase, and confirms that email reset remains disabled. Email failure no longer prevents access to the shopping app. The test uses a disposable SQLite database; I sent no real emails or modified live Neon accounts during this review.
+
+I checked the Git ignore rules using temporary Git metadata without initializing a repository in this project. I excluded private settings, databases, virtual environments, environment files and recovery-code downloads while keeping example settings included. I ran a targeted credential-pattern scan of eligible text files and found no real credentials. I reviewed five matching database strings in setup tests and confirmed they are synthetic fixtures. This was a targeted check, not an independent security audit.
+
+I verified Neon PostgreSQL separately on 2 October 2026. I completed live checks for connection, schema creation, registration, login, two-account isolation, saved purchases across new database connections, stale-edit rejection and logout. I deleted the temporary QA accounts and confirmed that the actual app's sign-in page rendered with hosted settings. This is additional live evidence, separate from the 94 automated tests.
+
+Full keyboard and screen-reader accessibility, human usability feedback, Streamlit Cloud deployment/redeployment and provider backup restoration remain unverified. The narrow-screen screenshot is evidence of that viewport only, not a certification for every browser/device. A source-backed estimate remains approximate and is not independently validated carbon accounting.
+
+Collect real feedback with `docs/usability-feedback.md`, record improvements, and smoke-test the public deployment and database restart/restore procedures before final submission.
+
+## 2026 data and design update
+
+On 25 November 2026, I ran all 94 tests successfully. The suite includes older-backup opt-in, immutable recalculation and confirmation before changing saved estimates. See [2026 update](2026-update.md) for source evidence and compatibility. I refreshed the presentation and PDF guides for this repository state.

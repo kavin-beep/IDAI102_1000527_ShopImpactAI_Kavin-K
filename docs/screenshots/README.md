@@ -1,6 +1,6 @@
 # Browser screenshots
 
-Most screenshots were captured on 11 November 2026 from the previous account-enabled design and a separate local test database. The username and purchases are fictional inputs, not a demo mode or a real user's history. `sign-in.png` was refreshed from the user-provided screenshot on 26 November 2026; it shows the current username/password layout with no email or recovery controls. Older account screenshots show the previous controls and are historical.
+I refreshed the screenshots for ShopImpact 2.0 on 11 November 2026 using a separate local test database. I used a fictional test username and fictional purchases, not demo content or real account history.
 
 - sign-in.png: account entry screen with the animated aurora panel
 - mobile-sign-in.png: stacked account entry layout

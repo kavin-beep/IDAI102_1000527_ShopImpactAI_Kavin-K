@@ -1,31 +1,31 @@
 # Repository readiness review
 
-Reviewed 26 November 2026. The core application is maintained at
+I reviewed the repository on 25 November 2026. I maintain the core application at
 `kavin-beep/IDAI102_1000527_ShopImpactAI_Kavin-K`.
 
-## Current app behavior
+## Small improvements completed
 
-- The app opens on a username/password sign-in page with only **Sign in** and **Create account** tabs. No email or password recovery option is shown.
-- New accounts accept passwords from 1–8 characters. Passwords are stored as salted Argon2id hashes and login attempts are rate-limited.
-- Purchases, wishlist entries and preferences are saved per account in SQLite locally or PostgreSQL when hosted.
-- The Eco Journey plant evolves through five level-based forms, gaining leaves, blossoms and fruit; it gives eco tips and changes expression against monthly spending and estimated CO₂e goals.
-- Persistent data on Streamlit Cloud requires private PostgreSQL settings. Email setup files remain in the repository but are not used by the account UI.
+- Invalid optional email settings show a safe warning instead of preventing sign-in. Purchase saving and recovery codes continue to work; unavailable email reset remains disabled.
+- Gmail setup accurately describes optional verification and verified-address password resets. Signup still opens the home page immediately.
+- The chart uses the consistent CO₂e label. How it works explains manufacturing, packaging, transport, and the role of spending in simple language.
+- TOML, imported directly by setup tools, is explicitly pinned in requirements.txt.
+- Ignore rules cover private environment files, database files, recovery-code downloads, purchase exports and disposable caches. The example settings, source data, artwork, tests, documentation and explanation PDFs remain available for the repository.
 
 ## Verification
 
-The Python 3.12 suite has 90 passing tests covering username sign-in, account creation, database persistence, password hashing/rate limiting, plant mood and growth rules, and shopping interactions. Tests use disposable databases and synthetic data. A local Streamlit startup smoke test returned HTTP 200 on 26 November 2026.
+I passed all 94 automated tests in the project Python 3.12 environment. I ran the dependency check and found no broken requirements. I covered purchase calculations and validation, import/export, account isolation, signup/login, recovery, conflicting saves, email actions, Insights and Streamlit UI interactions. I wrote the email-configuration regression test to sign in and save a purchase despite invalid SMTP settings.
 
-All 23 Python source, test and tool files were checked; each has a module-level docstring describing its purpose. Inline comments are used where they clarify non-obvious behavior rather than repeating the code.
+I rechecked the supplied assessment brief against docs/requirements.md. I implemented the required purchase fields, live calculations, monthly dashboard, badges, alternatives, Python data structures and conditional Turtle artwork. I included the existing screenshots and the 15-record synthetic test fixture. I still need to confirm the Turtle desktop preview and assessor acceptance of the SVG integration.
 
-The supplied assessment brief was rechecked against docs/requirements.md. The required purchase fields, live calculations, monthly dashboard, badges, alternatives, Python data structures and conditional Turtle artwork are implemented. Existing screenshots and the 15-record synthetic test fixture are present. Turtle desktop preview and assessor acceptance of the SVG integration remain to be confirmed.
-
-Private-file exclusions were verified using Git's own ignore handling with temporary metadata outside the project. No real credentials were found by the targeted scan of eligible text files. The connection strings in setup tests are deliberately synthetic; real database settings remain private. No live user data was changed during this review.
+I verified private-file exclusions using Git's own ignore handling with temporary metadata outside the project. I found no real credentials in my targeted scan of eligible text files. I deliberately kept the connection strings in setup tests synthetic and my real database settings private. I changed no live user data during this review.
 
 ## Before public launch and final submission
 
-1. Confirm assessor access to `kavin-beep/IDAI102_1000527_ShopImpactAI_Kavin-K` as specified by the brief.
-2. The shared public app page currently shows Streamlit's **Not found** screen. Restore or confirm the deployment, then verify its private persistent PostgreSQL configuration and check that account data survives sign-out, sign-in and redeployment.
-3. Five informal feedback responses are recorded in the README. If a structured usability study is required, use `docs/usability-feedback.md` to observe tasks, record changes and retest them; do not describe the informal comments or AI inspection as a formal study.
-4. Complete the assessment submission PDF with the actual student name, registration number, school, course and project links. The ten-page explanation PDF is a learning guide, not that completed submission.
+1. Rotate the Neon database password previously shared in chat, then update private local and hosted settings. Do not put the replacement connection string in the repository or chat.
+2. Confirm assessor access to `kavin-beep/IDAI102_1000527_ShopImpactAI_Kavin-K` as specified by the brief.
+3. Deploy app.py to Streamlit Cloud with private PostgreSQL settings. Verify two-account isolation, recovery, downloads and persistence after redeployment. Add the actual public URL to the README.
+4. If enabling email, complete private Gmail setup and check inbox delivery and reset links from the deployed app. Recovery codes remain available without email.
+5. Gather actual participant feedback using docs/usability-feedback.md; record changes and retest them. Complete keyboard and screen-reader checks and database backup restoration checks.
+6. Complete the assessment submission PDF with my actual name, registration number, school, course and project links. The ten-page explanation PDF is a learning guide, not that completed submission.
 
-Structured usability testing and final submission details remain pending. Passing automated tests alone does not establish those outcomes or guarantee an assessment grade.
+Public deployment, real feedback and final submission are pending. Passing automated tests alone does not establish those outcomes or guarantee an assessment grade.
