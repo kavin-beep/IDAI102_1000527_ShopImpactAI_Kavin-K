@@ -284,19 +284,6 @@ IDAI102_1000527_ShopImpactAI_Kavin-K/
 
 ---
 
-## 🎓 Assessment and presentations
-
-- **Canva deck** (21 slides, with speaker notes): [canva.link/v8iiqeb2k0bxb1g](https://canva.link/v8iiqeb2k0bxb1g)
-- **PowerPoint** (18 slides): [`ShopImpact_Vibrant_Deck.pptx`](output/presentation/ShopImpact_Vibrant_Deck.pptx)
-- **10-page code and data guide**: [`ShopImpact_10_Page_Explanation.pdf`](output/pdf/ShopImpact_10_Page_Explanation.pdf)
-
-I regenerated the PowerPoint deck and PDF guides for the November 2026 current design and 94-test snapshot.
-The [repository readiness review](docs/repository-readiness.md) records my implementation checks. I have not collected real participant
-feedback yet, so [requirements](docs/requirements.md) and the
-[feedback record/template](docs/usability-feedback.md) remain the accurate evidence for this assessment status.
-
----
-
 ## 📚 References
 
 - [USEEIO v1.4 published dataset](https://zenodo.org/records/17202747)
