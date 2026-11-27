@@ -13,11 +13,14 @@ APP = Path(__file__).resolve().parents[1] / "app.py"
 
 
 def by_label(elements, label):
+    """Find a Streamlit AppTest element by its visible label."""
     return next(item for item in elements if item.label == label)
 
 
 class AppTests(unittest.TestCase):
+    """Exercise sign-in and shopping workflows through Streamlit's AppTest interface."""
     def setUp(self):
+        """Point the app at an isolated database and create a test account."""
         self.tmp = tempfile.TemporaryDirectory()
         self.url = "sqlite:///" + (Path(self.tmp.name) / "ui.db").as_posix()
         self.env = patch.dict(os.environ, {"SHOPIMPACT_DATABASE_URL": self.url, "SHOPIMPACT_PUBLIC": "false", "SHOPIMPACT_EMAIL_ENABLED": "false"})
@@ -27,6 +30,7 @@ class AppTests(unittest.TestCase):
         self.db.register("alice", "Testing only password 123")
 
     def tearDown(self):
+        """Dispose cached services and restore the environment after each UI test."""
         from account_ui import account_service
         account_service(self.url, False, False).engine.dispose()
         if self.require_verified_test:
@@ -37,6 +41,7 @@ class AppTests(unittest.TestCase):
         self.tmp.cleanup()
 
     def app(self):
+        """Launch the app, sign in as the test user, and return its dashboard state."""
         app = AppTest.from_file(str(APP), default_timeout=30).run()
         self.assertFalse(app.exception)
         self.assertEqual(len(app.metric), 0)
@@ -47,11 +52,13 @@ class AppTests(unittest.TestCase):
         return app
 
     def test_initial_empty_dashboard(self):
+        """Verifies initial empty dashboard."""
         app = self.app()
         self.assertEqual(app.metric[0].value, "INR 0.00")
         self.assertEqual(app.session_state["account_data"]["purchases"], [])
 
     def test_themes_work_before_sign_in_and_preserve_account_data(self):
+        """Verifies themes work before sign in and preserve account data."""
         app = AppTest.from_file(str(APP), default_timeout=30).run()
         app.selectbox(key="visual_theme").select("Night").run()
         self.assertFalse(app.exception)
@@ -71,6 +78,7 @@ class AppTests(unittest.TestCase):
         self.assertTrue(any(".si-scenery {display:none;}" in item.value for item in app.markdown))
 
     def test_deployment_refreshes_cached_rules_and_backup_version(self):
+        """Verifies deployment refreshes cached rules and backup version."""
         import logic
         import storage
         from unittest.mock import patch
@@ -83,6 +91,7 @@ class AppTests(unittest.TestCase):
             self.assertEqual(storage.VERSION, logic.VERSION)
 
     def test_saved_estimates_change_only_after_confirmed_recalculation(self):
+        """Verifies saved estimates change only after confirmed recalculation."""
         from logic import make_purchase, VERSION
         from datetime import date
         row = make_purchase("New clothing", 1000, "Saved shop", date.today())
@@ -103,6 +112,7 @@ class AppTests(unittest.TestCase):
 
     def test_invalid_email_configuration_does_not_block_accounts(self):
         # Misconfigured optional SMTP must not break sign-in or purchase saving.
+        """Verifies invalid email configuration does not block accounts."""
         with patch.dict(os.environ, {"SHOPIMPACT_EMAIL_ENABLED": "true"}), patch(
             "account_ui.email_settings", return_value={
                 "SHOPIMPACT_EMAIL_ENABLED": True,
@@ -123,6 +133,7 @@ class AppTests(unittest.TestCase):
 
 
     def test_history_filters_limit_edit_choices_and_keep_saved_data(self):
+        """Verifies history filters limit edit choices and keep saved data."""
         app = self.app()
         app.text_input(key="new_brand").set_value("First shop")
         app.button(key="add").click().run()
@@ -138,6 +149,7 @@ class AppTests(unittest.TestCase):
         self.assertEqual(len(app.session_state["account_data"]["purchases"]), 2)
 
     def test_insights_follow_logged_month_and_saved_goal(self):
+        """Verifies insights follow logged month and saved goal."""
         app = self.app()
         app.text_input(key="new_brand").set_value("Insight shop")
         app.button(key="add").click().run()
@@ -151,6 +163,7 @@ class AppTests(unittest.TestCase):
         self.assertEqual(by_label(app.metric, "Above spending goal").value, "INR 400.00")
 
     def test_wishlist_skip_and_buy_keep_goals_and_history_separate(self):
+        """Verifies wishlist skip and buy keep goals and history separate."""
         app = self.app()
         for name in ["Headphones", "Jacket"]:
             by_label(app.text_input, "What is it?").set_value(name)
@@ -174,6 +187,7 @@ class AppTests(unittest.TestCase):
         self.assertEqual(len(latest["settings"]["wishlist"]), 2)
 
     def test_incorrect_login_shows_message_without_crashing(self):
+        """Verifies incorrect login shows message without crashing."""
         app = AppTest.from_file(str(APP), default_timeout=30).run()
         app.text_input(key="login_name").set_value("alice")
         app.text_input(key="login_password").set_value("incorrect password")
@@ -183,12 +197,14 @@ class AppTests(unittest.TestCase):
         self.assertEqual(len(app.metric), 0)
 
     def test_blank_brand_rejected(self):
+        """Verifies blank brand rejected."""
         app = self.app()
         app.button(key="add").click().run()
         self.assertEqual(len(app.error), 1)
         self.assertEqual(app.session_state["account_data"]["purchases"], [])
 
     def test_add_edit_delete(self):
+        """Verifies add edit delete."""
         app = self.app()
         app.text_input(key="new_brand").set_value("Local repair shop")
         app.selectbox(key="new_category").select("Repair services")
@@ -206,6 +222,7 @@ class AppTests(unittest.TestCase):
         self.assertEqual(app.session_state["account_data"]["purchases"], [])
 
     def test_refresh_retains_purchases_and_settings(self):
+        """Verifies refresh retains purchases and settings."""
         app = self.app()
         self.assertFalse(any(r.label == "Workspace" for r in app.radio))
         app.text_input(key="new_brand").set_value("Saved shop")
@@ -221,6 +238,7 @@ class AppTests(unittest.TestCase):
         self.assertTrue(fresh.checkbox(key="contrast").value)
 
     def test_registration_then_login(self):
+        """Verifies registration then login."""
         app = AppTest.from_file(str(APP), default_timeout=30).run()
         self.assertEqual([tab.label for tab in app.tabs], ["Sign in", "Create account", "Recover account"])
         by_label(app.text_input, "Choose a username").set_value("bob")
@@ -243,6 +261,7 @@ class AppTests(unittest.TestCase):
         self.assertEqual(app.session_state["account_data"]["email"], "bob@example.test")
 
     def test_existing_account_can_link_email_then_sign_in(self):
+        """Verifies existing account can link email then sign in."""
         app = self.app()
         by_label(app.text_input, "Sign-in email").set_value("alice@example.test")
         by_label(app.text_input, "Current password").set_value("Testing only password 123")
@@ -256,6 +275,7 @@ class AppTests(unittest.TestCase):
         self.assertEqual(app.session_state["account_data"]["email"], "alice@example.test")
 
     def test_verification_link_is_removed_from_url_and_requires_confirmation(self):
+        """Verifies verification link is removed from url and requires confirmation."""
         self.db.set_email(self.db.login("alice", "Testing only password 123"), "alice@example.test", "Testing only password 123")
         _, token = self.db.request_email_action("alice@example.test", "verify")
         app = AppTest.from_file(str(APP), default_timeout=30)
@@ -271,6 +291,7 @@ class AppTests(unittest.TestCase):
         self.assertFalse(any(token in item.value for item in app.code))
 
     def test_email_reset_screen_revokes_sessions(self):
+        """Verifies email reset screen revokes sessions."""
         old = self.db.login("alice", "Testing only password 123")
         self.db.set_email(old, "alice@example.test", "Testing only password 123")
         _, verify = self.db.request_email_action("alice@example.test", "verify")
@@ -292,6 +313,7 @@ class AppTests(unittest.TestCase):
         self.assertTrue(self.db.login("alice@example.test", "New temporary testing password 456"))
 
     def test_email_enabled_registration_opens_home_before_verification(self):
+        """Verifies email enabled registration opens home before verification."""
         with patch("account_ui.configured_mailer", return_value=object()), patch("account_ui.queue_email_action") as deliver:
             app = AppTest.from_file(str(APP), default_timeout=30).run()
             by_label(app.text_input, "Choose a username").set_value("bob")

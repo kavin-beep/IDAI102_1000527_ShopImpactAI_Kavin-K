@@ -17,29 +17,35 @@ DEFAULT_SETTINGS = {"budget": 10000.0, "carbon_goal": 100, "contrast": False}
 
 
 class AccountError(ValueError):
+    """Report invalid account input or an account operation that cannot proceed."""
     pass
 
 
 class ConflictError(AccountError):
+    """Report that saved account data changed since it was loaded."""
     pass
 
 
 def digest(value):
+    """Hash a session, recovery, or email-action token before database storage."""
     return hashlib.sha256(value.encode()).hexdigest()
 
 
 def username_key(name):
+    """Validate a username and normalize it for case-insensitive identity lookups."""
     if not isinstance(name, str) or not re.fullmatch(r"[A-Za-z0-9_.-]{3,40}", name.strip()):
         raise AccountError("Use 3–40 letters, numbers, dots, underscores or hyphens for your username.")
     return name.strip().lower()
 
 
 def check_password(password):
+    """Enforce the password length accepted by registration and recovery."""
     if not isinstance(password, str) or not 12 <= len(password) <= 128:
         raise AccountError("Choose a password containing 12–128 characters.")
 
 
 def email_key(email):
+    """Normalize an email address and reject malformed or overlong values."""
     if not isinstance(email, str):
         raise AccountError("Enter a valid email address.")
     email = email.strip().lower()
@@ -53,7 +59,9 @@ def email_key(email):
 
 
 class Accounts:
+    """Manage account credentials, sessions, purchases, and recovery in SQL storage."""
     def __init__(self, url=None, public=False, require_verified_email=False):
+        """Connect to the configured database and create or migrate account tables."""
         self.require_verified_email = require_verified_email
         if public and (not url or not url.startswith("postgresql")):
             raise AccountError("Public hosting requires a persistent PostgreSQL database.")
@@ -99,6 +107,7 @@ class Accounts:
                 address_hash TEXT PRIMARY KEY, next_allowed DOUBLE PRECISION NOT NULL)"""))
 
     def register(self, username, password, email=None):
+        """Create an empty account and return its one-time recovery code."""
         username = username_key(username)
         email = email_key(email) if email is not None else None
         check_password(password)
@@ -116,6 +125,7 @@ class Accounts:
         return recovery
 
     def _identity(self, identifier):
+        """Find an account by username or email and return its shared rate-limit key."""
         field = "email" if isinstance(identifier, str) and "@" in identifier else "username"
         name = email_key(identifier) if field == "email" else username_key(identifier)
         with self.engine.connect() as db:
@@ -125,12 +135,14 @@ class Accounts:
         return (row["username"] if row else name), row
 
     def _blocked(self, name):
+        """Reject an identity while its failed-login cooldown is active."""
         with self.engine.connect() as db:
             row = db.execute(text("SELECT blocked_until FROM attempts WHERE name=:name"), {"name": name}).first()
         if row and row[0] > time.time():
             raise AccountError("Too many attempts. Please wait 15 minutes before trying again.")
 
     def _failure(self, name):
+        """Atomically count a failed attempt and start a cooldown after five failures."""
         with self.engine.begin() as db:
             # Atomic increment prevents parallel attempts from losing counter updates.
             db.execute(text("""INSERT INTO attempts(name, failures, blocked_until) VALUES (:name, 0, 0)
@@ -143,6 +155,7 @@ class Accounts:
                        {"name": name, "until": time.time() + 900})
 
     def login(self, username, password):
+        """Verify credentials, clear failures, and issue a hashed 12-hour session."""
         name, row = self._identity(username)
         self._blocked(name)
         valid = False
@@ -170,6 +183,7 @@ class Accounts:
         return token
 
     def _user(self, db, token):
+        """Resolve a live session token to its account or raise an authentication error."""
         user = db.execute(text("""SELECT u.* FROM users u JOIN sessions s ON u.id=s.user_id
             WHERE s.token_hash=:token AND s.expires_at>:now"""),
             {"token": digest(token), "now": time.time()}).mappings().first()
@@ -178,12 +192,14 @@ class Accounts:
         return user
 
     def load(self, token):
+        """Load the signed-in account's profile, purchases, settings, and revision."""
         with self.engine.connect() as db:
             user = self._user(db, token)
             return {"username": user["username"], "email": user["email"], "email_verified": bool(user["email_verified"]), "purchases": json.loads(user["purchases"]),
                     "settings": json.loads(user["settings"]), "revision": user["revision"]}
 
     def save(self, token, purchases, settings, revision):
+        """Persist account data only if its revision is current, preventing lost edits."""
         if len(purchases) > 1000:
             raise AccountError("An account supports up to 1,000 purchases.")
         with self.engine.begin() as db:
@@ -197,10 +213,12 @@ class Accounts:
         return revision + 1
 
     def logout(self, token):
+        """Revoke the session associated with the supplied token."""
         with self.engine.begin() as db:
             db.execute(text("DELETE FROM sessions WHERE token_hash=:token"), {"token": digest(token)})
 
     def reset_password(self, username, recovery, new_password):
+        """Reset a password with a recovery code, rotate that code, and revoke sessions."""
         name, row = self._identity(username)
         check_password(new_password)
         self._blocked("recovery:" + name)
@@ -219,6 +237,7 @@ class Accounts:
         return replacement
 
     def set_email(self, token, email, password):
+        """Link or change the signed-in account's email after confirming its password."""
         email = email_key(email)
         try:
             with self.engine.begin() as db:
@@ -261,6 +280,7 @@ class Accounts:
         return email, token
 
     def consume_email_action(self, token, purpose, new_password=None):
+        """Consume a one-use verification or reset link and apply its account change."""
         if purpose not in {"verify", "reset"} or not isinstance(token, str) or not 20 <= len(token) <= 100:
             raise AccountError("This link is invalid or expired. Request a new email.")
         password_hash = None
@@ -296,6 +316,7 @@ class Accounts:
         return {"email": row["email"], "recovery_code": recovery}
 
     def delete_account(self, token, password):
+        """Delete the account after password confirmation, including sessions and links."""
         with self.engine.begin() as db:
             user = self._user(db, token)
             try:

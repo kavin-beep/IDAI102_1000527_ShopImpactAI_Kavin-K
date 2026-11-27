@@ -10,10 +10,12 @@ from ui import brand_panel
 
 @st.cache_resource
 def _cached_account_service(url, public, require_verified_email, implementation_id):
+    """Reuse one database service for the current deployment configuration."""
     return Accounts(url or None, public=public, require_verified_email=require_verified_email)
 
 
 def account_service(url, public, require_verified_email=False):
+    """Return a cached service, refreshing it when Streamlit reloads the account module."""
     # Streamlit can reload exception classes while retaining cached service objects.
     # Recreate the service when its implementation class changes, so errors are caught.
     return _cached_account_service(url, public, require_verified_email, id(Accounts))
@@ -23,6 +25,7 @@ account_service.clear = _cached_account_service.clear
 
 
 def email_settings():
+    """Read email settings with environment variables taking precedence over Streamlit secrets."""
     keys = ["SHOPIMPACT_EMAIL_ENABLED", "SHOPIMPACT_SMTP_HOST", "SHOPIMPACT_SMTP_PORT",
             "SHOPIMPACT_SMTP_USERNAME", "SHOPIMPACT_SMTP_PASSWORD", "SHOPIMPACT_SMTP_FROM",
             "SHOPIMPACT_SMTP_SECURITY", "SHOPIMPACT_APP_URL"]
@@ -40,6 +43,7 @@ def email_settings():
 
 
 def configured_mailer():
+    """Create the optional email sender, keeping invalid email settings from blocking sign-in."""
     if os.environ.get("SHOPIMPACT_EMAIL_ENABLED", "").lower() == "false":
         return None
     settings = email_settings()
@@ -58,6 +62,7 @@ EMAIL_REQUEST_MESSAGE = "If this address is eligible, an email will arrive short
 
 
 def email_link_screen(service, mailer):
+    """Remove link tokens from the URL, then render the verification or password-reset flow."""
     if "email_action" in st.query_params or "email_token" in st.query_params:
         action = st.query_params.get("email_action", "")
         token = st.query_params.get("email_token", "")
@@ -116,6 +121,7 @@ def email_link_screen(service, mailer):
 
 
 def request_email_form(service, mailer, purpose):
+    """Render a generic-response form for requesting a verification or reset email."""
     label = "Send verification email" if purpose == "verify" else "Send password-reset email"
     with st.form("request_" + purpose, clear_on_submit=True):
         email = st.text_input("Verification email address" if purpose == "verify" else "Password-reset email address", max_chars=254)
@@ -129,6 +135,7 @@ def request_email_form(service, mailer, purpose):
 
 
 def sign_out(service):
+    """Revoke the active session and clear all account data from browser state."""
     if st.session_state.get("auth_token"):
         service.logout(st.session_state.auth_token)
     st.session_state.clear()
@@ -136,6 +143,7 @@ def sign_out(service):
 
 
 def require_account():
+    """Load deployment settings and gate the dashboard behind account authentication."""
     url = os.environ.get("SHOPIMPACT_DATABASE_URL", "")
     public = os.environ.get("SHOPIMPACT_PUBLIC", "false").lower() == "true"
     try:
@@ -250,6 +258,7 @@ def require_account():
 
 
 def save_account(service, data, purchases=None, settings=None):
+    """Save selected account changes and update local state only after persistence succeeds."""
     purchases = data["purchases"] if purchases is None else purchases
     settings = data["settings"] if settings is None else settings
     try:

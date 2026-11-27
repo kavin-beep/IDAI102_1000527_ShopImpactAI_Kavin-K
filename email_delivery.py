@@ -11,11 +11,13 @@ from accounts import email_key
 
 
 class EmailConfigurationError(ValueError):
+    """Report invalid or incomplete private SMTP configuration."""
     pass
 
 
 @dataclass(repr=False)
 class Mailer:
+    """Validate trusted email settings and send verification, reset, or notice messages."""
     host: str
     port: int
     username: str
@@ -25,6 +27,7 @@ class Mailer:
     security: str = "ssl"
 
     def __post_init__(self):
+        """Normalize the sender and reject insecure or malformed delivery settings."""
         self.sender = email_key(self.sender)
         parsed = urlsplit(self.base_url)
         local = parsed.hostname in {"localhost", "127.0.0.1", "::1"}
@@ -37,6 +40,7 @@ class Mailer:
             raise EmailConfigurationError("Use SSL or STARTTLS with a valid SMTP port.")
 
     def _connect(self):
+        """Open an authenticated SMTP connection using verified SSL or STARTTLS."""
         context = ssl.create_default_context()
         if self.security == "ssl":
             connection = smtplib.SMTP_SSL(self.host, int(self.port), timeout=15, context=context)
@@ -57,10 +61,12 @@ class Mailer:
         return connection
 
     def check_login(self):
+        """Confirm that the configured SMTP credentials can authenticate."""
         with self._connect():
             pass
 
     def send_message(self, recipient, subject, body):
+        """Send a plain-text message to a validated recipient."""
         recipient = email_key(recipient)
         message = EmailMessage()
         message["From"] = self.sender
@@ -71,6 +77,7 @@ class Mailer:
             connection.send_message(message)
 
     def send_action(self, recipient, token, purpose):
+        """Build and send a trusted, expiring link for verification or password reset."""
         if purpose not in {"verify", "reset"}:
             raise EmailConfigurationError("Unknown email action.")
         link = self.base_url + "/?" + urlencode({"email_action": purpose, "email_token": token})
@@ -82,6 +89,7 @@ class Mailer:
 
 
 def mailer_from_settings(settings):
+    """Construct a mailer from the application's private settings mapping."""
     return Mailer(host=str(settings.get("SHOPIMPACT_SMTP_HOST", "smtp.gmail.com")),
                   port=int(settings.get("SHOPIMPACT_SMTP_PORT", 465)),
                   username=str(settings.get("SHOPIMPACT_SMTP_USERNAME", "")),
@@ -102,6 +110,7 @@ def queue_email_action(service, mailer, email, purpose):
         return
 
     def deliver():
+        """Create an eligible one-time action and send it without exposing delivery details."""
         try:
             payload = service.request_email_action(email, purpose)
             if payload:
@@ -118,9 +127,11 @@ def queue_email_action(service, mailer, email, purpose):
 
 
 def queue_notice(mailer, email, subject, body):
+    """Queue a bounded, best-effort notice without blocking the Streamlit request."""
     if not email or not _slots.acquire(blocking=False):
         return
     def deliver():
+        """Send the notice in the worker and release its capacity slot afterward."""
         try:
             mailer.send_message(email, subject, body)
         except Exception:

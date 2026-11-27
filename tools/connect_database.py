@@ -15,6 +15,7 @@ sys.path.insert(0, str(ROOT))
 
 
 def validate_url(raw):
+    """Parse a provider URI and require PostgreSQL credentials plus TLS settings."""
     url = make_url(raw.strip())
     if url.drivername not in {"postgres", "postgresql", "postgresql+psycopg"}:
         raise ValueError("Use a PostgreSQL connection string, starting with postgresql://.")
@@ -39,6 +40,7 @@ def read_clipboard():
 
 
 def main(use_clipboard=False):
+    """Collect a hidden connection URI, validate it, and configure the hosted database."""
     print("ShopImpact hosted database setup")
     if use_clipboard:
         print("Copy your NEW PostgreSQL connection string from Neon's Connect panel.")

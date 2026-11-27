@@ -32,6 +32,7 @@ import charts
 
 COOL_OFF_DAYS = 7
 
+# Configure the page, account session, theme, and saved application state.
 st.set_page_config(page_title="ShopImpact | Conscious shopping", page_icon="🌿", layout="wide")
 brand_slot = st.sidebar.container()
 theme_controls()
@@ -55,6 +56,7 @@ def save_wishlist(updated, purchases=None):
     return save_account(service, account, purchases=purchases, settings={**account["settings"], "wishlist": updated})
 
 
+# Render account controls and monthly goals in the sidebar.
 with brand_slot:
     ui.sidebar_brand(account["username"], level)
 
@@ -143,10 +145,12 @@ if st.session_state.get("personal"):
                 del st.session_state["personal"]
                 st.rerun()
 
+# Organize the main dashboard, wishlist, insights, journey, history, and guide tabs.
 entry, wishes, insights, path, history, about = st.tabs(
     ["🌿 Dashboard", "⏸️ Mindful wishlist", "📈 Insights", "🏆 Eco journey", "🧾 History & backups", "📚 How it works"])
 months = sorted({this_month} | {p["purchase_date"][:7] for p in records}, reverse=True)
 
+# Dashboard: monthly totals, a live estimate, charts, goals, and purchase actions.
 with entry:
     if "next_dashboard_month" in st.session_state:
         st.session_state.month = st.session_state.pop("next_dashboard_month")
@@ -260,6 +264,7 @@ with entry:
         y.metric("Alternative (estimated kg CO₂e)", f"{alternative:,.2f}", delta=f"{alternative - original:+,.2f}", delta_color="inverse")
         st.caption("Reference-model comparison only. A lower price can lower this estimate without lowering physical emissions. Reuse benefits are not quantified by this model.")
 
+# Wishlist: save potential purchases, allow the cool-off period, then record a decision.
 with wishes:
     ui.section("⏸️", "Pause before you buy", f"Park things you want for {COOL_OFF_DAYS} days. Then decide calmly: buy it, or let it go.")
     w1, w2, w3 = st.columns(3)
@@ -315,6 +320,7 @@ with wishes:
                     st.rerun()
     st.caption("Skipped items are not purchases, so I keep them out of your history and totals. 'Estimated CO₂e not added' uses the same rough price × category model and is not a verified saving.")
 
+# Insights: compare monthly spending and estimated impact over time.
 with insights:
     ui.section("📈", "See the bigger picture", "Six months of your recorded shopping, measured against your goals.")
     insight_month = st.selectbox("Insights month", months, key="insight_month")
@@ -345,6 +351,7 @@ with insights:
     with st.expander("View the monthly numbers"):
         st.dataframe([{"Month": row["month"], "Entries": row["count"], "Spending (INR)": float(row["spend"]), "Estimated CO₂e (kg)": float(row["co2"])} for row in trend], hide_index=True, width="stretch")
 
+# Eco journey: display points, levels, streaks, milestones, and equivalents.
 with path:
     ui.level_card(level, journey.LEVELS)
     ui.section("✨", "How your points add up", "Points celebrate logging and thoughtful habits — I keep them separate from badge rules.")
@@ -361,6 +368,7 @@ with path:
     st.caption(f"Points: {journey.POINTS['logged']} per purchase logged · {journey.POINTS['lower']} per reuse, repair or reusable choice · "
                f"{journey.POINTS['repair']} repair bonus · {journey.POINTS['skipped']} per skipped wishlist item. Streaks count consecutive months with at least one reuse, repair or reusable choice.")
 
+# History: search and manage saved purchases, then export or restore backups.
 with history:
     ui.section("🧾", "Your purchase history", "Search, filter, correct and export.")
     if records:
@@ -419,6 +427,7 @@ with history:
         except ValueError as error:
             st.error(str(error))
 
+# How it works: explain estimate sources, assumptions, and recalculation choices.
 with about:
     ui.section("📚", "An honest estimate, a helpful habit", "How ShopImpact turns a price into a rough CO₂e estimate.")
     st.write("Making, packaging and delivering products can release greenhouse gases. CO₂e means carbon dioxide equivalent: a common measure of their combined warming effect. ShopImpact uses the product category and price as clues to estimate that impact; spending itself does not directly create emissions.")

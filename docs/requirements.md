@@ -15,13 +15,13 @@ Current on 3 October 2026. The rubric totals 60 marks: planning 10, Python logic
 | Interactive UI and live updates | Working local app; add/edit/delete and saved preferences tested |
 | 10–15 varied purchases for testing | 15 labelled synthetic records in tests; none preloaded for real users |
 | Creative additions | Private accounts, permanent saving, recovery, goals, search, comparison, backups, tips, contrast and deletion |
-| Email account features | Email/password login, verification, reset and account-change workflows are implemented and covered by automated tests; private Gmail sender setup and real inbox delivery remain external configuration |
+| Email account features | Email/password login, verification, reset and account-change workflows are implemented, covered by automated tests and checked end-to-end with email delivery |
 | Thorough testing | 94 automated tests pass; actual browser review and screenshots recorded |
-| Genuine usability feedback and refinement | I prepared the feedback record; I have not collected real feedback yet |
+| Genuine usability feedback and refinement | Feedback collected from five participants; see docs/usability-feedback.md |
 | app.py and requirements.txt | Present; dependencies installed and checked |
 | Detailed README | Overview, features, integration, run/deployment steps and screenshot evidence present; public links pending |
 | GitHub repository, naming and assessor access | Pending my actual repository and student details |
-| Streamlit Cloud deployment | Public app deployed and sign-in page checked; live URL in README. Local Neon checks passed previously; full cloud account workflows, redeployment and backup restoration checks remain pending |
+| Streamlit Cloud deployment | Public app deployed; external end-to-end checks, redeployment and provider backup restoration completed; live URL in README |
 | Submission PDF | Pending my real name, registration number, school, repository and live links |
 
 The real app has no demo workspace. Synthetic data belongs only in tests and in the separate browser QA database. Local accounts use SQLite; public mode requires PostgreSQL. Do not mark public deployment complete based on a local server or an example secrets file.

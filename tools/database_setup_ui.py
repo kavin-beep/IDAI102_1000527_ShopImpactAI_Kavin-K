@@ -9,6 +9,7 @@ import streamlit as st
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from tools.connect_database import configure_database, validate_url
 
+# Restrict setup to a loopback server and confirm the target database page.
 st.set_page_config(page_title="ShopImpact database setup", page_icon="🌿", layout="centered")
 
 if st.get_option("server.address") not in {"127.0.0.1", "localhost", "::1"}:
@@ -20,6 +21,7 @@ st.write("Copy the current PostgreSQL connection string from Neon's Connect pane
 st.caption("This page runs on your computer. The connection string is saved in private app settings after a successful connection.")
 st.info("Local accounts stay in the local database. Export purchases before switching if you want to bring them into a hosted account.")
 
+# Accept a PostgreSQL URI and validate it before changing private settings.
 with st.form("database_setup", clear_on_submit=True):
     connection_string = st.text_input("Database connection string", type="password",
                                       placeholder="postgresql://…", max_chars=4096)

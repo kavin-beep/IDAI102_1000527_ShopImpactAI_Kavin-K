@@ -8,7 +8,9 @@ from tools import connect_database
 
 
 class DatabaseSetupTests(unittest.TestCase):
+    """Verify database setup validates secure URLs and protects private settings."""
     def test_connection_diagnostics_hide_provider_details_and_credentials(self):
+        """Verifies connection diagnostics hide provider details and credentials."""
         for marker, expected in (
             ("password authentication failed", "password"),
             ("failed to resolve host", "hostname"),
@@ -22,6 +24,7 @@ class DatabaseSetupTests(unittest.TestCase):
                 self.assertNotIn("PRIVATE_SECRET", message)
 
     def test_clipboard_failure_is_private_and_does_not_change_settings(self):
+        """Verifies clipboard failure is private and does not change settings."""
         output = io.StringIO()
         with patch("builtins.input", return_value=""), \
                 patch.object(connect_database, "read_clipboard", side_effect=RuntimeError("PRIVATE_SECRET")), \
@@ -32,6 +35,7 @@ class DatabaseSetupTests(unittest.TestCase):
         self.assertNotIn("PRIVATE_SECRET", output.getvalue())
 
     def test_clipboard_input_reaches_validation_without_being_printed(self):
+        """Verifies clipboard input reaches validation without being printed."""
         output = io.StringIO()
         uri = "postgresql://user:PRIVATE_SECRET@host/db?sslmode=require"
         with patch("builtins.input", return_value=""), \
@@ -43,6 +47,7 @@ class DatabaseSetupTests(unittest.TestCase):
         self.assertNotIn("PRIVATE_SECRET", output.getvalue())
 
     def test_provider_uri_preserves_password_and_tls_parameters(self):
+        """Verifies provider uri preserves password and tls parameters."""
         url = connect_database.validate_url(
             "postgresql://user:p%40ss@host.example/shopimpact?sslmode=require&channel_binding=require"
         )
@@ -51,6 +56,7 @@ class DatabaseSetupTests(unittest.TestCase):
         self.assertEqual(url.query["channel_binding"], "require")
 
     def test_rejects_insecure_incomplete_and_non_postgres_urls(self):
+        """Verifies rejects insecure incomplete and non postgres urls."""
         for raw in (
             "sqlite:///local.db",
             "postgresql://user:secret@host/db",
@@ -61,6 +67,7 @@ class DatabaseSetupTests(unittest.TestCase):
                 connect_database.validate_url(raw)
 
     def test_invalid_input_does_not_echo_credentials(self):
+        """Verifies invalid input does not echo credentials."""
         output = io.StringIO()
         with patch.object(connect_database.getpass, "getpass", return_value="PRIVATE_SECRET"), \
                 patch.object(connect_database, "create_engine") as engine, \
@@ -70,6 +77,7 @@ class DatabaseSetupTests(unittest.TestCase):
         self.assertNotIn("PRIVATE_SECRET", output.getvalue())
 
     def test_connection_failure_does_not_echo_credentials_or_write_settings(self):
+        """Verifies connection failure does not echo credentials or write settings."""
         output = io.StringIO()
         uri = "postgresql://user:PRIVATE_SECRET@host/db?sslmode=require"
         with patch.object(connect_database.getpass, "getpass", return_value=uri), \

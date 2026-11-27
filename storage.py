@@ -6,10 +6,12 @@ from logic import VERSION, make_purchase
 
 
 def export_json(records):
+    """Serialize purchases with the current methodology and INR currency metadata."""
     return json.dumps({"version": VERSION, "currency": "INR", "purchases": records}, indent=2)
 
 
 def import_json(raw, allow_legacy=False):
+    """Validate a bounded backup and rebuild each record from trusted purchase inputs."""
     if len(raw) > 2_000_000:
         raise ValueError("Backup must be smaller than 2 MB.")
     try:
@@ -42,6 +44,7 @@ def import_json(raw, allow_legacy=False):
 
 
 def export_csv(records):
+    """Export purchase fields while neutralizing text that spreadsheet apps treat as formulas."""
     buffer = io.StringIO(newline="")
     fields = ["purchase_date", "product_type", "brand", "price", "estimated_co2", "multiplier", "methodology", "source_code"]
     writer = csv.DictWriter(buffer, fieldnames=fields, extrasaction="ignore")

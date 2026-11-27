@@ -11,7 +11,9 @@ PASSWORD = "Testing only passphrase 123"
 
 
 class AccountTests(unittest.TestCase):
+    """Exercise account isolation, password security, recovery, and session handling."""
     def setUp(self):
+        """Create a fresh SQLite account and authenticated session for each test."""
         self.tmp = tempfile.TemporaryDirectory()
         self.url = "sqlite:///" + (Path(self.tmp.name) / "accounts.db").as_posix()
         self.db = Accounts(self.url)
@@ -19,10 +21,12 @@ class AccountTests(unittest.TestCase):
         self.token = self.db.login("alice", PASSWORD)
 
     def tearDown(self):
+        """Close the database connection and remove the temporary test database."""
         self.db.engine.dispose()
         self.tmp.cleanup()
 
     def test_private_data_and_restart(self):
+        """Verifies private data and restart."""
         purchase = make_purchase("New clothing", 100, "Shop", "2026-10-01")
         self.db.save(self.token, [purchase], DEFAULT_SETTINGS, 0)
         self.db.register("bob", PASSWORD)
@@ -33,6 +37,7 @@ class AccountTests(unittest.TestCase):
         restarted.engine.dispose()
 
     def test_passwords_are_salted_hashes(self):
+        """Verifies passwords are salted hashes."""
         self.db.register("bob", PASSWORD)
         with self.db.engine.connect() as connection:
             hashes = connection.execute(text("SELECT password_hash FROM users")).scalars().all()
@@ -40,11 +45,13 @@ class AccountTests(unittest.TestCase):
         self.assertTrue(all(value.startswith("$argon2id$") for value in hashes))
 
     def test_duplicate_and_weak_password(self):
+        """Verifies duplicate and weak password."""
         for name, password in [("ALICE", PASSWORD), ("eve", "short"), ("' OR 1=1", PASSWORD)]:
             with self.assertRaises(AccountError):
                 self.db.register(name, password)
 
     def test_failed_login_rate_limit(self):
+        """Verifies failed login rate limit."""
         for _ in range(5):
             with self.assertRaises(AccountError):
                 self.db.login("alice", "incorrect")
@@ -52,12 +59,14 @@ class AccountTests(unittest.TestCase):
             self.db.login("alice", PASSWORD)
 
     def test_concurrent_edits_do_not_overwrite(self):
+        """Verifies concurrent edits do not overwrite."""
         self.db.save(self.token, [], {**DEFAULT_SETTINGS, "budget": 20000}, 0)
         with self.assertRaises(ConflictError):
             self.db.save(self.token, [], DEFAULT_SETTINGS, 0)
         self.assertEqual(self.db.load(self.token)["settings"]["budget"], 20000)
 
     def test_recovery_revokes_sessions_and_rotates_code(self):
+        """Verifies recovery revokes sessions and rotates code."""
         replacement = self.db.reset_password("alice", self.recovery, "A new long passphrase")
         self.assertNotEqual(self.recovery, replacement)
         with self.assertRaises(AccountError):
@@ -67,10 +76,12 @@ class AccountTests(unittest.TestCase):
         self.assertTrue(self.db.login("alice", "A new long passphrase"))
 
     def test_password_reset_during_login_cannot_issue_old_session(self):
+        """Verifies password reset during login cannot issue old session."""
         from accounts import HASHER
         original = HASHER.verify
 
         def reset_after_verification(encoded, password):
+            """Reset the password immediately after a login verifies its old hash."""
             result = original(encoded, password)
             self.db.reset_password("alice", self.recovery, "A changed long passphrase")
             return result
@@ -82,6 +93,7 @@ class AccountTests(unittest.TestCase):
         self.assertTrue(self.db.login("alice", "A changed long passphrase"))
 
     def test_logout_and_expired_sessions(self):
+        """Verifies logout and expired sessions."""
         self.db.logout(self.token)
         with self.assertRaises(AccountError):
             self.db.load(self.token)
@@ -92,6 +104,7 @@ class AccountTests(unittest.TestCase):
             self.db.load(token)
 
     def test_delete_requires_password_and_removes_account(self):
+        """Verifies delete requires password and removes account."""
         with self.assertRaises(AccountError):
             self.db.delete_account(self.token, "wrong")
         self.db.delete_account(self.token, PASSWORD)
@@ -99,10 +112,12 @@ class AccountTests(unittest.TestCase):
             self.db.load(self.token)
 
     def test_hosted_mode_rejects_local_database(self):
+        """Verifies hosted mode rejects local database."""
         with self.assertRaises(AccountError):
             Accounts(self.url, public=True)
 
     def test_email_login_normalizes_case_and_preserves_username(self):
+        """Verifies email login normalizes case and preserves username."""
         self.db.register("bob", PASSWORD, email=" Bob+shop@Example.Test ")
         token = self.db.login(" BOB+SHOP@example.test ", PASSWORD)
         self.assertEqual(self.db.load(token)["username"], "bob")
@@ -110,12 +125,14 @@ class AccountTests(unittest.TestCase):
         self.assertTrue(self.db.login("bob", PASSWORD))
 
     def test_invalid_and_duplicate_emails_are_rejected(self):
+        """Verifies invalid and duplicate emails are rejected."""
         self.db.register("bob", PASSWORD, email="bob@example.test")
         for email in ("", "plain", "a@", "a@host", ".a@example.test", "a..b@example.test", "a b@example.test", "a@-host.test", "x" * 65 + "@example.test", "BOB@EXAMPLE.TEST"):
             with self.subTest(email=email), self.assertRaises(AccountError):
                 self.db.register("charlie", PASSWORD, email=email)
 
     def test_link_email_requires_password_and_preserves_saved_data(self):
+        """Verifies link email requires password and preserves saved data."""
         purchase = make_purchase("Repair services", 100, "Shop", "2026-10-02")
         self.db.save(self.token, [purchase], DEFAULT_SETTINGS, 0)
         with self.assertRaises(AccountError):
@@ -134,6 +151,7 @@ class AccountTests(unittest.TestCase):
         self.assertTrue(self.db.login("updated@example.test", PASSWORD))
 
     def test_email_and_username_share_login_rate_limit(self):
+        """Verifies email and username share login rate limit."""
         self.db.set_email(self.token, "alice@example.test", PASSWORD)
         for alias in ("alice", "alice@example.test", "ALICE", "ALICE@example.test", "alice"):
             with self.assertRaises(AccountError):
@@ -142,6 +160,7 @@ class AccountTests(unittest.TestCase):
             self.db.login("alice@example.test", PASSWORD)
 
     def test_email_recovery_revokes_existing_sessions(self):
+        """Verifies email recovery revokes existing sessions."""
         self.db.set_email(self.token, "alice@example.test", PASSWORD)
         replacement = self.db.reset_password("ALICE@example.test", self.recovery, "A new email passphrase")
         self.assertNotEqual(replacement, self.recovery)
@@ -150,6 +169,7 @@ class AccountTests(unittest.TestCase):
         self.assertTrue(self.db.login("alice@example.test", "A new email passphrase"))
 
     def test_existing_database_migration_keeps_accounts_and_purchases(self):
+        """Verifies existing database migration keeps accounts and purchases."""
         purchase = make_purchase("Repair services", 100, "Shop", "2026-10-02")
         self.db.save(self.token, [purchase], DEFAULT_SETTINGS, 0)
         with self.db.engine.begin() as connection:

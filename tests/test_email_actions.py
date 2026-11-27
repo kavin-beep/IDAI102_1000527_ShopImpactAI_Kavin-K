@@ -12,25 +12,31 @@ NEW_PASSWORD = "Changed temporary password 456"
 
 
 class EmailActionTests(unittest.TestCase):
+    """Exercise verification and password-reset links with a disposable database."""
     def setUp(self):
+        """Create an isolated account that requires email verification."""
         self.tmp = tempfile.TemporaryDirectory()
         self.db = Accounts("sqlite:///" + (Path(self.tmp.name) / "mail.db").as_posix(), require_verified_email=True)
         self.recovery = self.db.register("alice", PASSWORD, "alice@example.test")
 
     def tearDown(self):
+        """Close the test database and remove its temporary files."""
         self.db.engine.dispose()
         self.tmp.cleanup()
 
     def allow_request(self):
+        """Clear the email cooldown so a test can request another action link."""
         with self.db.engine.begin() as db:
             db.execute(text("UPDATE email_requests SET next_allowed=0"))
 
     def verify(self):
+        """Verify the test address and reset its request cooldown."""
         _, token = self.db.request_email_action("alice@example.test", "verify")
         self.db.consume_email_action(token, "verify")
         self.allow_request()
 
     def test_verification_gates_login_stores_hash_and_is_single_use(self):
+        """Verifies verification gates login stores hash and is single use."""
         for alias in ("alice", "alice@example.test"):
             with self.assertRaisesRegex(AccountError, "Verify your email"):
                 self.db.login(alias, PASSWORD)
@@ -45,6 +51,7 @@ class EmailActionTests(unittest.TestCase):
             self.db.consume_email_action(token, "verify")
 
     def test_expired_and_wrong_purpose_links_cannot_verify(self):
+        """Verifies expired and wrong purpose links cannot verify."""
         _, token = self.db.request_email_action("alice@example.test", "verify")
         with self.assertRaises(AccountError):
             self.db.consume_email_action(token, "reset", NEW_PASSWORD)
@@ -56,12 +63,14 @@ class EmailActionTests(unittest.TestCase):
             self.db.login("alice", PASSWORD)
 
     def test_reset_request_requires_verified_email_and_unknown_is_silent(self):
+        """Verifies reset request requires verified email and unknown is silent."""
         self.assertIsNone(self.db.request_email_action("alice@example.test", "reset"))
         self.assertIsNone(self.db.request_email_action("unknown@example.test", "reset"))
         with self.db.engine.connect() as db:
             self.assertEqual(db.execute(text("SELECT count(*) FROM email_actions")).scalar(), 0)
 
     def test_resend_is_limited_and_new_request_invalidates_old_link(self):
+        """Verifies resend is limited and new request invalidates old link."""
         _, first = self.db.request_email_action("alice@example.test", "verify")
         self.assertIsNone(self.db.request_email_action("ALICE@example.test", "verify"))
         self.allow_request()
@@ -71,6 +80,7 @@ class EmailActionTests(unittest.TestCase):
         self.db.consume_email_action(second, "verify")
 
     def test_reset_revokes_sessions_rotates_recovery_and_rejects_replay(self):
+        """Verifies reset revokes sessions rotates recovery and rejects replay."""
         self.verify()
         session = self.db.login("alice", PASSWORD)
         _, token = self.db.request_email_action("alice@example.test", "reset")
@@ -88,6 +98,7 @@ class EmailActionTests(unittest.TestCase):
             self.db.reset_password("alice", self.recovery, PASSWORD)
 
     def test_email_change_invalidates_old_links_and_requires_reverification(self):
+        """Verifies email change invalidates old links and requires reverification."""
         self.verify()
         session = self.db.login("alice", PASSWORD)
         _, token = self.db.request_email_action("alice@example.test", "reset")
@@ -102,6 +113,7 @@ class EmailActionTests(unittest.TestCase):
         self.assertTrue(self.db.login("updated@example.test", PASSWORD))
 
     def test_recovery_code_reset_invalidates_email_reset_links(self):
+        """Verifies recovery code reset invalidates email reset links."""
         self.verify()
         _, token = self.db.request_email_action("alice@example.test", "reset")
         self.db.reset_password("alice", self.recovery, NEW_PASSWORD)
@@ -109,9 +121,11 @@ class EmailActionTests(unittest.TestCase):
             self.db.consume_email_action(token, "reset", PASSWORD)
 
     def test_simultaneous_reset_claims_only_one_token(self):
+        """Verifies simultaneous reset claims only one token."""
         self.verify()
         _, token = self.db.request_email_action("alice@example.test", "reset")
         def consume():
+            """Attempt to use the same reset link and report whether it succeeded."""
             try:
                 self.db.consume_email_action(token, "reset", NEW_PASSWORD)
                 return True
@@ -122,6 +136,7 @@ class EmailActionTests(unittest.TestCase):
         self.assertEqual(sorted(results), [False, True])
 
     def test_account_deletion_removes_email_actions(self):
+        """Verifies account deletion removes email actions."""
         self.verify()
         session = self.db.login("alice", PASSWORD)
         self.db.request_email_action("alice@example.test", "reset")

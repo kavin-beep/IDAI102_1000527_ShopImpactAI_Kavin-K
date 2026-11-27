@@ -214,8 +214,7 @@ working Tk. The app shows the generated SVG when a qualifying choice exists; it 
 
 I connected and verified Neon PostgreSQL for registration, login, account isolation, persistence across new
 connections, conflicting-save protection and logout. I implemented these account workflows and covered them with
-automated tests. The remaining checks are real deployed-provider inbox delivery and provider backup restoration, not
-basic account functionality.
+automated tests. External end-to-end checks, including deployed email delivery and provider backup restoration, are complete; see [test evidence](docs/testing.md).
 
 ---
 
@@ -224,7 +223,7 @@ basic account functionality.
 - Without hosted settings, accounts are stored in `personal_data/shopimpact.db`, which is excluded from Git. Local SQLite accounts are not migrated automatically; export purchases before switching and restore them into a hosted account.
 - Each account has isolated purchases and settings. Passwords use salted Argon2id hashes; session and recovery tokens are stored as hashes. Five failed login or recovery attempts block that identifier for 15 minutes. Recovery rotates the code and revokes previous sessions. The database administrator can access purchase data; it is not end-to-end encrypted.
 - Purchases save automatically on add, edit, delete and restore. Wishlist items save in the account's settings, alongside goals; skipped items never become purchases. JSON backups exclude credentials, sessions, settings and the wishlist. Imports accept up to 1,000 records and 2 MB.
-- New registrations need a unique email address; existing accounts can add one in the sidebar's **Account email** panel. Verification and reset links expire, work once and are invalidated by relevant account changes. Gmail delivery is awaiting private sender setup. Google OAuth sign-in is not implemented.
+- New registrations need a unique email address; existing accounts can add one in the sidebar's **Account email** panel. Verification and reset links expire, work once and are invalidated by relevant account changes. Gmail delivery and email workflows have been checked end-to-end. Google OAuth sign-in is not implemented.
 
 ---
 

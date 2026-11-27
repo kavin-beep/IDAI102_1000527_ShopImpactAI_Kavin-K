@@ -13,6 +13,7 @@ class SvgTurtle(turtle.TNavigator):
     """Small SVG pen adapter around the standard-library navigation engine."""
 
     def __init__(self):
+        """Start a Turtle navigator that stores strokes for later SVG export."""
         super().__init__()
         self.drawing = True
         self.paths = []
@@ -21,6 +22,7 @@ class SvgTurtle(turtle.TNavigator):
         self.width = 3
 
     def _goto(self, end):
+        """Record drawn coordinates before delegating movement to Turtle navigation."""
         if self.drawing:
             if not self.current:
                 self.current.append(tuple(self._position))
@@ -28,26 +30,32 @@ class SvgTurtle(turtle.TNavigator):
         super()._goto(end)
 
     def flush(self):
+        """Save the current stroke with its color and width, if it has points."""
         if self.current:
             self.paths.append((self.current, self.colour, self.width))
             self.current = []
 
     def penup(self):
+        """Finish the current stroke and stop recording movement."""
         self.flush()
         self.drawing = False
 
     def pendown(self):
+        """Start recording subsequent Turtle movement as a visible stroke."""
         self.drawing = True
 
     def pencolor(self, colour):
+        """Start a new stroke using the requested color."""
         self.flush()
         self.colour = colour
 
     def pensize(self, width):
+        """Start a new stroke using the requested line width."""
         self.flush()
         self.width = width
 
     def svg(self):
+        """Serialize saved strokes as accessible SVG markup."""
         self.flush()
         parts = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="-125 -165 260 235" role="img" aria-labelledby="title">',
                  '<title id="title">Turtle leaf reward for a lower-factor shopping choice</title>',
@@ -89,6 +97,7 @@ def draw_leaf(pen):
 
 
 def main():
+    """Generate the reward SVG and optionally preview the same drawing with Tk Turtle."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--preview", action="store_true", help="Draw using desktop turtle.Turtle (requires Tk)")
     args = parser.parse_args()

@@ -9,43 +9,54 @@ from storage import export_csv, export_json, import_json
 
 
 class LogicTests(unittest.TestCase):
+    """Verify purchase validation, calculations, badges, and backup handling."""
     def purchase(self, category="Repair services", price=100, day="2026-10-01"):
+        """Create a valid test purchase with convenient defaults."""
         return make_purchase(category, price, "Test shop", day)
 
     def test_formula_and_decimal_rounding(self):
+        """Verifies formula and decimal rounding."""
         self.assertEqual(impact("650", "Second-hand clothing"), Decimal("0.81"))
         self.assertEqual(money("10.005"), Decimal("10.01"))
 
     def test_invalid_prices(self):
+        """Verifies invalid prices."""
         for price in [-1, "NaN", "Infinity", "oops", None, True, 10000001]:
             with self.subTest(price=price), self.assertRaises(ValueError):
                 money(price)
 
     def test_empty_brand_and_invalid_dates(self):
+        """Verifies empty brand and invalid dates."""
         for brand, day in [(" ", "2026-10-01"), ("a" * 81, "2026-10-01"), ("Shop", "2026-02-30"), ("Shop", "1999-01-01")]:
             with self.subTest(brand=brand, day=day), self.assertRaises(ValueError):
                 make_purchase("Repair services", 100, brand, day)
 
     def test_unknown_category(self):
+        """Verifies unknown category."""
         with self.assertRaises(ValueError):
             impact(10, "Unknown")
 
     def test_zero_price_allowed(self):
+        """Verifies zero price allowed."""
         self.assertEqual(impact(0, "New electronics"), Decimal("0.00"))
 
     def test_year_and_month_filter(self):
+        """Verifies year and month filter."""
         rows = [self.purchase(day=d) for d in ["2025-12-31", "2026-01-01", "2026-12-31"]]
         self.assertEqual(len(month_records(rows, "2025-12")), 1)
         self.assertEqual(month_records(rows, "2026-01")[0]["purchase_date"], "2026-01-01")
 
     def test_summary_known_values(self):
+        """Verifies summary known values."""
         rows = [self.purchase("New clothing", 1000), self.purchase("Second-hand clothing", 500)]
         self.assertEqual(summary(rows), {"spend": Decimal("1500"), "co2": Decimal("1.86"), "count": 2, "lower": 1})
 
     def test_empty_no_badges(self):
+        """Verifies empty no badges."""
         self.assertEqual(badges([]), [])
 
     def test_eco_saver_boundary(self):
+        """Verifies eco saver boundary."""
         for estimate, eligible in [("29.99", True), ("30.00", True), ("30.01", False)]:
             rows = [self.purchase() for _ in range(3)]
             for row, value in zip(rows, ["10.00", "10.00", estimate]):
@@ -54,12 +65,14 @@ class LogicTests(unittest.TestCase):
         self.assertNotIn("Eco Saver", badges([self.purchase()]))
 
     def test_lower_factor_badge_boundary(self):
+        """Verifies lower factor badge boundary."""
         rows = [self.purchase() for _ in range(3)] + [self.purchase("New clothing") for _ in range(2)]
         self.assertIn("Low Impact Shopper", badges(rows))
         rows.append(self.purchase("New clothing"))
         self.assertNotIn("Low Impact Shopper", badges(rows))
 
     def test_edit_recalculates_and_keeps_id(self):
+        """Verifies edit recalculates and keeps id."""
         old = self.purchase()
         new = make_purchase("New electronics", 1000, "New shop", "2026-11-01", old["id"])
         updated = update_purchase([old], new)
@@ -68,12 +81,14 @@ class LogicTests(unittest.TestCase):
         self.assertEqual(old["price"], "100.00")
 
     def test_demo_has_15_and_handles_january(self):
+        """Verifies demo has 15 and handles january."""
         rows = demo_records(date(2026, 1, 1))
         self.assertEqual(len(rows), 15)
         self.assertEqual(len(month_records(rows, "2025-12")), 5)
         self.assertEqual(len({p["id"] for p in rows}), 15)
 
     def test_all_categories_have_alternatives(self):
+        """Verifies all categories have alternatives."""
         self.assertTrue(all(len(item["alternatives"]) >= 3 for item in CATALOG.values()))
         from logic import ROOT
         links = json.loads((ROOT / "data/alternative_links.json").read_text())
@@ -81,15 +96,18 @@ class LogicTests(unittest.TestCase):
         self.assertTrue(all(options and all(item["url"].startswith("https://") for item in options) for options in links.values()))
 
     def test_backup_roundtrip(self):
+        """Verifies backup roundtrip."""
         rows = demo_records(date(2026, 10, 1))
         self.assertEqual(import_json(export_json(rows)), rows)
 
     def test_backup_does_not_trust_estimate(self):
+        """Verifies backup does not trust estimate."""
         row = self.purchase()
         row["estimated_co2"] = "999999"
         self.assertEqual(import_json(export_json([row]))[0]["estimated_co2"], "0.12")
 
     def test_legacy_backup_requires_explicit_migration(self):
+        """Verifies legacy backup requires explicit migration."""
         backup = json.loads(export_json([self.purchase()]))
         backup["version"] = "illustrative-inr-v1"
         with self.assertRaises(ValueError):
@@ -97,6 +115,7 @@ class LogicTests(unittest.TestCase):
         self.assertEqual(import_json(json.dumps(backup), allow_legacy=True)[0]["estimated_co2"], "0.12")
 
     def test_factor_provenance_and_no_invented_reuse_discount(self):
+        """Verifies factor provenance and no invented reuse discount."""
         from logic import ROOT
         source = json.loads((ROOT / "data/emission_sources.json").read_text())
         rows = {r["2017 NAICS Code"]: r for r in source["rows"]}
@@ -108,11 +127,13 @@ class LogicTests(unittest.TestCase):
         self.assertEqual(impact(500, "New clothing"), impact(500, "Second-hand clothing"))
 
     def test_duplicate_ids_rejected(self):
+        """Verifies duplicate ids rejected."""
         row = self.purchase()
         with self.assertRaises(ValueError):
             import_json(export_json([row, row]))
 
     def test_previous_reference_backup_requires_opt_in(self):
+        """Verifies previous reference backup requires opt in."""
         from logic import ROOT, VERSION
         old = json.loads((ROOT / "tests/sample_purchases.json").read_text())
         with self.assertRaises(ValueError):
@@ -127,6 +148,7 @@ class LogicTests(unittest.TestCase):
             import_json(json.dumps(old))
 
     def test_recalculation_preserves_purchase_details_and_original(self):
+        """Verifies recalculation preserves purchase details and original."""
         from logic import VERSION, recalculate_purchases
         old = self.purchase("New clothing", 1000)
         old.update(methodology="epa-2022-inr-reference-v2", estimated_co2="1.53")
@@ -138,11 +160,13 @@ class LogicTests(unittest.TestCase):
             self.assertEqual(updated[field], old[field])
 
     def test_malformed_backup(self):
+        """Verifies malformed backup."""
         for raw in ["{", "[]", '{"version":"wrong"}', export_json([{}]), "x" * 2000001]:
             with self.subTest(raw=raw[:60]), self.assertRaises(ValueError):
                 import_json(raw)
 
     def test_csv_formula_neutralized(self):
+        """Verifies csv formula neutralized."""
         row = self.purchase()
         row["brand"] = "=1+1"
         self.assertIn("'=1+1", export_csv([row]))

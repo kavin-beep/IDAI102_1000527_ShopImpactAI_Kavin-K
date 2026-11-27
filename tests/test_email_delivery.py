@@ -5,7 +5,9 @@ from email_delivery import Mailer, EmailConfigurationError, queue_email_action
 
 
 class DeliveryTests(unittest.TestCase):
+    """Check SMTP configuration and message construction without sending real email."""
     def mailer(self, **options):
+        """Build a test mailer with safe defaults and optional overridden settings."""
         values = dict(host="smtp.example.test", port=465, username="sender@example.test",
                       password="PRIVATE_TEST_PASSWORD", sender="sender@example.test",
                       base_url="https://shop.example.test")
@@ -13,6 +15,7 @@ class DeliveryTests(unittest.TestCase):
         return Mailer(**values)
 
     def test_rejects_untrusted_link_addresses_and_insecure_transport(self):
+        """Verifies rejects untrusted link addresses and insecure transport."""
         for address in ("http://shop.example.test", "https://user:secret@shop.example.test", "https://shop.example.test?next=evil", "javascript:alert(1)"):
             with self.subTest(address=address), self.assertRaises(EmailConfigurationError):
                 self.mailer(base_url=address)
@@ -21,9 +24,11 @@ class DeliveryTests(unittest.TestCase):
         self.mailer(base_url="http://127.0.0.1:8501")
 
     def test_representation_does_not_contain_credentials(self):
+        """Verifies representation does not contain credentials."""
         self.assertNotIn("PRIVATE_TEST_PASSWORD", repr(self.mailer()))
 
     def test_link_and_expiry_use_trusted_config_and_correct_purpose(self):
+        """Verifies link and expiry use trusted config and correct purpose."""
         mailer = self.mailer()
         with patch.object(Mailer, "send_message") as send:
             mailer.send_action("alice@example.test", "opaque_token", "reset")
@@ -33,6 +38,7 @@ class DeliveryTests(unittest.TestCase):
         self.assertNotIn("PRIVATE_TEST_PASSWORD", body)
 
     def test_ssl_transport_authenticates_without_plaintext_connection(self):
+        """Verifies ssl transport authenticates without plaintext connection."""
         with patch("email_delivery.smtplib.SMTP_SSL") as secure, patch("email_delivery.smtplib.SMTP") as plain:
             self.mailer().check_login()
         secure.return_value.login.assert_called_once()
@@ -40,6 +46,7 @@ class DeliveryTests(unittest.TestCase):
         self.assertIsNotNone(secure.call_args.kwargs["context"])
 
     def test_starttls_happens_before_login(self):
+        """Verifies starttls happens before login."""
         with patch("email_delivery.smtplib.SMTP") as plain:
             self.mailer(port=587, security="starttls").check_login()
         connection = plain.return_value
@@ -47,6 +54,7 @@ class DeliveryTests(unittest.TestCase):
         self.assertLess(names.index("starttls"), names.index("login"))
 
     def test_unknown_address_never_sends_and_worker_errors_do_not_escape(self):
+        """Verifies unknown address never sends and worker errors do not escape."""
         service = Mock()
         service.request_email_action.return_value = None
         mailer = Mock()

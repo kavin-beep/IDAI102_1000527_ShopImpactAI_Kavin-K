@@ -4,6 +4,7 @@ from logic import month_records, summary
 
 
 def shift_month(month, offset):
+    """Shift a YYYY-MM month by an integer offset, including across year boundaries."""
     year, number = map(int, month.split("-"))
     if not 1 <= number <= 12:
         raise ValueError("Choose a valid month.")
@@ -18,6 +19,7 @@ def monthly_trend(records, month):
 
 
 def month_insights(records, month, budget):
+    """Summarize the selected month against its predecessor and spending goal."""
     current = summary(month_records(records, month))
     previous = summary(month_records(records, shift_month(month, -1)))
     categories = {}

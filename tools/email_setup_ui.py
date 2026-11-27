@@ -12,6 +12,7 @@ sys.path.insert(0, str(ROOT))
 from accounts import email_key
 from email_delivery import Mailer
 
+# Restrict setup to localhost before presenting private Gmail configuration.
 st.set_page_config(page_title="ShopImpact Gmail setup", page_icon="✉️", layout="centered")
 if st.get_option("server.address") not in {"127.0.0.1", "localhost", "::1"}:
     st.error("This setup page must run locally with --server.address 127.0.0.1.")
@@ -23,6 +24,8 @@ st.markdown("1. Enable Google **2-Step Verification**.\n2. Create an app passwor
 st.link_button("Create a Google app password", "https://myaccount.google.com/apppasswords")
 st.caption("Use a Google app password, not your normal Google password. Keep it out of chat and GitHub.")
 st.info("Connecting sends one test email to the sender address. Verification is optional for sign-in and dashboard access; a verified address enables email password resets. Existing purchases remain saved.")
+
+# Collect credentials and the app URL, then save only after the test succeeds.
 with st.form("gmail_setup", clear_on_submit=True):
     sender = st.text_input("Sender Gmail address", max_chars=254, placeholder="yourname@gmail.com")
     password = st.text_input("Google app password", type="password", max_chars=100)

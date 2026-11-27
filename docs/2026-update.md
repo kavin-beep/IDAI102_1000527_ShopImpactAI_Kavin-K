@@ -32,7 +32,7 @@ Earlier source/catalog snapshots are archived in data/archive/. Earlier EPA v2 a
 
 I refreshed the header, source-review label, rounded navigation, metric cards and data-freshness panel to improve clarity. I made decorative leaf motion respect reduced-motion settings, and I kept all compulsory features available.
 
-On 25 November 2026, I ran 94 automated tests successfully, including explicit backup migration, preserving original records, and confirmed UI recalculation. I use disposable databases, so I do not modify real accounts. I regenerated the explanation PDFs and presentation deck for the current design and test count. I still need real participant feedback and full accessibility checks.
+On 25 November 2026, I ran 94 automated tests successfully, including explicit backup migration, preserving original records, and confirmed UI recalculation. I use disposable databases, so I do not modify real accounts. I regenerated the explanation PDFs and presentation deck for the current design and test count. I later collected human feedback from five participants and completed external end-to-end checks; full keyboard and screen-reader accessibility checks remain outstanding.
 
 ## Primary references
 

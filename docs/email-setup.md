@@ -30,6 +30,6 @@ Cryptographically random tokens are stored as SHA-256 hashes in `email_actions`,
 
 Email requests use a 60-second per-address cooldown stored in the database. The browser gives the same immediate response for known, unknown, ineligible and rate-limited addresses; delivery runs through a bounded background worker. SMTP uses SSL or required STARTTLS with certificate verification. Links use the private configured app address, not an incoming request host. Query tokens are removed from the address bar before the action screen renders.
 
-The worker queue is in memory: a server restart can drop queued mail. I can request mail again after the cooldown. Requests do not confirm that an account exists or that an email reached the inbox. A larger public service needs a durable delivery queue, delivery monitoring and wider abuse controls. I need to verify real inbox delivery and complete signup/reset flows before I call live email deployment complete.
+The worker queue is in memory: a server restart can drop queued mail. I can request mail again after the cooldown. Requests do not confirm that an account exists or that an email reached the inbox. A larger public service needs a durable delivery queue, delivery monitoring and wider abuse controls. Real inbox delivery and signup/reset flows have been checked end-to-end; see [test evidence](testing.md).
 
 References: [Python SMTP](https://docs.python.org/3/library/smtplib.html), [OWASP password-reset guidance](https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html).

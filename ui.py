@@ -35,10 +35,12 @@ HERO_VIDEO = "https://assets.mixkit.co/videos/4147/4147-720.mp4"
 
 
 def theme_name():
+    """Return the selected visual theme, defaulting to the standard appearance."""
     return st.session_state.get("visual_theme", "Normal")
 
 
 def motion_on():
+    """Return whether animated scenery is enabled for this browser session."""
     return st.session_state.get("scenery_motion", True)
 
 
@@ -459,6 +461,7 @@ html,body {background:#000!important;}
 
 
 def apply_styles(high_contrast=False):
+    """Apply the base design plus the selected theme or high-contrast overrides."""
     theme = theme_name()
     st.markdown(BASE_CSS, unsafe_allow_html=True)
     if high_contrast:
@@ -613,10 +616,12 @@ def _inject_fx():
 
 
 def html(markup):
+    """Render app-generated HTML markup through Streamlit's markdown renderer."""
     st.markdown(markup, unsafe_allow_html=True)
 
 
 def sidebar_brand(username, level):
+    """Render the account identity and current eco level in the sidebar."""
     initial = escape((username or "?")[:1].upper())
     html(f"""<div class="si-side-brand"><div class="si-logo" aria-hidden="true">🌿</div>
     <div><b>ShopImpact</b><small>Conscious shopping journal</small></div></div>
@@ -625,6 +630,7 @@ def sidebar_brand(username, level):
 
 
 def _arc(progress, size, stroke, gradient_id, colors):
+    """Build an SVG progress ring, clamping displayed progress between zero and one."""
     radius = (size - stroke) / 2
     circumference = 2 * 3.14159265 * radius
     offset = circumference * (1 - max(0.0, min(progress, 1.0)))
@@ -636,11 +642,13 @@ def _arc(progress, size, stroke, gradient_id, colors):
 
 
 def _ticker(words):
+    """Build a decorative duplicated text ticker hidden from assistive technology."""
     items = "".join(f"<span>{escape(w)}<i>✳</i></span>" for w in words * 2)
     return f'<div class="si-ticker" aria-hidden="true"><div>{items}</div></div>'
 
 
 def hero(username, level, streak, skips, month_label):
+    """Render the welcome panel with the user's level and journey counters."""
     orb = _arc(level["progress"], 150, 8, "si-orb-grad", ["#A3C585", "#E8B04A", "#E07A5F"])
     nxt = f"{level['to_next']} pts to {escape(level['next_name'])}" if level["next_name"] else "Top level reached"
     ticker = _ticker(["Buy less, choose well", "Second-hand first", "Repair before replace", "Pause before you buy",
@@ -666,17 +674,20 @@ def hero(username, level, streak, skips, month_label):
 
 
 def section(icon, title, subtitle=""):
+    """Render a consistent section heading, escaping user-visible text."""
     sub = f"<p>{escape(subtitle)}</p>" if subtitle else ""
     html(f'<div class="si-section"><div class="si-ico" aria-hidden="true">{icon}</div><div><h3>{escape(title)}</h3>{sub}</div></div>')
 
 
 def estimate_pill(kg, factor, category, lower, equivalent):
+    """Show the live estimate, category factor, choice type, and everyday equivalent."""
     tag = '<span class="si-tag">♻️ Reuse / repair choice</span>' if lower else '<span class="si-tag si-new">🛍️ New purchase</span>'
     html(f"""<div class="si-estimate" role="status"><span>Live preview</span><b>{kg:,.2f} kg CO₂e</b>{tag}
 <span>{CATEGORY_ICONS.get(category, '🛒')} reference factor {factor:.6f} per INR · ≈ {equivalent['value']:,} {escape(equivalent['label'])}</span></div>""")
 
 
 def goal_rings(items):
+    """Render spending and impact goal rings with a distinct over-goal state."""
     cards = []
     for index, (icon, label, used, goal, unit) in enumerate(items):
         share = used / goal if goal else 0
@@ -690,28 +701,34 @@ def goal_rings(items):
 
 
 def equivalents_cards(rows):
+    """Render sourced everyday equivalents as labelled visual cards."""
     cards = "".join(f'<div><i aria-hidden="true">{r["icon"]}</i><b>{r["value"]:,}</b><span>{escape(r["label"])}</span></div>' for r in rows)
     html(f'<div class="si-equiv">{cards}</div>')
 
 
 def alternatives_cards(ideas):
+    """Render numbered lower-impact alternatives as labelled visual cards."""
     cards = "".join(f'<div class="si-alt"><div class="si-num" aria-hidden="true">{i:02d}</div><p>{escape(text)}</p></div>' for i, text in enumerate(ideas, 1))
     html(f'<div class="si-alts">{cards}</div>')
 
 
 def tip_card(tip):
+    """Display one short shopping suggestion in the shared tip-card style."""
     html(f'<div class="si-tip"><small>✨ A SMALL IDEA</small><p>{escape(tip)}</p></div>')
 
 
 def story_card(text):
+    """Display the selected month's summary sentence in a story-card layout."""
     html(f'<div class="si-story"><span aria-hidden="true">📖</span><p><b>Your month in a sentence:</b> {escape(text)}</p></div>')
 
 
 def empty_state(icon, text):
+    """Explain an empty view with a decorative icon and escaped text."""
     html(f'<div class="si-empty"><span aria-hidden="true">{icon}</span>{escape(text)}</div>')
 
 
 def level_card(level, levels):
+    """Show current level progress and the ordered path of available levels."""
     width = max(level["progress"], 0.02) * 100
     nxt = f"{level['to_next']} points to {escape(level['next_icon'])} {escape(level['next_name'])}" if level["next_name"] else "You've reached the top level — keep growing your forest!"
     path = "".join(f'<span class="{"si-here" if n == level["name"] else ""}">{i} {escape(n)}</span>' for _, n, i in levels)
@@ -722,11 +739,13 @@ def level_card(level, levels):
 
 
 def points_grid(breakdown):
+    """Render the labelled point totals that make up the user's eco score."""
     cells = "".join(f'<div><b class="si-count" style="--to:{value}"></b><small>{escape(label)}</small></div>' for label, value in breakdown.items())
     html(f'<div class="si-points">{cells}</div>')
 
 
 def medal_grid(items):
+    """Render earned and locked milestones with their names and unlocking rules."""
     cards = []
     for item in items:
         state = "si-got" if item["earned"] else "si-locked"
@@ -737,6 +756,7 @@ def medal_grid(items):
 
 
 def wish_card(wish, days, cool_off):
+    """Display wishlist status, estimated impact, and elapsed cool-off time."""
     icon = CATEGORY_ICONS.get(wish["product_type"], "🛒")
     if wish["status"] == "waiting":
         badge = '<span class="si-ready">Cool-off complete — decide calmly</span>' if days >= cool_off else f'<span class="si-cool">Cooling off · {cool_off - days} days to go</span>'
@@ -750,6 +770,7 @@ def wish_card(wish, days, cool_off):
 
 
 def brand_panel():
+    """Render the sign-in page's visual introduction and brand message."""
     html(f"""<section class="si-brand">
 <div class="si-poster"></div><video autoplay muted loop playsinline preload="metadata"><source src="{BRAND_VIDEO}" type="video/mp4"></video>
 <div class="si-wordmark"><span>🌿 ShopImpact</span><small>CONSCIOUS SHOPPING JOURNAL</small></div>

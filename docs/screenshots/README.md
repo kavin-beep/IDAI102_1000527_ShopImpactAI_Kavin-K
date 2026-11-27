@@ -14,4 +14,4 @@ I refreshed the screenshots for ShopImpact 2.0 on 11 November 2026 using a separ
 - high-contrast.png: saved contrast preference
 - mobile.png: narrow viewport with sidebar collapsed
 
-These images document local browser rendering; public deployment verification is still pending.
+These images document local browser rendering. Separate external end-to-end checks of the public deployment have been completed; see [test evidence](../testing.md).

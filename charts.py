@@ -8,6 +8,7 @@ SCALE = alt.Scale(domain=list(CATEGORY_COLORS), range=list(CATEGORY_COLORS.value
 
 
 def _style(chart, ink):
+    """Apply shared transparent styling and readable axis and legend colors."""
     grid = "rgba(148,163,209,.18)" if ink != "#0F2E25" else "rgba(15,94,72,.10)"
     return (chart.configure(background="transparent", font=FONT)
             .configure_axis(labelColor=ink, titleColor=ink, gridColor=grid, domain=False, ticks=False,
@@ -17,10 +18,12 @@ def _style(chart, ink):
 
 
 def _frame(grouped):
+    """Convert category totals into the labelled tabular data Altair expects."""
     return pd.DataFrame({"Category": list(grouped), "Value": [round(float(v), 2) for v in grouped.values()]})
 
 
 def category_bars(grouped, unit, ink):
+    """Build a sorted category bar chart with value labels and accessible tooltips."""
     data = _frame(grouped)
     base = alt.Chart(data).encode(
         y=alt.Y("Category:N", sort="-x", title=None),
@@ -33,6 +36,7 @@ def category_bars(grouped, unit, ink):
 
 
 def category_donut(grouped, unit, ink):
+    """Build a category-share donut with a total, unit caption, and hover details."""
     data = _frame(grouped)
     total = data["Value"].sum()
     data["Share"] = data["Value"] / total if total else 0
@@ -46,6 +50,7 @@ def category_donut(grouped, unit, ink):
 
 
 def trend_area(months, values, measure, ink):
+    """Build a six-month trend chart with a gradient area and point tooltips."""
     data = pd.DataFrame({"Month": months, "Value": values})
     gradient = alt.Gradient(gradient="linear", x1=1, x2=1, y1=1, y2=0, stops=[
         alt.GradientStop(color="rgba(163,197,133,0.02)", offset=0),

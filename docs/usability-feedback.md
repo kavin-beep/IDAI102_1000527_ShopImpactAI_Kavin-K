@@ -1,6 +1,6 @@
 # Real participant feedback record
 
-I have not collected participant feedback yet. I will fill this record with actual observations; automated checks do not replace this assessment requirement. I will use participant aliases rather than unnecessary personal information.
+I collected feedback from five participants between 3 and 19 November 2026. Their responses are recorded below using aliases or relationship labels; automated checks do not replace this human feedback.
 
 ## Tasks
 
@@ -10,10 +10,15 @@ Create an account and save the recovery code; add a purchase; find a monthly tot
 
 | Respondent | Date | Feedback |
 |---|---|---|
-| Friend 1 | 3 November 2026 | The purchase tracking and monthly spending dashboard are useful. |
+| Friend 1 | 3 November 2026 | The purchase tracking and monthly spending dashboard are useful. He also encountered an error when trying to log in again. |
 | Mother | 6 November 2026 | The application helps users understand their shopping habits and environmental impact. The 7-day wishlist encourages more thoughtful purchases. |
 | Friend 2 | 10 November 2026 | The eco-points and achievement system make the application engaging. |
 | Father | 15 November 2026 | The spending insights and charts are useful. |
 | Classmate | 19 November 2026 | The interface is creative and easy to navigate. |
 
-Include at least one less-confident computer participant where possible. Ask about labels, readability and whether any message feels confusing or judgmental. Do not collect passwords or recovery codes.
+## Change made from feedback
+
+In response to Friend 1's repeat-login error, I simplified the login-page logic and made the sign-in flow easier to use.
+**Retest:** We repeated the sign-in flow after the change and confirmed that logging in now works as expected.
+
+Feedback collection and the documented login retest are complete. Do not collect passwords or recovery codes.

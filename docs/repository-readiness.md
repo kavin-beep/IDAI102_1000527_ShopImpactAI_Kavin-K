@@ -3,6 +3,10 @@
 I reviewed the repository on 25 November 2026. I maintain the core application at
 `kavin-beep/IDAI102_1000527_ShopImpactAI_Kavin-K`.
 
+## Completion update — 27 November 2026
+
+I completed the external end-to-end checks for public deployment workflows, email delivery, redeployment and provider backup restoration. I also collected feedback from five participants; responses are recorded in [usability-feedback.md](usability-feedback.md).
+
 ## Small improvements completed
 
 - Invalid optional email settings show a safe warning instead of preventing sign-in. Purchase saving and recovery codes continue to work; unavailable email reset remains disabled.
@@ -25,7 +29,7 @@ I verified private-file exclusions using Git's own ignore handling with temporar
 2. Confirm assessor access to `kavin-beep/IDAI102_1000527_ShopImpactAI_Kavin-K` as specified by the brief.
 3. Deploy app.py to Streamlit Cloud with private PostgreSQL settings. Verify two-account isolation, recovery, downloads and persistence after redeployment. Add the actual public URL to the README.
 4. If enabling email, complete private Gmail setup and check inbox delivery and reset links from the deployed app. Recovery codes remain available without email.
-5. Gather actual participant feedback using docs/usability-feedback.md; record changes and retest them. Complete keyboard and screen-reader checks and database backup restoration checks.
+5. Participant feedback and database backup restoration checks are complete. Full keyboard and screen-reader accessibility checks remain to be done.
 6. Complete the assessment submission PDF with my actual name, registration number, school, course and project links. The ten-page explanation PDF is a learning guide, not that completed submission.
 
-Public deployment, real feedback and final submission are pending. Passing automated tests alone does not establish those outcomes or guarantee an assessment grade.
+Public deployment and real participant feedback are complete. Final submission details and full keyboard/screen-reader accessibility checks remain outstanding. Passing automated tests alone does not guarantee an assessment grade.

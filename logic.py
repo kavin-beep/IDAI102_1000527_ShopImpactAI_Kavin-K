@@ -23,6 +23,7 @@ def money(value):
 
 
 def impact(price, product_type):
+    """Estimate CO2e as the validated price multiplied by the category's reference factor."""
     if product_type not in CATALOG:
         raise ValueError("Choose a recognised product type.")
     return (money(price) * Decimal(CATALOG[product_type]["multiplier"])).quantize(
@@ -30,6 +31,7 @@ def impact(price, product_type):
 
 
 def make_purchase(product_type, price, brand, purchased_on, record_id=None):
+    """Validate purchase details and build a record with its sourced estimate and ID."""
     if not isinstance(brand, str) or not brand.strip() or len(brand.strip()) > 80:
         raise ValueError("Enter a brand or shop name between 1 and 80 characters.")
     try:
@@ -48,10 +50,12 @@ def make_purchase(product_type, price, brand, purchased_on, record_id=None):
 
 
 def month_records(records, month):
+    """Return purchases whose ISO date falls within the selected YYYY-MM period."""
     return [p for p in records if p["purchase_date"][:7] == month]
 
 
 def summary(records):
+    """Calculate exact spending, estimated CO2e, purchase count, and lower-impact choices."""
     spend = sum((Decimal(p["price"]) for p in records), Decimal("0"))
     co2 = sum((Decimal(p["estimated_co2"]) for p in records), Decimal("0"))
     lower = sum(CATALOG[p["product_type"]]["lower_impact"] for p in records)
@@ -72,6 +76,7 @@ def badges(records):
 
 
 def update_purchase(records, replacement):
+    """Replace a matching purchase by ID without mutating the original history."""
     if not any(p["id"] == replacement["id"] for p in records):
         raise ValueError("That purchase no longer exists.")
     return [replacement if p["id"] == replacement["id"] else p for p in records]

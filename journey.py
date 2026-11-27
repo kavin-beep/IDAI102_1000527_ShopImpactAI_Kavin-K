@@ -28,6 +28,7 @@ WISH_STATUSES = {"waiting", "bought", "skipped"}
 
 
 def _is_lower(purchase):
+    """Check whether the catalog marks a purchase as reuse, repair, or reusable."""
     return bool(CATALOG.get(purchase["product_type"], {}).get("lower_impact"))
 
 
@@ -43,6 +44,7 @@ def eco_points(records, wishlist=()):
 
 
 def level_for(points):
+    """Map accumulated points to a level and progress toward the next threshold."""
     index = max(i for i, (threshold, _, _) in enumerate(LEVELS) if points >= threshold)
     threshold, name, icon = LEVELS[index]
     if index + 1 < len(LEVELS):
@@ -63,6 +65,7 @@ def reuse_streak(records, month):
     month stays alive until the selected month is over.
     """
     def has_choice(period):
+        """Check whether a month includes at least one lower-impact choice."""
         return any(_is_lower(p) for p in month_records(records, period))
 
     period = month if has_choice(month) else shift_month(month, -1)
@@ -85,6 +88,7 @@ def goal_months(records, budget, carbon_goal):
 
 
 def milestones(records, wishlist, month, budget, carbon_goal):
+    """Return each lifetime milestone with its rule and earned status."""
     lower = sum(map(_is_lower, records))
     repairs = sum(p["product_type"] == "Repair services" for p in records)
     skipped = sum(item.get("status") == "skipped" for item in wishlist)
@@ -119,6 +123,7 @@ def equivalents(kg):
 
 
 def make_wish(name, product_type, price, added_on=None, record_id=None):
+    """Validate and create a wishlist item with its current reference estimate."""
     if not isinstance(name, str) or not name.strip() or len(name.strip()) > 80:
         raise ValueError("Give the item a name between 1 and 80 characters.")
     added = date.fromisoformat(str(added_on or date.today()))
@@ -128,17 +133,20 @@ def make_wish(name, product_type, price, added_on=None, record_id=None):
 
 
 def add_wish(wishlist, wish):
+    """Append a wishlist item without mutating the saved list or exceeding its limit."""
     if len(wishlist) >= WISHLIST_LIMIT:
         raise ValueError(f"Your wishlist holds up to {WISHLIST_LIMIT} items. Remove a few decided ones first.")
     return list(wishlist) + [wish]
 
 
 def days_waiting(wish, today=None):
+    """Count days since an item was added, stopping at resolution when applicable."""
     end = date.fromisoformat(wish["resolved_on"]) if wish.get("resolved_on") else (today or date.today())
     return max((end - date.fromisoformat(wish["added_on"])).days, 0)
 
 
 def resolve_wish(wishlist, wish_id, status, today=None):
+    """Mark a wishlist item as bought or skipped and record the decision date."""
     if status not in WISH_STATUSES - {"waiting"}:
         raise ValueError("Choose bought or skipped.")
     if not any(w["id"] == wish_id for w in wishlist):
@@ -148,6 +156,7 @@ def resolve_wish(wishlist, wish_id, status, today=None):
 
 
 def remove_wish(wishlist, wish_id):
+    """Return the wishlist without the selected item."""
     return [w for w in wishlist if w["id"] != wish_id]
 
 
@@ -157,6 +166,7 @@ def wish_to_purchase(wish, purchased_on=None):
 
 
 def wishlist_summary(wishlist):
+    """Summarize wishlist states, skipped spending, and estimates not added by skips."""
     skipped = [w for w in wishlist if w.get("status") == "skipped"]
     return {
         "waiting": sum(w.get("status") == "waiting" for w in wishlist),
